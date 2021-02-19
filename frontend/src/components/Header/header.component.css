@@ -1,0 +1,122 @@
+nav {
+    /* margin-top: 15px; */
+    height: 22vh;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.logo {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    font-family: 'Dancing Script', cursive;
+    transform: translate(2vw, 92%);
+    font-size: 2.25em;
+}
+
+.logo-text {
+    height: 100%;
+}
+
+.logo-img img {
+    display: block;
+    width: 50%;
+    height: auto;
+    padding: 0;
+    margin: auto;
+}
+
+.hamburger {
+    position: absolute;
+    cursor: pointer;
+    display: none;
+    right: 5%;
+    transform: translate(-5%, 200%);
+}
+
+.nav-links {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 30px;
+    list-style: none;
+    width: 40%;
+    height: 100%;
+}
+
+.nav-links li span,
+a {
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: 600;
+}
+
+.non-auth-links {
+    color: rgb(143, 143, 143);
+    transition: color 200ms ease-in-out;
+}
+
+.auth-links {
+    background: rgb(11, 100, 172);
+    padding: 8px 25px 8px 25px;
+    border-radius: 50px;
+    color: white;
+    transition: background 200ms ease-in-out;
+}
+
+.non-auth-links:hover {
+    color: rgb(83, 83, 83);
+}
+
+.auth-links:hover {
+    background: rgba(10, 90, 155, 0.829);
+}
+
+@media screen and (max-width: 768px) {
+    .nav-links {
+        flex-direction: column;
+        justify-content: center;
+        position: fixed;
+        background-image: radial-gradient(rgb(76, 191, 236), rgb(10, 90, 155));
+        height: 100vh;
+        width: 100vw;
+        transform: translateY(-100%);
+        transition: transform 0.28s ease-in-out;
+    }
+
+    .nav-links.show {
+        transform: translateY(0%);
+    }
+
+    .nav-links li span {
+        color: white;
+        background: none;
+        padding: 0;
+    }
+
+    .nav-links li span:hover {
+        font-size: 1.1em;
+    }
+
+    .line1,
+    .line2,
+    .line3 {
+        width: 25px;
+        height: 2px;
+        background-color: rgb(76, 191, 236);
+        margin: 4px;
+        border-radius: 200px;
+        padding: 1px;
+    }
+
+    .hamburger {
+        display: inline;
+        z-index: 1;
+    }
+}
