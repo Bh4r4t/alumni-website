@@ -26,6 +26,11 @@
     width: inherit;
 }
 
+.signup-form-items-name {
+    display: flex;
+    flex-direction: row;
+}
+
 .signup-form-items > input {
     box-sizing: border-box;
     height: 7vh;

@@ -1,4 +1,4 @@
-import './auth.component.css';
+import './auth.css';
 
 function Auth({ children }: any) {
     return (

@@ -13,7 +13,7 @@ export function genAccessToken(payload: jwtpayload) {
 
 export function genRefreshToken(payload: jwtpayload) {
 	return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET as jwt.Secret, {
-		expiresIn: '1d',
+		expiresIn: '30 days',
 	});
 }
 

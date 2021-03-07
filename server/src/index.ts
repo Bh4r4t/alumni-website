@@ -1,9 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import auth from './auth/index';
+import user from './routes/user';
 import connectDB from './db/index';
 
 dotenv.config();
@@ -31,6 +31,8 @@ connectDB(process.env.DBURL as string);
 
 // auth routes
 app.use('/auth', auth);
+// user routes
+app.use('/user', user);
 
 app.get('/', (req, res) => {
     res.send({ error: false });

@@ -5,9 +5,9 @@ import { loginUser } from '../../../services/api/auth';
 import { useDispatch } from 'react-redux';
 import { LOGIN_SUCCESS } from '../../../services/actions/actionTypes';
 import './login.component.css';
-import { HR, HRBreak, Logo } from '../auth.component';
+import { HR, HRBreak, Logo } from '../../../pages/AuthPage/auth';
 
-function Login() {
+function SignIn() {
     const [error, setError] = useState(false);
     const history = useHistory();
     const dispatch = useDispatch();
@@ -67,7 +67,7 @@ function Login() {
             </div>
             <div className="signup-option">
                 Don't have an Account?
-                <Link to="/auth/register" className="signup-option-link">
+                <Link to="/auth/signup" className="signup-option-link">
                     Signup
                 </Link>
             </div>
@@ -75,4 +75,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default SignIn;

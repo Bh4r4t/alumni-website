@@ -7,7 +7,7 @@ body {
         'Helvetica Neue', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: rgba(228, 238, 245, 0.137);
+    background: white;
 }
 
 code {
