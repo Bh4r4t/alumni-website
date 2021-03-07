@@ -1,20 +1,25 @@
 import { Grid, Dropdown, Menu } from 'antd';
 import PersonIcon from '@material-ui/icons/Person';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import logo_img from '../../../assets/alumni_iitrpr_logo.png';
 import './topNavbar.component.css';
 
 function TopNavBar() {
 	const user = useSelector((state: any) => state.authReducer.user);
+	const history = useHistory();
 	const { useBreakpoint } = Grid;
 
 	return (
 		<div className="topnavbar">
 			<div className="topnavbar-container">
 				<div className="topnavbar-head">
-					<img src={logo_img} alt="IIT Ropar Alumni Association" />
+					<img
+						src={logo_img}
+						alt="IIT Ropar Alumni Association"
+						onClick={() => history.push('/')}
+					/>
 					<NavLinks user={user} />
 				</div>
 			</div>

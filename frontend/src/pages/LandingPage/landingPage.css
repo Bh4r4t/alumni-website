@@ -7,3 +7,18 @@
     margin-left: 10vw;
 	margin-right: 10vw;
 }
+
+
+.carousal-card {
+    position: relative;
+    color: white;
+}
+
+.carousal-card h1 {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+    color: white;
+    background: black;
+    width: 100%;
+}
