@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
-import { logoutAction } from '../../services/actions/auth';
-import './header.component.css';
+import { logoutAction } from '../../../services/actions/auth';
+import logo_img from '../../../assets/alumni_iitrpr_logo.png';
+import './navbar.component.css';
 
 function Header() {
 	const [show, setShow] = useState(false);
@@ -26,10 +27,7 @@ function Header() {
 				<div className="line3"></div>
 			</div>
 			<div className="logo" onClick={() => history.push('/')}>
-				{/* <div className="logo-img">
-                    <img src={interviewImage} alt={''}/>
-                </div> */}
-				<div className="logo-text">IIT-RPR Alumni</div>
+					<img src={logo_img} alt="IIT Ropar Alumni Association" />
 			</div>
 			<ul className={show ? 'nav-links show' : 'nav-links'}>
 				<li>

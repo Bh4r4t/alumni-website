@@ -1,7 +1,9 @@
-.body {
+.landingpage-body {
     position: relative;
-    margin: 0;
     padding-bottom: 6rem;
     min-height: 100%;
     font-family: "Helvetica Neue", Arial, sans-serif;
+    margin-top: 5vw;
+    margin-left: 10vw;
+	margin-right: 10vw;
 }

@@ -18,24 +18,28 @@ function Footer() {
 						<div className="col">
 							<h1 className="list-unstyled">
 								<div className="list-items">
-									<EmailIcon style={{ fontSize: 30 }} />
-									<li>alumni@iitrpr.ac.in</li>
+									<EmailIcon style={{ fontSize: 25, color:"white"}} />
+									<a href="mailto:alumni@iitrpr.ac.in">
+										<li>alumni@iitrpr.ac.in</li>
+									</a>
 								</div>
 								<div className="list-items">
-									<LocationOnIcon style={{ fontSize: 30 }} />
+									<LocationOnIcon style={{ fontSize: 25, color:"white" }} />
 									<li>
-										Alumni Affairs, Room No. 109, IIT Ropar
+										Alumni Affairs, Room No. 109, IIT Ropar,
 										<br />
-										Rupnagar, Punjab India - 140001
+										Rupnagar, Punjab, India - 140001
 									</li>
 								</div>
 							</h1>
 						</div>
 						<div className="footer-logo">
-							<img
-								src={logo_img}
-								alt="IIT Ropar Alumni Association"
-							/>
+							<Link to="/">
+								<img
+									src={logo_img}
+									alt="IIT Ropar Alumni Association"
+								/>
+							</Link>
 						</div>
 					</div>
 					<div className="row-bottom">
