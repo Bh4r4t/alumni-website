@@ -32,11 +32,11 @@
 	text-decoration: none;
 	display: flex;
 	align-items: center;
-	padding: 0 35px 0 35px;
+	padding: 0 30px 0 30px;
 	transition: box-shadow 0.2s ease-in-out;
 	color: #375997;
-	font-weight: 500;
-	font-size: 1.1em;
+	font-weight: 700;
+	font-size: 1.25em;
 }
 
 .topnavbar-links a:active, .topnavbar-links a:focus, .topnavbar-links a:visited {

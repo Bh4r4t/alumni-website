@@ -42,7 +42,7 @@ function NavLinks(props: any) {
 				<Link to="">Constitution</Link>
 			</Menu.Item>
 			<Menu.Item>
-				<Link to="">Contact Us</Link>
+				<Link to="/about/contact">Contact Us</Link>
 			</Menu.Item>
 		</Menu>
 	);
@@ -73,7 +73,7 @@ function NavLinks(props: any) {
 				<Link to="">Be a Volunteer</Link>
 			</Menu.Item>
 			<Menu.Item>
-				<Link to="">Send Query</Link>
+				<Link to="/about/contact">Send Query</Link>
 			</Menu.Item>
 			<Menu.Item>
 				<Link to="">Share Achievements</Link>

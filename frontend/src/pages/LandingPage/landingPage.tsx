@@ -11,17 +11,20 @@ function LandingPage() {
 					<Carousel autoplay effect="fade">
 						<div className="carousal-card">
 							<img src={img1} />
-							<h1> Hello</h1>
+							<h1> Welcome </h1>
 						</div>
-						{/* <div className="carousal-card">
+						<div className="carousal-card">
 							<img src={img2} />
+							<h1> Welcome 2 </h1>
 						</div>
 						<div className="carousal-card">
 							<img src={img1} />
+							<h1> Welcome 3 </h1>
 						</div>
 						<div className="carousal-card">
 							<img src={img2} />
-						</div> */}
+							<h1> Welcome 4 </h1>
+						</div>
 					</Carousel>
 				</div>
 				{/* shows stats of iitrpr alumni network */}
