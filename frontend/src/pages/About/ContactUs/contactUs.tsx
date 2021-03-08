@@ -12,6 +12,7 @@ function ContactUs() {
 	const handleSubmit = async (payload: any) => {
 		try {
 			setLoading(true);
+			console.log(payload);
 			// TODO: API call and send data to backend
 			setLoading(false);
 		} catch (err) {
@@ -23,13 +24,13 @@ function ContactUs() {
 	const [form] = Form.useForm();
 
 	return (
-		<div className="container">
-			<div className="body">
-				<div className="head">
+		<div className="contact-container">
+			<div className="contact-body">
+				<div className="contact-head">
 					<h1>Contact Us</h1>
 					<hr />
 				</div>
-				<div className="details">
+				<div className="contact-details">
 					<p>
 						{' '}
 						Our Alumni Relations representatives are available
@@ -39,9 +40,9 @@ function ContactUs() {
 					</p>
 				</div>
 				<div className="contact-methods">
-					<Row>
-						<Col>
-							<Card>
+					<Row className="contact-methods-row">
+						<Col className="contact-methods-col">
+							<Card className="contact-methods-card">
 								<div className="card-head">
 									<MailOutlineIcon
 										style={{
@@ -56,12 +57,12 @@ function ContactUs() {
 									<a href="mailto:alumni@iitrpr.ac.in">
 										alumni@iitrpr.ac.in
 									</a>{' '}
-									or via the form below
+									or via the form below.
 								</p>
 							</Card>
 						</Col>
 						<Col>
-							<Card>
+							<Card className="contact-methods-card">
 								<div className="card-head">
 									<LocationOnOutlinedIcon
 										style={{
@@ -80,16 +81,17 @@ function ContactUs() {
 					</Row>
 				</div>
 				<hr />
-				<div className="query-form">
+				<div className="contact-query-form">
 					<Form
 						layout="vertical"
 						form={form}
 						autoComplete="off"
 						onFinish={handleSubmit}
 					>
-						<Row>
-							<Col>
+						<Row className="contact-query-form-row">
+							<Col className="contact-query-form-col">
 								<Form.Item
+									className="contact-form-formitem"
 									name="firstname"
 									label="First Name"
 									rules={[
@@ -103,8 +105,9 @@ function ContactUs() {
 									<Input />
 								</Form.Item>
 							</Col>
-							<Col>
+							<Col className="contact-query-form-col">
 								<Form.Item
+									className="contact-form-formitem"
 									name="lastname"
 									label="Last Name"
 									rules={[
@@ -119,9 +122,10 @@ function ContactUs() {
 								</Form.Item>
 							</Col>
 						</Row>
-						<Row>
-							<Col>
+						<Row className="contact-query-form-row">
+							<Col className="contact-query-form-col">
 								<Form.Item
+									className="contact-form-formitem"
 									name="email"
 									label="Email Id"
 									rules={[
@@ -134,14 +138,16 @@ function ContactUs() {
 									<Input />
 								</Form.Item>
 							</Col>
-							<Col>
+							<Col className="contact-query-form-col">
 								<Form.Item
+									className="contact-form-formitem"
 									name="contactno"
 									label="Contact No."
 									rules={[
 										{
 											required: false,
-											message: 'Please input your contact no.!',
+											message:
+												'Please input your contact no.!',
 										},
 									]}
 								>
@@ -150,6 +156,7 @@ function ContactUs() {
 							</Col>
 						</Row>
 						<Form.Item
+							className="contact-form-formitem"
 							name="subject"
 							label="Subject"
 							rules={[
@@ -162,6 +169,7 @@ function ContactUs() {
 							<Input />
 						</Form.Item>
 						<Form.Item
+							className="contact-form-formitem"
 							name="message"
 							label="Message"
 							rules={[
@@ -173,15 +181,18 @@ function ContactUs() {
 						>
 							<TextArea rows={4} />
 						</Form.Item>
-						<Form.Item>
-							<Button
-								type="primary"
-								htmlType="submit"
-								loading={isLoading}
-							>
-								Submit
-							</Button>
-						</Form.Item>
+						<div className="contact-form-buttom">
+							<Form.Item className="contact-form-formitem">
+								<Button
+									className="contact-form-formitem-submit"
+									type="primary"
+									htmlType="submit"
+									loading={isLoading}
+								>
+									Submit
+								</Button>
+							</Form.Item>
+						</div>
 					</Form>
 				</div>
 			</div>

@@ -13,7 +13,9 @@ import LandingPage from '../LandingPage/landingPage';
 import Dashboard from '../../components/Dashboard/dashboard.component';
 import ProfilePage from '../../components/Profile/profile.component';
 import PrivateRoute from '../../components/PrivateRoute/privateRoute';
-import ContactUs from '../getInvolved/contactUs/contactUs';
+import ContactUs from '../About/ContactUs/contactUs';
+import BeAMentor from '../Support/beAMentor/beAMentor';
+import BeAVolunteer from '../Support/beAVolunteer/beAVolunteer';
 
 import './App.css';
 
@@ -58,6 +60,13 @@ function App() {
 						<Route path="/about/contact">
 							<ContactUs />
 						</Route>
+						<Route path="/support/become-mentor">
+							<BeAMentor />
+						</Route>
+						<Route path="/support/become-volunteer">
+							<BeAVolunteer />
+						</Route>
+
 						{/* landing Page */}
 						<Route path="/" exact>
 							<LandingPage />

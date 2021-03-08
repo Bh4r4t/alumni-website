@@ -67,10 +67,10 @@ function NavLinks(props: any) {
 	const getInvolvedMenu = (
 		<Menu>
 			<Menu.Item>
-				<Link to="">Be A Mentor</Link>
+				<Link to="/support/become-mentor">Be A Mentor</Link>
 			</Menu.Item>
 			<Menu.Item>
-				<Link to="">Be a Volunteer</Link>
+				<Link to="/support/become-volunteer">Be a Volunteer</Link>
 			</Menu.Item>
 			<Menu.Item>
 				<Link to="/about/contact">Send Query</Link>
