@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Row, Col, Card, Form, Input, Button, Alert } from 'antd';
 import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
+import PhoneIcon from '@material-ui/icons/Phone';
 import './contactUs.css';
 import TextArea from 'antd/lib/input/TextArea';
 
@@ -76,6 +77,20 @@ function ContactUs() {
 									We’d love to see you whenever you’re on
 									campus.
 								</p>
+							</Card>
+						</Col>
+						<Col>
+							<Card className="contact-methods-card">
+								<div className="card-head">
+									<PhoneIcon
+										style={{
+											fontSize: 25,
+											color: '#375997',
+										}}
+									/>
+									<h2>Phone</h2>
+								</div>
+								<p>Call us at (+91) 01881 242305.</p>
 							</Card>
 						</Col>
 					</Row>

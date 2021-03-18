@@ -1,25 +1,56 @@
 import express, { Request, Response } from 'express';
-import User from '../db/models/user.model';
+import User, { IUser } from '../db/models/user.model';
 import bcrypt from 'bcryptjs';
-import * as jwt from 'jsonwebtoken';
-import cookieParser from 'cookie-parser';
-import {
-    genAccessToken,
-    genRefreshToken,
-    updateRefreshInDB,
-    sendRefreshToken,
-} from './tokens';
+import { genAccessToken, genRefreshToken, sendRefreshToken } from './tokens';
 import verifyToken from './verifyToken';
 import { validationResult } from 'express-validator';
-import { signupValidation, signinValidation, createUser } from './utils';
+import {
+    signupValidation,
+    signinValidation,
+    createUser,
+    createPendingRequest,
+} from './utils';
+import cookieParser from 'cookie-parser';
 
 const app = express.Router();
 app.use(cookieParser());
 app.use(express.json());
 
 export interface jwtpayload {
-    email: string;
+    id: String;
+    email: String;
+    first_name: String;
+    last_name: String;
 }
+
+/**
+ * @route           POST auth/check_signup
+ * @description     checks whether the email entered already exist in the DB
+ * @access          Public
+ */
+app.post('/check_signup', async (req: Request, res: Response) => {
+    try {
+        if (req.body.email === undefined) {
+            throw new Error('Not valid Email ID!');
+        }
+        const instance = await User.findOne({
+            $or: [
+                { primary_email: req.body.email },
+                {
+                    'location_contact_info.alternative_email_id':
+                        req.body.email,
+                },
+            ],
+        });
+        if (!instance) {
+            res.send({ error: false, message: 'Unique Email' });
+        } else {
+            throw new Error('Not Unique Email ID!');
+        }
+    } catch (err) {
+        res.send({ error: true, message: err.message });
+    }
+});
 
 /**
  * @route           POST auth/signup
@@ -35,23 +66,32 @@ app.post('/signup', signupValidation, async (req: Request, res: Response) => {
                 errors: validationError.mapped(),
             });
         }
-        await User.find({
-            'location_contact_info.login_email_id': req.body.email,
-        }).then((docs) => {
-            if (JSON.stringify(docs) !== '[]') {
-                throw new Error('user already exists!');
-            }
+        if (req.body.emailId === undefined) {
+            throw new Error('Not Unique Email ID!');
+        }
+        const instance = await User.findOne({
+            $or: [
+                { primary_email: req.body.email },
+                {
+                    'location_contact_info.alternative_email_id':
+                        req.body.emailId,
+                },
+            ],
         });
-        const hashedPassword = await bcrypt.hash(req.body.password, 6);
-        await createUser(req.body, hashedPassword);
+        if (instance) {
+            throw new Error(`User already exists!`);
+        }
+        const salt = await bcrypt.genSalt(6);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const user = await createUser(req.body, hashedPassword);
+        await createPendingRequest(user._id);
         res.send({
             error: false,
             message: `user:${
-                req.body.first_name + ' ' + req.body.lastname
+                req.body.first_name + ' ' + req.body.last_name
             }'s info successfully added into db!!`,
         });
     } catch (err) {
-        console.log(err)
         res.send({ error: true, message: err.message });
     }
 });
@@ -70,34 +110,36 @@ app.post('/signin', signinValidation, async (req: Request, res: Response) => {
                 errors: validationError.mapped(),
             });
         }
-        const instance = await User.find({
-            'location_contact_info.login_email_id': req.body.email,
-        }).then((docs) => {
-            if (JSON.stringify(docs) === '[]') {
-                throw new Error('user does not exist!');
-            }
-            return docs;
+        const instance = await User.findOne({
+            primary_email: req.body.email,
         });
+        if (!instance) {
+            throw new Error(`User doesn't exist`);
+        }
         const checkPass = await bcrypt.compare(
             req.body.password,
-            instance[0].password
+            instance.password as string
         );
-        if (checkPass === false) {
+        if (!checkPass) {
             throw new Error('email or password is invalid');
         }
+        // if (instance.status !== 'verified') {
+        //     throw new Error('user is not verified yet!');
+        // }
         const payload: jwtpayload = {
-            email: instance[0].location_contact_info.login_email_id,
+            id: instance._id,
+            first_name: instance.basic_info.first_name,
+            last_name: instance.basic_info.last_name,
+            email: instance.primary_email,
         };
-        // generate access and refresh tokens
-        const accessToken = genAccessToken(payload);
-        const refreshToken = genRefreshToken(payload);
-        // put refresh_token into db
-        updateRefreshInDB(refreshToken, instance);
+        // login successful
         // send access and refresh tokens
-        sendRefreshToken(res, refreshToken);
+        sendRefreshToken(res, genRefreshToken(payload));
         res.send({
-            accesstoken: accessToken,
-            refreshtoken: refreshToken
+            first_name: instance.basic_info.first_name,
+            last_name: instance.basic_info.last_name,
+            email: instance.primary_email,
+            token: genAccessToken(payload),
         });
     } catch (err) {
         res.send({ error: true, message: err.message });
@@ -110,55 +152,15 @@ app.post('/signin', signinValidation, async (req: Request, res: Response) => {
  * @access          Public
  */
 app.post('/logout', verifyToken, async (req, res) => {
+    res.clearCookie('rid');
     // remove token from database
-    res.clearCookie('refreshtoken');
     // email is sent from the client
     try {
         await User.updateOne(
-            { 'location_contact_info.login_email_id': res.locals.email },
+            { primary_email: res.locals.email },
             { token: undefined }
-        ).then(() => res.send({ message: 'logged out!' }));
-    } catch (err) {
-        res.send({ error: true, message: err.message });
-    }
-});
-
-/**
- * @route           POST auth/refresh_token
- * @description     Refresh token to check for cookie and update the token in cookie as well as in database.
- * @access          Public
- */
-app.post('/refresh_token', async (req, res) => {
-    try {
-        const token = req.cookies.refreshtoken;
-        // console.log(req.cookies.refreshtoken);
-        if (!token) {
-            throw new Error('Please login first!');
-        } else {
-            const payload: jwtpayload = jwt.verify(
-                token,
-                process.env.REFRESH_TOKEN_SECRET as jwt.Secret
-            ) as jwtpayload;
-            const user = await User.find({
-                'location_contact_info.login_email_id': payload.email,
-            }).then((docs) => {
-                if (Object.keys(docs).length === 0 || docs[0].token !== token) {
-                    throw new Error('Please login first!');
-                }
-                return docs;
-            });
-            const pload: jwtpayload = {
-                email: payload.email,
-            } as jwtpayload;
-
-            // create new access and refresh token
-            const accessToken = genAccessToken(pload);
-            const refreshToken = genRefreshToken(pload);
-            // update refresh token in db
-            updateRefreshInDB(refreshToken, user);
-            sendRefreshToken(res, refreshToken);
-            res.send({ token: accessToken });
-        }
+        );
+        res.send({ error: false, message: 'logged out!' });
     } catch (err) {
         res.send({ error: true, message: err.message });
     }

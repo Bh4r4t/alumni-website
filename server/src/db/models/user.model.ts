@@ -9,9 +9,10 @@ export interface IUser extends Document {
     membership_type: String;
     attachments: IUserAttachments;
     registered_user: boolean;
-    email: string;
-    password: string;
-    token: string;
+    primary_email: String;
+    password: String;
+    status: String;
+    token: String;
 }
 
 export enum e_salutation {
@@ -52,74 +53,73 @@ export enum e_attach_type {
 }
 
 export interface IUserBasicInfoPrivacy extends Document {
-    show_day_of_birth: string;
-    show_year_of_birth: string;
-    show_day_of_wedding: string;
-    show_year_of_wedding: string;
+    show_day_of_birth: String;
+    show_year_of_birth: String;
+    show_day_of_wedding: String;
+    show_year_of_wedding: String;
 }
 
 export interface IUserContactInfoPrivacy extends Document {
-    show_contact_num: string;
-    show_email_id: string;
+    show_contact_num: String;
+    show_email_id: String;
 }
 
 export interface IUserBasicInfo extends Document {
-    salutation: string;
+    salutation: String;
     first_name: String;
-    middle_name: String;
     last_name: String;
     nick_name: String;
-    gender: string;
+    gender: String;
     date_of_birth: Date;
-    relationship_status: string;
+    relationship_status: String;
     wedding_anniversary: Date;
-    profile_role: string;
+    profile_role: String;
     privacy_info: IUserBasicInfoPrivacy;
-    about_me: string;
+    about_me: String;
 }
 
 export interface IUserContactInfoSocial extends Document {
-    website: string;
-    facebook: string;
-    linkedin: string;
-    twitter: string;
-    youtube: string;
-    instagram: string;
+    website: String;
+    facebook: String;
+    linkedin: String;
+    twitter: String;
+    youtube: String;
+    instagram: String;
 }
 
 export interface IUserLocationContactInfo extends Document {
-    current_city: string;
-    home_town: string;
-    correspondance_address: string;
-    correspondance_location: string;
+    current_city: String;
+    home_town: String;
+    correspondance_address: String;
+    correspondance_location: String;
     correspondance_postal_code: number;
-    mobile_number: string;
-    home_phone_number: string;
-    work_phone_number: string;
-    login_email_id: string; // unique id
-    alternative_email_id: Types.Array<string>;
+    mobile_number: String;
+    home_phone_number: String;
+    work_phone_number: String;
+    login_email_id: String; // unique id
+    alternative_email_id: Types.Array<String>;
     privacy_info: IUserContactInfoPrivacy;
     social_profiles: IUserContactInfoSocial;
 }
 
 export interface IUserProfessionalInfo extends Document {
-    role: string;
-    company: string;
+    role: String;
+    company: String;
 }
 
 export interface IUserEducationalInfo extends Document {
     editable: boolean;
-    name_of_organization: string;
+    name_of_organization: String;
     start_date: Date;
     end_date: Date;
-    degree_name: string;
-    score_obtained: string;
+    degree_name: String;
+    score_obtained: String;
 }
 
 export interface IUserAttachments extends Document {
-    title: string;
+    title: String;
     attachment_type: e_attach_type;
-    attachement: string;
+    attachement: String;
     show_on_profile: boolean;
 }
 
@@ -128,7 +128,6 @@ const userSchema: Schema = new Schema({
     basic_info: {
         salutation: { type: String, enum: Object.values(e_salutation) },
         first_name: String,
-        middle_name: String,
         last_name: String,
         nick_name: String,
         gender: { type: String, enum: Object.values(e_gender) },
@@ -172,7 +171,7 @@ const userSchema: Schema = new Schema({
         mobile_number: String,
         home_phone_number: String,
         work_phone_number: String,
-        login_email_id: { type: String, required: true }, // unique id
+        email_id: String,
         alternative_email_id: [String],
         privacy_info: {
             show_contact_num: {
@@ -223,8 +222,9 @@ const userSchema: Schema = new Schema({
             show_on_profile: { type: Boolean, default: true },
         },
     ],
-    registered_user: Boolean,
-    email: String,
+    registered_user: { type: String, default: false },
+    status: { type: String, default: 'pending' },
+    primary_email: { type: String, unique: true }, // unique id
     password: String,
     token: String,
 });

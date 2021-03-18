@@ -6,8 +6,8 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import InstagramIcon from '@material-ui/icons/Instagram';
-import './footer.component.css';
-import logo_img from '../../assets/alumni_iitrpr_logo.png';
+import './mainFooter.component.css';
+import logo_img from '../../../assets/alumni_iitrpr_logo.png';
 
 function Footer() {
 	return (
@@ -47,7 +47,7 @@ function Footer() {
 							<a href="#">
 								<h1>About</h1>
 							</a>
-							<a href="#">
+							<a href="/about/contact">
 								<h1>Contact us</h1>
 							</a>
 						</div>

@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import auth from './auth/index';
+import refreshToken from './auth/refresh_token';
 import user from './routes/user';
 import connectDB from './db/index';
 
@@ -31,6 +32,8 @@ connectDB(process.env.DBURL as string);
 
 // auth routes
 app.use('/auth', auth);
+// refresh_token route
+app.use('/refresh_token', refreshToken);
 // user routes
 app.use('/user', user);
 

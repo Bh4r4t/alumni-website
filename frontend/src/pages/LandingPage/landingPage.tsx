@@ -1,9 +1,11 @@
 import { Carousel } from 'antd';
+import { useSelector } from 'react-redux';
 import img1 from '../../assets/landingpage/img1.jpg';
 import img2 from '../../assets/landingpage/img2.jpg';
 import './landingPage.css';
 
 function LandingPage() {
+	const user = useSelector((state: any) => state.authReducer.user);
 	return (
 		<div className="landingpage">
 			<div className="landingpage-body">
@@ -43,10 +45,12 @@ function LandingPage() {
 							<h2 className="section-title">
 								Connect with the community!
 							</h2>
-							
 						</div>
 					</div>
 				</section>
+				<p>{user?.token}</p>
+				<p>{user?.email}</p>
+				<p>{user?.first_name}</p>
 				<p>
 					Lorem Ipsum is simply dummy text of the printing and
 					typesetting industry. Lorem Ipsum has been the industry's

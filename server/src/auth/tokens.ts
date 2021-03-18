@@ -5,14 +5,14 @@ import { jwtpayload } from '../auth/index';
 
 
 export function genAccessToken(payload: jwtpayload) {
-	return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET as jwt.Secret, {
+	return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET! as jwt.Secret, {
 		expiresIn: '10m',
 	});
 }
 
 
 export function genRefreshToken(payload: jwtpayload) {
-	return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET as jwt.Secret, {
+	return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET! as jwt.Secret, {
 		expiresIn: '30 days',
 	});
 }
@@ -27,7 +27,8 @@ export async function updateRefreshInDB(refreshToken: any, dbInstance: any) {
 
 
 export function sendRefreshToken(res: Response, refreshToken: any) {
-	res.cookie('refreshtoken', refreshToken, {
+	res.cookie('rid', refreshToken, {
 		httpOnly: true,
+		// path: '/refresh_token'
 	});
 }

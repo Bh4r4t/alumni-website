@@ -2,8 +2,10 @@ import { Grid, Dropdown, Menu } from 'antd';
 import PersonIcon from '@material-ui/icons/Person';
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import logo_img from '../../../assets/alumni_iitrpr_logo.png';
+import { logoutAction } from '../../../services/actions/auth';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import './topNavbar.component.css';
 
 function TopNavBar() {
@@ -28,7 +30,12 @@ function TopNavBar() {
 }
 
 function NavLinks(props: any) {
+	const user = useSelector((state: any) => state.authReducer.user);
 	const [highlight, changeHighlight] = useState(false);
+	const dispatch = useDispatch();
+	const handleLogout = () => {
+		dispatch(logoutAction(user.token));
+	};
 
 	const aboutMenu = (
 		<Menu>
@@ -36,7 +43,7 @@ function NavLinks(props: any) {
 				<Link to="">Director's Message</Link>
 			</Menu.Item>
 			<Menu.Item>
-				<Link to="">Executive Team</Link>
+				<Link to="/about/executive-committee">Executive Team</Link>
 			</Menu.Item>
 			<Menu.Item>
 				<Link to="">Constitution</Link>
@@ -90,10 +97,10 @@ function NavLinks(props: any) {
 	const userMenu = (
 		<Menu>
 			<Menu.Item>
-				<Link to="">Login</Link>
+				<Link to="/auth/signin">Login</Link>
 			</Menu.Item>
 			<Menu.Item>
-				<Link to="">Register</Link>
+				<Link to="/auth/signup">Register</Link>
 			</Menu.Item>
 		</Menu>
 	);
@@ -113,7 +120,7 @@ function NavLinks(props: any) {
 				>
 					<a onClick={(e) => e.preventDefault()}>Get Involved</a>
 				</Dropdown>
-				<a href={''}>Contribute</a>
+				<a href={'/support/contribute'}>Contribute</a>
 				<Dropdown
 					overlay={aboutMenu}
 					// onVisibleChange={() => changeHighlight(!highlight)}
@@ -129,7 +136,14 @@ function NavLinks(props: any) {
 							<PersonIcon style={{ fontSize: 30 }} />
 						</a>
 					</Dropdown>
-				) : null}
+				) : (
+					<a onClick={handleLogout}>
+						<div className="topnavbar-links-logout">
+							<ExitToAppIcon />
+							Log out
+						</div>
+					</a>
+				)}
 			</div>
 			{/* <div className="topnavbar-usericon">
 			</div> */}

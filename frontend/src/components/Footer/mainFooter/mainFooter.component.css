@@ -63,7 +63,7 @@
     border: none;
 }
 
-.row-bottom-links h1:hover, .list-items a:hover {
+.row-bottom-links h1:hover, .list-items a:hover, .list-items a li:hover{
     text-decoration: underline;
     color: black;
 }

@@ -180,7 +180,7 @@ function BeAMentor() {
 							{/* TODO: implement the upload functionality */}
 							<Upload {...fileUploadProps}>
 								<Button icon={<UploadOutlined />}>
-									Upload
+									Select File
 								</Button>
 							</Upload>
 							<br />

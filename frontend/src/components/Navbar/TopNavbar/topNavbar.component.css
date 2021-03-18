@@ -47,6 +47,14 @@
 	box-shadow: inset 0 -3px salmon;
 }
 
+.topnavbar-links-logout {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-size: 0.8em;
+	justify-content: center;
+}
+
 @media screen and (max-width: 948px) {
 	/* .topnavbar {
 		padding: 1.5vw;

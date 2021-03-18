@@ -1,0 +1,71 @@
+.auth-form-wrapper {
+	/* background-color: rgba(228, 228, 228, 0.582); */
+	border: rgb(204, 204, 204) solid 1px;
+	border-radius: 5px;
+	/* padding: 40px; */
+}
+
+.auth-form-create-page-info {
+	margin: 20px 20px 30px 20px;
+	display: flex;
+	align-items: center;
+}
+
+.auth-form-create-page-info h1 {
+	margin-bottom: 0;
+	margin-left: 30px;
+}
+
+.ant-card.ant-card-bordered.auth-form-wrapper .ant-card-body {
+	padding-top: 10px;
+}
+
+.ant-card.ant-card-bordered.auth-form-wrapper .ant-card-body hr {
+	margin: 20px 0 40px 0;
+}
+
+.signupCreate-form-div {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.ant-form.ant-form-horizontal.signupCreate-form {
+	min-width: 50vw;
+}
+
+.signupCreate-form-submit-button-div {
+	margin: 50px 0 10px 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+/* padding after label in form */
+.ant-col.ant-form-item-label.ant-form-item-label-left.ant-col-xs-24.ant-col-sm-7 {
+	margin: 0;
+	padding: 0 0 5px 0;
+}
+
+.ant-col.ant-form-item-label.ant-form-item-label-left.ant-col-xs-24.ant-col-sm-7
+	label {
+	font-size: 1.1em;
+	font-weight: 500;
+}
+
+.ant-row.ant-form-item.email-check .ant-col.ant-form-item-control {
+	margin: 0;
+	padding: 0;
+}
+
+.ant-select.ant-select-auto-complete.city-search-autocomplete.ant-select-single.ant-select-show-search
+	.ant-select-selector {
+	height: 42px;
+}
+
+@media only screen and (max-width: 768px) {
+	.ant-form.ant-form-horizontal.signupCreate-form {
+		min-width: 80%;
+	}
+}

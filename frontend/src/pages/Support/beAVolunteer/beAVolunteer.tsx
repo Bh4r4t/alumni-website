@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import TextArea from 'antd/lib/input/TextArea';
 import { Row, Col, Form, Input, Button, Alert, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
 import './beAVolunteer.css';
 
 function BeAVolunteer() {

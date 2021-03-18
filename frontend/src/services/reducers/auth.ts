@@ -1,26 +1,30 @@
 import { LOGIN_SUCCESS, LOGOUT_SUCCESS } from '../actions/actionTypes';
 
 interface AuthState {
-    user?: { username: string; email: string };
+	user?: {
+		first_name: string;
+		last_name: string;
+		email: string;
+		token: string;
+	};
 }
 
 const initState: AuthState = {
-    user: undefined,
+	user: undefined,
 };
-// const initState: AuthState = { user: {username:"new", email:'new@gmail.com  '} };
 
 function authReducer(state = initState, action: any) {
-    switch (action.type) {
-        case LOGIN_SUCCESS: {
-            return { ...initState, user: action.payload };
-        }
-        case LOGOUT_SUCCESS: {
-            return { ...initState, user: action.payload };
-        }
-        default: {
-            return initState;
-        }
-    }
+	switch (action.type) {
+		case LOGIN_SUCCESS: {
+			return { ...initState, user: action.payload };
+		}
+		case LOGOUT_SUCCESS: {
+			return { user: undefined };
+		}
+		default: {
+			return initState;
+		}
+	}
 }
 
 export default authReducer;
