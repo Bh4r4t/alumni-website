@@ -1,9 +1,12 @@
-.topnavbar {
+.ant-layout-header.topnavbar {
 	padding: 0;
     border-bottom: 1px solid rgb(241, 203, 133);
+	background: transparent;
+	height: 125px;
 }
 
 .topnavbar-container {
+	height: inherit;
 	margin: 0 8vw 0 8vw;
 }
 
@@ -19,7 +22,7 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: space-between;
-	height: 92px;
+	height: 100%;
 }
 
 .topnavbar-links {
@@ -55,21 +58,60 @@
 	justify-content: center;
 }
 
+
+.topnavbar-container button {
+	margin: 0 20px 0 20px;
+	background-color: transparent;
+	display: flex;
+	align-items: center;
+	border:#375997 1px solid;
+	border-radius: 8px;
+	color: #375997;
+}
+
+.topnavbar-container button:focus {
+	outline: none;
+}
+
+.topnavbar-container button:hover {
+	cursor: pointer;
+	filter: brightness(1.5);
+}
+
+.topnavbar-links.vertical {
+	display: flex;
+	flex-direction: column;
+}
+
+.topnavbar-links.vertical a {
+	margin: 10px 0 10px 0;
+	/* border-bottom: rgba(209, 209, 209, 0.404) 1px solid; */
+	transition: brightness 0.5s;
+	box-shadow: none;
+}
+
+.topnavbar-links.vertical a:hover {
+	filter : brightness(1.8);
+}
+
+.topnavbar-links.vertical a .topnavbar-links-logout {
+	flex-direction: row;
+	align-items: center;
+	font-size: 1.04em;
+}
+
+.topnavbar-links.vertical a .topnavbar-links-logout .MuiSvgIcon-root {
+	margin-right: 7px;
+}
+
 @media screen and (max-width: 948px) {
-	/* .topnavbar {
-		padding: 1.5vw;
-	} */
 
 	.topnavbar-container {
 		margin: 0 1vw 0 1vw;
 	}
 
-	.topnavbar-head {
-		flex-direction: column;
-	}
-
     .topnavbar-head img {
-        max-width: 15;
+        max-width: 250px;
         height: auto;
 		padding: 20px;
     }

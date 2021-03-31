@@ -1,31 +1,54 @@
-import { Grid, Dropdown, Menu } from 'antd';
+import { Grid, Dropdown, Menu, Layout, Drawer } from 'antd';
 import PersonIcon from '@material-ui/icons/Person';
 import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+import MenuRoundedIcon from '@material-ui/icons/MenuRounded';
 import logo_img from '../../../assets/alumni_iitrpr_logo.png';
 import { logoutAction } from '../../../services/actions/auth';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import './topNavbar.component.css';
 
+const { useBreakpoint } = Grid;
+
 function TopNavBar() {
 	const user = useSelector((state: any) => state.authReducer.user);
+	const [drawer, showDrawer] = useState(false);
 	const history = useHistory();
-	const { useBreakpoint } = Grid;
+	const { Header } = Layout;
+	const { md } = useBreakpoint();
 
 	return (
-		<div className="topnavbar">
-			<div className="topnavbar-container">
-				<div className="topnavbar-head">
-					<img
-						src={logo_img}
-						alt="IIT Ropar Alumni Association"
-						onClick={() => history.push('/')}
-					/>
-					<NavLinks user={user} />
+		<>
+			<Header className="topnavbar">
+				<div className="topnavbar-container">
+					<div className="topnavbar-head">
+						<img
+							src={logo_img}
+							alt="IIT Ropar Alumni Association"
+							onClick={() => history.push('/')}
+						/>
+						{md ? (
+							<NavLinks user={user} md={md}/>
+						) : (
+							<button onClick={() => showDrawer(true)}>
+								<MenuRoundedIcon
+									style={{ fontSize: md ? 30 : 25 }}
+								/>
+							</button>
+						)}
+					</div>
 				</div>
-			</div>
-		</div>
+			</Header>
+			<Drawer
+				placement="right"
+				closable={false}
+				onClose={() => showDrawer(false)}
+				visible={drawer}
+			>
+				<NavLinks user={user} md={md} />
+			</Drawer>
+		</>
 	);
 }
 
@@ -107,31 +130,19 @@ function NavLinks(props: any) {
 
 	return (
 		<>
-			<div className="topnavbar-links">
-				<Dropdown
-					overlay={initiativesMenu}
-					// onVisibleChange={() => changeHighlight(!highlight)}
-				>
+			<div className={props.md ? "topnavbar-links" : "topnavbar-links vertical"}>
+				<Dropdown overlay={initiativesMenu}>
 					<a onClick={(e) => e.preventDefault()}>Initiatives</a>
 				</Dropdown>
-				<Dropdown
-					overlay={getInvolvedMenu}
-					// onVisibleChange={() => changeHighlight(!highlight)}
-				>
+				<Dropdown overlay={getInvolvedMenu}>
 					<a onClick={(e) => e.preventDefault()}>Get Involved</a>
 				</Dropdown>
 				<a href={'/support/contribute'}>Contribute</a>
-				<Dropdown
-					overlay={aboutMenu}
-					// onVisibleChange={() => changeHighlight(!highlight)}
-				>
+				<Dropdown overlay={aboutMenu}>
 					<a onClick={(e) => e.preventDefault()}>About Us</a>
 				</Dropdown>
 				{!props.user ? (
-					<Dropdown
-						overlay={userMenu}
-						// onVisibleChange={() => changeHighlight(!highlight)}
-					>
+					<Dropdown overlay={userMenu}>
 						<a onClick={(e) => e.preventDefault()}>
 							<PersonIcon style={{ fontSize: 30 }} />
 						</a>

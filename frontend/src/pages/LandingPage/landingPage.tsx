@@ -48,7 +48,7 @@ function LandingPage() {
 						</div>
 					</div>
 				</section>
-				<p>{user?.token}</p>
+				{/* <p>{user?.token}</p> */}
 				<p>{user?.email}</p>
 				<p>{user?.first_name}</p>
 				<p>

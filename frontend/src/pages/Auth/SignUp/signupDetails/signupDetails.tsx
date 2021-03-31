@@ -79,6 +79,7 @@ function SignUpDetails() {
 			if (res?.data?.error === true) {
 				throw new Error(res.data.message);
 			}
+			history.push('/auth/signin');
 			setLoading(false);
 		} catch (err) {
 			setError(err.message);

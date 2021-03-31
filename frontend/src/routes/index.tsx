@@ -1,5 +1,5 @@
-import { Footer } from 'antd/lib/layout/layout';
 import { Redirect, Route, Switch } from 'react-router-dom';
+import Footer from '../components/Footer/mainFooter/mainFooter.component';
 import Dashboard from '../components/Dashboard/dashboard.component';
 import ProfilePage from '../components/Profile/profile.component';
 import TopNavbar from '../components/Navbar/TopNavbar/topNavbar.component';
@@ -30,7 +30,7 @@ export const Routes: React.FC<RoutesProp> = () => {
 			<PrivateRoute exact path="/auth/signup/create" auth={true}>
 				<SignUpCreate />
 			</PrivateRoute>
-            <PrivateRoute exact path="/auth/signup/create/batch" auth={true}>
+			<PrivateRoute exact path="/auth/signup/create/batch" auth={true}>
 				<SignUpDetails />
 			</PrivateRoute>
 			<div className="page-container">
