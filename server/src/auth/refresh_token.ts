@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import User, { IUser } from '../db/models/user.model';
+import User, { IUser } from '../models/user.model';
 import * as jwt from 'jsonwebtoken';
 import { jwtpayload } from './index';
 import { genRefreshToken, genAccessToken, sendRefreshToken } from './tokens';

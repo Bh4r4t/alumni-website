@@ -126,37 +126,32 @@ export interface IUserAttachments extends Document {
 const userSchema: Schema = new Schema({
     isAdmin: { type: Boolean, default: false, required: true },
     basic_info: {
-        salutation: { type: String, enum: Object.values(e_salutation) },
+        salutation: { type: String},
         first_name: String,
         last_name: String,
         nick_name: String,
-        gender: { type: String, enum: Object.values(e_gender) },
+        gender: { type: String},
         date_of_birth: { type: Date, trim: true },
         relationship_status: {
             type: String,
-            enum: Object.values(e_relationship_status),
         },
         wedding_anniversary: { type: Date, trim: true },
-        profile_role: { type: String, enum: Object.values(e_profile_role) },
+        profile_role: { type: String},
         privacy_info: {
             show_day_of_birth: {
                 type: String,
-                enum: Object.values(e_privacy),
                 default: e_privacy.all_members,
             },
             show_year_of_birth: {
                 type: String,
-                enum: Object.values(e_privacy),
                 default: e_privacy.all_members,
             },
             show_day_of_weddingweddingyear: {
                 type: String,
-                enum: Object.values(e_privacy),
                 default: e_privacy.all_members,
             },
             show_year_of_weddingyear: {
                 type: String,
-                enum: Object.values(e_privacy),
                 default: e_privacy.all_members,
             },
         },
@@ -176,12 +171,10 @@ const userSchema: Schema = new Schema({
         privacy_info: {
             show_contact_num: {
                 type: String,
-                enum: Object.values(e_privacy),
                 default: e_privacy.all_members,
             },
             show_email_id: {
                 type: String,
-                enum: Object.values(e_privacy),
                 default: e_privacy.all_members,
             },
         },
@@ -207,7 +200,6 @@ const userSchema: Schema = new Schema({
     ],
     membership_type: {
         type: String,
-        enum: Object.values(e_member_type),
         // default: e_membership,
         // TODO: update the default value
     },
@@ -216,7 +208,6 @@ const userSchema: Schema = new Schema({
             title: String,
             attachment_type: {
                 type: String,
-                enum: Object.values(e_attach_type),
             },
             attachement: String,
             show_on_profile: { type: Boolean, default: true },

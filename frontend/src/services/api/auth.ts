@@ -6,7 +6,7 @@ dotenv.config();
 export let url = process.env.REACT_APP_SERVER_URL;
 
 export const verifyEmail = async (payload: any) =>
-	axios.post(`${url}/auth/check_signup`, payload, {
+	axios.post(`${url}/auth/check_email`, payload, {
 		withCredentials: true,
 	});
 

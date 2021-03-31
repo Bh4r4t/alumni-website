@@ -2,16 +2,16 @@ import { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Button, Card, Form, Input, Col, Grid, Row, Alert } from 'antd';
 import { verifyEmail } from '../../../../services/api/auth';
-import './signup.component.css';
+import './signup.css';
 import '../../auth.css';
 import {
 	GoogleOutlined,
 	LinkedinFilled,
 	FacebookFilled,
 } from '@ant-design/icons';
-import AuthFooter from '../../../Footer/authFooter/authFooter.component';
-import AuthNavBar from '../../../Navbar/authNavBar/authNavBar.component';
-import { OtherSignInOption } from '../../SignIn/signin.component';
+import AuthFooter from '../../../../components/Footer/authFooter/authFooter.component';
+import AuthNavBar from '../../../../components/Navbar/authNavBar/authNavBar.component';
+import { OtherSignInOption } from '../../SignIn/signin';
 
 function SignUp() {
 	const [isLoading, setLoading] = useState(false);
@@ -47,7 +47,7 @@ function SignUp() {
 					<div className="signup-wrapper">
 						{error ? (
 							<Alert
-								className="signup-email-check-error"
+								className="signup-error"
 								message={error}
 								type="error"
 								closable

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import {
 	Button,
 	Card,
@@ -12,23 +11,26 @@ import {
 	Progress,
 	AutoComplete,
 } from 'antd';
-import './signupCreate.component.css';
-import AuthFooter from '../../../Footer/authFooter/authFooter.component';
-import AuthNavBar from '../../../Navbar/authNavBar/authNavBar.component';
+import AssignmentIndSharpIcon from '@material-ui/icons/AssignmentIndSharp';
+import './signupCreate.css';
+import AuthFooter from '../../../../components/Footer/authFooter/authFooter.component';
+import AuthNavBar from '../../../../components/Navbar/authNavBar/authNavBar.component';
+import moment from 'moment';
+import { registerUser } from '../../../../services/api/auth';
 
 function SignUpCreate() {
 	const [isLoading, setLoading] = useState(false);
-	const [dataP1, setDataP1] = useState(null);
-	const [salut, setSalut] = useState();
-	const salutation_dict = {
+	const [, setSalut] = useState();
+	const history = useHistory();
+	const salutation_dict: { [id: string]: string } = {
 		1: 'Mr',
 		2: 'Ms',
 		3: 'Dr',
 		4: 'Prof',
 		5: 'Other',
 	};
-	const [gender, setGender] = useState();
-	const gender_dict = {
+	const [, setGender] = useState();
+	const gender_dict: { [id: string]: string } = {
 		1: 'Male',
 		2: 'Female',
 		3: 'Prefer not to say',
@@ -36,14 +38,33 @@ function SignUpCreate() {
 	const [error, setError] = useState('');
 	const location = useLocation();
 	const email: string = location.state as string;
-	console.log('email', email);
 
-	// form for page 1
 	const [basicInfoForm] = Form.useForm();
-	// form for page 2
-	const [batchForm] = Form.useForm();
 
-	const handleSubmit = () => {};
+	const handleSubmit = async (payload: any) => {
+		try {
+			setLoading(true);
+			const formBody = { ...payload };
+			formBody.salutation = salutation_dict[payload.salutation as string];
+			formBody.gender = gender_dict[payload.gender as string];
+			formBody.date_of_birth = moment(payload.date_of_birth).format(
+				'YYYY-MM-DD[T00:00:00.000Z]'
+			);
+			const res = await registerUser(formBody);
+			if (res?.data?.error === true) {
+				throw new Error(res.data.message);
+			}
+			history.push({
+				pathname: '/auth/signup/create/batch',
+				state: payload.email,
+			});
+			console.log(formBody);
+			setLoading(false);
+		} catch (err) {
+			setError(err.message);
+			setLoading(false);
+		}
+	};
 
 	const formItemLayout = {
 		labelCol: {
@@ -63,7 +84,7 @@ function SignUpCreate() {
 				<div className="auth-container-wrapper">
 					{error ? (
 						<Alert
-							className="signup-email-check-error"
+							className="signup-error"
 							message={error}
 							type="error"
 							closable
@@ -71,13 +92,18 @@ function SignUpCreate() {
 						/>
 					) : null}
 					<div className="signup-head">
-						<h1>Register</h1>
+						<h1>Registration</h1>
 						<span>Connect with your alumni network</span>
 					</div>
 					<Card className="auth-form-wrapper">
 						<div className="auth-form-create-page-info">
 							<Progress type="circle" percent={0} width={75} />
-							<h1>Basic Info</h1>
+							<h1>
+								<AssignmentIndSharpIcon
+									style={{ fontSize: 40 }}
+								/>
+								Basic Info
+							</h1>
 						</div>
 						<hr />
 						<div className="signupCreate-form-div">
@@ -108,7 +134,7 @@ function SignUpCreate() {
 									<Input disabled />
 								</Form.Item>
 								<Form.Item
-									name="Salutation"
+									name="salutation"
 									label="Salutation"
 									rules={[{ required: true }]}
 								>
@@ -125,7 +151,7 @@ function SignUpCreate() {
 									</Radio.Group>
 								</Form.Item>
 								<Form.Item
-									name="First-name"
+									name="first_name"
 									label="First Name"
 									rules={[
 										{
@@ -135,11 +161,11 @@ function SignUpCreate() {
 										},
 									]}
 								>
-									<Input placeholder="First Name"/>
+									<Input placeholder="First Name" />
 								</Form.Item>
 
 								<Form.Item
-									name="Last-name"
+									name="last_name"
 									label="Last Name"
 									rules={[
 										{
@@ -149,7 +175,7 @@ function SignUpCreate() {
 										},
 									]}
 								>
-									<Input placeholder="Last Name"/>
+									<Input placeholder="Last Name" />
 								</Form.Item>
 
 								<Form.Item
@@ -171,7 +197,7 @@ function SignUpCreate() {
 								</Form.Item>
 
 								<Form.Item
-									name="DateofBirth"
+									name="date_of_birth"
 									label="Date of Birth"
 									rules={[
 										{
@@ -193,7 +219,7 @@ function SignUpCreate() {
 										},
 									]}
 								>
-									<Input placeholder="+91 0123456789"/>
+									<Input placeholder="+91 0123456789" />
 								</Form.Item>
 								<Form.Item
 									name="current_city"
@@ -206,7 +232,10 @@ function SignUpCreate() {
 										},
 									]}
 								>
-									<AutoComplete className="city-search-autocomplete" placeholder="Type to search" />
+									<AutoComplete
+										className="city-search-autocomplete"
+										placeholder="Type to search"
+									/>
 								</Form.Item>
 								<Form.Item
 									className="signupCreate-form-password"
@@ -224,9 +253,9 @@ function SignUpCreate() {
 								<div className="signupCreate-form-submit-button-div">
 									<Form.Item className="signupCreate-form-submit">
 										<Button
-											className=""
 											type="primary"
 											htmlType="submit"
+											loading={isLoading}
 										>
 											Submit
 										</Button>

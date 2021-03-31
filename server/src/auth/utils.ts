@@ -1,7 +1,7 @@
 import { check } from 'express-validator';
 import { Response } from 'express';
-import User from '../db/models/user.model';
-import pendingVerication from '../db/models/requestToAdmin/pendingVerification.model';
+import User from '../models/user.model';
+import pendingVerication from '../models/requestToAdmin/pendingVerification.model';
 import passport from 'passport';
 
 export const signupValidation = [

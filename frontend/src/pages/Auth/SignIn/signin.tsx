@@ -13,9 +13,9 @@ import {
 	EyeInvisibleOutlined,
 	EyeTwoTone,
 } from '@ant-design/icons';
-import './signin.component.css';
-import AuthFooter from '../../Footer/authFooter/authFooter.component';
-import AuthNavBar from '../../Navbar/authNavBar/authNavBar.component';
+import './signin.css';
+import AuthFooter from '../../../components/Footer/authFooter/authFooter.component';
+import AuthNavBar from '../../../components/Navbar/authNavBar/authNavBar.component';
 
 function SignIn() {
 	const [isLoading, setLoading] = useState(false);

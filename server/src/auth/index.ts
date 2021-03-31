@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import User, { IUser } from '../db/models/user.model';
+import User, { IUser } from '../models/user.model';
 import bcrypt from 'bcryptjs';
 import { genAccessToken, genRefreshToken, sendRefreshToken } from './tokens';
 import verifyToken from './verifyToken';
@@ -24,11 +24,11 @@ export interface jwtpayload {
 }
 
 /**
- * @route           POST auth/check_signup
+ * @route           POST auth/check_email
  * @description     checks whether the email entered already exist in the DB
  * @access          Public
  */
-app.post('/check_signup', async (req: Request, res: Response) => {
+app.post('/check_email', async (req: Request, res: Response) => {
     try {
         if (req.body.email === undefined) {
             throw new Error('Not valid Email ID!');
@@ -66,7 +66,7 @@ app.post('/signup', signupValidation, async (req: Request, res: Response) => {
                 errors: validationError.mapped(),
             });
         }
-        if (req.body.emailId === undefined) {
+        if (req.body.email === undefined) {
             throw new Error('Not Unique Email ID!');
         }
         const instance = await User.findOne({
@@ -74,7 +74,7 @@ app.post('/signup', signupValidation, async (req: Request, res: Response) => {
                 { primary_email: req.body.email },
                 {
                     'location_contact_info.alternative_email_id':
-                        req.body.emailId,
+                        req.body.email,
                 },
             ],
         });

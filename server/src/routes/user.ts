@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import { jwtpayload } from '../auth';
 import verifyToken from '../auth/verifyToken';
-import User from '../db/models/user.model';
-import { e_request_admin } from '../db/models/requestToAdmin/pendingVerification.model';
+import User from '../models/user.model';
+import { e_request_admin } from '../models/requestToAdmin/pendingVerification.model';
 import { createPendingRequest } from '../auth/utils';
 
 const app = Router();

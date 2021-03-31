@@ -43,7 +43,7 @@
 	border-radius: 200px;
 }
 
-.ant-alert.ant-alert-error.ant-alert-no-icon.signup-email-check-error {
+.ant-alert.ant-alert-error.ant-alert-no-icon.signup--error {
 	margin: 0 25vw 30px 25vw;
 }
 
@@ -95,7 +95,7 @@
 		margin-bottom: 30px;
 	}
 
-	.ant-alert.ant-alert-error.ant-alert-no-icon.signup-email-check-error {
+	.ant-alert.ant-alert-error.ant-alert-no-icon.signup-error {
 		margin: 50px 5vw 20px 5vw;
 	}
 

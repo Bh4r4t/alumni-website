@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import { Response } from 'express';
-import User from '../db/models/user.model';
+import User from '../models/user.model';
 import { jwtpayload } from '../auth/index';
 
 
