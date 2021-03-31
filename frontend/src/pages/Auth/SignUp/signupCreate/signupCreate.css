@@ -115,6 +115,23 @@
 	height: 40px;
 }
 
+.mobile-num {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex: 1;
+}
+
+.ant-select.mobile-num-selector.ant-select-single.ant-select-show-arrow{
+	/* max-width: 100px; */
+}
+
+.ant-select.mobile-num-selector.ant-select-single.ant-select-show-arrow .ant-select-selector{
+	height: 40px;
+	display: flex;
+	align-items: center;
+}
+
 @media only screen and (max-width: 768px) {
 	.ant-form.ant-form-horizontal.signupCreate-form {
 		min-width: 80%;

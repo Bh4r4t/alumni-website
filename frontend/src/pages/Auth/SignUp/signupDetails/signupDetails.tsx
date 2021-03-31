@@ -21,6 +21,8 @@ import {
 	allDepts,
 } from './coursesInfo';
 import moment from 'moment';
+import { ILocationState } from '../signupCreate/signupCreate';
+import { initDetailsFaculty, initDetailsStd } from '../../../../services/api/user';
 
 interface ICatForm {
 	alumnusForm: FormInstance<any>;
@@ -33,13 +35,28 @@ function SignUpDetails() {
 	const [regCat, setRegCat] = useState('');
 	const history = useHistory();
 	const [error, setError] = useState('');
-	const location = useLocation();
-	const email: string = location.state as string;
+	const location: ILocationState = useLocation().state as ILocationState;
+	const email: string = location.email as string;
+	const accessToken: string = location.accessToken as string;
 
-	const handleSubmitAsAlumnus = async (payload: any) => {
+	const handleSubmitAsAlumnus = (profile_role: string) => async (
+		payload: any
+	) => {
 		try {
 			setLoading(true);
-			console.log(payload);
+			const formData = { ...payload };
+			formData.profile_role = profile_role;
+			formData.start_date = moment(payload.start_date).format(
+				'YYYY-MM-DD[T00:00:00.000Z]'
+			);
+			formData.end_date = moment(payload.end_date).format(
+				'YYYY-MM-DD[T00:00:00.000Z]'
+			);
+			console.log(formData);
+			const res = await initDetailsStd(formData, accessToken);
+			if (res?.data?.error === true) {
+				throw new Error(res.data.message);
+			}
 			setLoading(false);
 		} catch (err) {
 			setError(err.message);
@@ -50,18 +67,18 @@ function SignUpDetails() {
 	const handleSubmitAsFaculty = async (payload: any) => {
 		try {
 			setLoading(true);
-			console.log(payload);
-			setLoading(false);
-		} catch (err) {
-			setError(err.message);
-			setLoading(false);
-		}
-	};
-
-	const handleSubmitAsStudent = async (payload: any) => {
-		try {
-			setLoading(true);
-			console.log(payload);
+			const formData = { ...payload };
+			formData.start_date = moment(payload.start_date).format(
+				'YYYY-MM-DD[T00:00:00.000Z]'
+			);
+			formData.end_date = moment(payload.end_date).format(
+				'YYYY-MM-DD[T00:00:00.000Z]'
+			);
+			console.log(formData);
+			const res = await initDetailsFaculty(formData, accessToken);
+			if (res?.data?.error === true) {
+				throw new Error(res.data.message);
+			}
 			setLoading(false);
 		} catch (err) {
 			setError(err.message);
@@ -150,12 +167,12 @@ function SignUpDetails() {
 									FacultyForm,
 									StudentForm,
 								} as unknown) as ICatForm,
-								handleSubmitAsAlumnus,
+								handleSubmitAsAlumnus('Alumnus'),
 								handleSubmitAsFaculty,
-								handleSubmitAsStudent,
+								handleSubmitAsAlumnus('Student'),
 								isLoading
 							)}
-							{regCat !== 'faculty' ? (
+							{regCat !== 'faculty' && regCat !== '' ? (
 								<ul>
 									<li>
 										Graduation year is the year of
@@ -263,11 +280,30 @@ function RenderCatForm(
 								</Select>
 							</Form.Item>
 							<Form.Item
+								name="start_date"
+								label="Start Date"
+								rules={[{ required: true }]}
+							>
+								<DatePicker
+									picker="year"
+									disabledDate={(current) =>
+										current &&
+										current.year() > moment().year()
+									}
+								/>
+							</Form.Item>
+							<Form.Item
 								name="end_date"
 								label="End Date(expected/left)"
 								rules={[{ required: true }]}
 							>
-								<DatePicker picker="year" />
+								<DatePicker
+									picker="year"
+									disabledDate={(current) =>
+										current &&
+										current.year() > moment().year() + 4
+									}
+								/>
 							</Form.Item>
 							<div className="signupDetails-form-submit-button-div">
 								<Form.Item className="signupDetails-form-submit">
@@ -343,6 +379,7 @@ function RenderCatForm(
 										type="primary"
 										htmlType="submit"
 										loading={isLoading}
+										disabled
 									>
 										Submit
 									</Button>
@@ -397,6 +434,19 @@ function RenderCatForm(
 								>
 									{deptOptions}
 								</Select>
+							</Form.Item>
+							<Form.Item
+								name="end_date"
+								label="End Date(expected/left)"
+								rules={[{ required: true }]}
+							>
+								<DatePicker
+									picker="year"
+									disabledDate={(current) =>
+										current &&
+										current.year() > moment().year()
+									}
+								/>
 							</Form.Item>
 							<Form.Item
 								name="end_date"

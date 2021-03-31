@@ -4,10 +4,10 @@ export interface IUser extends Document {
     isAdmin: boolean;
     basic_info: IUserBasicInfo;
     location_contact_info: IUserLocationContactInfo;
-    professional_info: IUserProfessionalInfo;
-    educational_info: IUserEducationalInfo;
+    professional_info: Array<IUserProfessionalInfo>;
+    educational_info: Array<IUserEducationalInfo>;
     membership_type: String;
-    attachments: IUserAttachments;
+    attachments: Array<IUserAttachments>;
     registered_user: boolean;
     primary_email: String;
     password: String;
@@ -34,7 +34,11 @@ export enum e_relationship_status {
     single = 'Single',
 }
 
-export enum e_profile_role {}
+export enum e_profile_role {
+    faculty = 'Faculty',
+    alumnus = 'Alumnus',
+    student = 'Student'
+}
 // TODO: update profile_role
 
 export enum e_privacy {
@@ -52,19 +56,19 @@ export enum e_attach_type {
     published_work = 'Published Work',
 }
 
-export interface IUserBasicInfoPrivacy extends Document {
+export interface IUserBasicInfoPrivacy {
     show_day_of_birth: String;
     show_year_of_birth: String;
     show_day_of_wedding: String;
     show_year_of_wedding: String;
 }
 
-export interface IUserContactInfoPrivacy extends Document {
+export interface IUserContactInfoPrivacy {
     show_contact_num: String;
     show_email_id: String;
 }
 
-export interface IUserBasicInfo extends Document {
+export interface IUserBasicInfo {
     salutation: String;
     first_name: String;
     last_name: String;
@@ -78,7 +82,7 @@ export interface IUserBasicInfo extends Document {
     about_me: String;
 }
 
-export interface IUserContactInfoSocial extends Document {
+export interface IUserContactInfoSocial {
     website: String;
     facebook: String;
     linkedin: String;
@@ -87,7 +91,7 @@ export interface IUserContactInfoSocial extends Document {
     instagram: String;
 }
 
-export interface IUserLocationContactInfo extends Document {
+export interface IUserLocationContactInfo {
     current_city: String;
     home_town: String;
     correspondance_address: String;
@@ -102,21 +106,22 @@ export interface IUserLocationContactInfo extends Document {
     social_profiles: IUserContactInfoSocial;
 }
 
-export interface IUserProfessionalInfo extends Document {
+export interface IUserProfessionalInfo {
     role: String;
     company: String;
 }
 
-export interface IUserEducationalInfo extends Document {
+export interface IUserEducationalInfo {
     editable: boolean;
     name_of_organization: String;
     start_date: Date;
     end_date: Date;
     degree_name: String;
-    score_obtained: String;
+    stream_name: String;
+    score_obtained?: String;
 }
 
-export interface IUserAttachments extends Document {
+export interface IUserAttachments {
     title: String;
     attachment_type: e_attach_type;
     attachement: String;
@@ -126,17 +131,17 @@ export interface IUserAttachments extends Document {
 const userSchema: Schema = new Schema({
     isAdmin: { type: Boolean, default: false, required: true },
     basic_info: {
-        salutation: { type: String},
+        salutation: { type: String },
         first_name: String,
         last_name: String,
         nick_name: String,
-        gender: { type: String},
+        gender: { type: String },
         date_of_birth: { type: Date, trim: true },
         relationship_status: {
             type: String,
         },
         wedding_anniversary: { type: Date, trim: true },
-        profile_role: { type: String},
+        profile_role: { type: String },
         privacy_info: {
             show_day_of_birth: {
                 type: String,
@@ -166,7 +171,6 @@ const userSchema: Schema = new Schema({
         mobile_number: String,
         home_phone_number: String,
         work_phone_number: String,
-        email_id: String,
         alternative_email_id: [String],
         privacy_info: {
             show_contact_num: {
@@ -191,11 +195,12 @@ const userSchema: Schema = new Schema({
     educational_info: [
         {
             editable: { type: Boolean, default: true },
-            name_of_organization: { type: String, default: true },
-            start_date: { type: Date, default: true },
-            end_date: { type: Date, default: true },
-            degree_name: { type: String, default: true },
-            score_obtained: { type: String, default: true },
+            name_of_organization: { type: String},
+            start_date: { type: Date},
+            end_date: { type: Date},
+            degree_name: { type: String},
+            stream_name: {type:String},
+            score_obtained: { type: String},
         },
     ],
     membership_type: {

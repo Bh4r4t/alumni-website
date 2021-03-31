@@ -10,17 +10,26 @@ import {
 	Radio,
 	Progress,
 	AutoComplete,
+	Select,
 } from 'antd';
 import AssignmentIndSharpIcon from '@material-ui/icons/AssignmentIndSharp';
 import './signupCreate.css';
 import AuthFooter from '../../../../components/Footer/authFooter/authFooter.component';
 import AuthNavBar from '../../../../components/Navbar/authNavBar/authNavBar.component';
 import moment from 'moment';
+import ReactCountryFlag from 'react-country-flag';
 import { registerUser } from '../../../../services/api/auth';
+import codes from '../../../../assets/country_codes';
+
+export interface ILocationState {
+	email: string;
+	accessToken: string;
+}
 
 function SignUpCreate() {
 	const [isLoading, setLoading] = useState(false);
 	const [, setSalut] = useState();
+	const [ccode, setCCode] = useState('');
 	const history = useHistory();
 	const salutation_dict: { [id: string]: string } = {
 		1: 'Mr',
@@ -40,6 +49,7 @@ function SignUpCreate() {
 	const email: string = location.state as string;
 
 	const [basicInfoForm] = Form.useForm();
+	const { Option } = Select;
 
 	const handleSubmit = async (payload: any) => {
 		try {
@@ -50,13 +60,21 @@ function SignUpCreate() {
 			formBody.date_of_birth = moment(payload.date_of_birth).format(
 				'YYYY-MM-DD[T00:00:00.000Z]'
 			);
+			formBody.mobile_num = [
+				ccode,
+				payload.mobile_num.split(' ').join(''),
+			].join(' ');
 			const res = await registerUser(formBody);
 			if (res?.data?.error === true) {
 				throw new Error(res.data.message);
 			}
+			const locState: ILocationState = {
+				email: payload.email,
+				accessToken: res.data.accessToken,
+			};
 			history.push({
 				pathname: '/auth/signup/create/batch',
-				state: payload.email,
+				state: locState,
 			});
 			console.log(formBody);
 			setLoading(false);
@@ -219,7 +237,45 @@ function SignUpCreate() {
 										},
 									]}
 								>
-									<Input placeholder="+91 0123456789" />
+									<div className="mobile-num">
+										<Input.Group compact>
+											<Select
+												showSearch
+												className="mobile-num-selector"
+												placeholder="--"
+												style={{ width: '30%' }}
+												onChange={(val: string) =>
+													setCCode(codes[val])
+												}
+											>
+												{Object.entries(codes).map(
+													([key, val]) => (
+														<Option value={key}>
+															<>
+																<ReactCountryFlag
+																	countrtCode={
+																		key
+																	}
+																/>
+																{[
+																	key,
+																	[
+																		'(',
+																		val,
+																		')',
+																	].join(''),
+																].join(' ')}
+															</>
+														</Option>
+													)
+												)}
+											</Select>
+											<Input
+												placeholder="0123456789"
+												style={{ width: '70%' }}
+											/>
+										</Input.Group>
+									</div>
 								</Form.Item>
 								<Form.Item
 									name="current_city"

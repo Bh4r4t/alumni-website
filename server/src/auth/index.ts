@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 export interface jwtpayload {
-    id: String;
+    id?: String;
     email: String;
     first_name: String;
     last_name: String;
@@ -81,15 +81,20 @@ app.post('/signup', signupValidation, async (req: Request, res: Response) => {
         if (instance) {
             throw new Error(`User already exists!`);
         }
-        const salt = await bcrypt.genSalt(6);
-        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+        const hashedPassword = await bcrypt.hash(req.body.password, await bcrypt.genSalt(6));
         const user = await createUser(req.body, hashedPassword);
         await createPendingRequest(user._id);
+        const payload: jwtpayload = {
+            first_name: req.body.first_name,
+            last_name: req.body.last_name,
+            email: req.body.email,
+        };
+        const accessToken = genAccessToken(payload)
         res.send({
-            error: false,
             message: `user:${
                 req.body.first_name + ' ' + req.body.last_name
             }'s info successfully added into db!!`,
+            accessToken : accessToken
         });
     } catch (err) {
         res.send({ error: true, message: err.message });
