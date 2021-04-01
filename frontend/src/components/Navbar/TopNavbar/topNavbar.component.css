@@ -2,17 +2,18 @@
 	padding: 0;
     border-bottom: 1px solid rgb(241, 203, 133);
 	background: transparent;
-	height: 125px;
+	height: 110px;
 }
 
 .topnavbar-container {
 	height: inherit;
 	margin: 0 8vw 0 8vw;
+	font-size: 1.1em;
 }
 
 .topnavbar-head img {
 	padding: 1.5vw;
-	max-width: 250px;
+	max-width: 275px;
 	height: auto;
 	cursor: pointer;
 }

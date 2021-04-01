@@ -11,7 +11,7 @@ import SignIn from '../pages/Auth/SignIn/signin';
 import SignUp from '../pages/Auth/SignUp/emailVerification/signup';
 import SignUpCreate from '../pages/Auth/SignUp/signupCreate/signupCreate';
 import SignUpDetails from '../pages/Auth/SignUp/signupDetails/signupDetails';
-import LandingPage from '../pages/LandingPage/landingPage';
+import HomePage from '../pages/HomePage/homePage';
 import BeAMentor from '../pages/Support/beAMentor/beAMentor';
 import BeAVolunteer from '../pages/Support/beAVolunteer/beAVolunteer';
 import Contribute from '../pages/Support/Contribute/contribute';
@@ -66,7 +66,7 @@ export const Routes: React.FC<RoutesProp> = () => {
 
 					{/* landing Page */}
 					<Route path="/" exact>
-						<LandingPage />
+						<HomePage />
 					</Route>
 					<Route path="*">
 						<Redirect to="/" />
