@@ -3,6 +3,7 @@ import Footer from '../components/Footer/mainFooter/mainFooter.component';
 import Dashboard from '../components/Dashboard/dashboard.component';
 import ProfilePage from '../components/Profile/profile.component';
 import TopNavbar from '../components/Navbar/TopNavbar/topNavbar.component';
+import PrivateNavBar from '../components/Navbar/PrivateNavbar/privateNav.component';
 import PrivateRoute from '../components/PrivateRoute/privateRoute';
 import ContactUs from '../pages/About/ContactUs/contactUs';
 import Director from '../pages/About/Director/director';
@@ -15,9 +16,11 @@ import HomePage from '../pages/HomePage/homePage';
 import BeAMentor from '../pages/Support/beAMentor/beAMentor';
 import BeAVolunteer from '../pages/Support/beAVolunteer/beAVolunteer';
 import Contribute from '../pages/Support/Contribute/contribute';
+import { useSelector } from 'react-redux';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
+	const user = useSelector((state:any) => state.authReducer.user);
 	return (
 		<Switch>
 			{/* Auth routes */}
@@ -35,6 +38,8 @@ export const Routes: React.FC<RoutesProp> = () => {
 			</PrivateRoute>
 			<div className="page-container">
 				<TopNavbar />
+				<PrivateNavBar username={user?.first_name + ' ' + user?.last_name}/>
+				{/* {user ? <PrivateNavBar /> : null} */}
 				<div className="content-wrap">
 					{/* Private Routes*/}
 					<PrivateRoute path="/dashboard" exact>

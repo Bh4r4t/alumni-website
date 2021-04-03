@@ -105,6 +105,14 @@
 	margin-right: 7px;
 }
 
+.ant-dropdown-menu-item.ant-dropdown-menu-item-only-child {
+	min-height: 45px;
+	display: flex;
+	align-items: center;
+	font-size: 1.1em;
+	font-weight: 500;
+}
+
 @media screen and (max-width: 948px) {
 
 	.topnavbar-container {

@@ -4,17 +4,19 @@ import StoriesCard from '../../components/StoriesCard/storiesCard.component';
 import './homePage.css';
 import img1 from '../../assets/landingpage/img1.jpg';
 import img2 from '../../assets/landingpage/img2.jpg';
+import { useSelector } from 'react-redux';
 
 const { useBreakpoint } = Grid;
 
 function Home() {
+	const user = useSelector((state: any) => state.authReducer.user);
 	return (
 		<div className="homepage">
 			<ImgCarousel />
 			<AlumniStats />
 			<EventsSection />
 			<LatestStories />
-			<GetConnected />
+			{!user ? <GetConnected /> : null}
 		</div>
 	);
 }

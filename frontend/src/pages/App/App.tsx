@@ -15,7 +15,7 @@ function App() {
 		dispatch(checkAuthAction());
 		setTimeout(() => {
 			setLoading(false);
-		}, 500);
+		}, 100);
 	}, [dispatch]);
 
 	if (loading) {
