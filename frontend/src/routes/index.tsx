@@ -68,9 +68,9 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<Route path="/" exact>
 						<HomePage />
 					</Route>
-					<Route path="*">
+					{/* <Route path="*">
 						<Redirect to="/" />
-					</Route>
+					</Route> */}
 				</div>
 
 				<Footer />

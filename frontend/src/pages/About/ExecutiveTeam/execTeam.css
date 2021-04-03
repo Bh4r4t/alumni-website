@@ -1,5 +1,5 @@
 .execteam-container {
-	margin: 0 10vw 0 10vw;
+	margin: 0 8vw 0 8vw;
 }
 
 .execteam-body {
@@ -77,7 +77,7 @@
 }
 
 .ant-card.ant-card-bordered.execteam-profilecard .ant-card-body { 
-	padding: 10px 20px 20px 10px;
+	padding: 10px 10px 10px 10px;
 }
 
 .execteam-profilecard-items img {
@@ -136,8 +136,9 @@
 
 .ant-col.ant-col-14.execteam-profilecard-row-details .person-info span {
 	margin-bottom: 0;
-	font-size: 1.1em;
-	font-weight: 400;
+	font-size: 1.2em;
+	font-weight: 500;
+	color: rgb(114, 114, 114);
 }
 
 .person-social{
@@ -150,8 +151,28 @@
 	margin: 0 10px 0 0;
 }
 
-@media Screen and(max-width: 968px) {
+@media Screen and (max-width: 692px) {
+	.execteam-container {
+		margin: 0 3vw 0 3vw;
+	}
+
 	.execteam-profilecard-row-details-div {
 		flex-direction: column;
+	}
+
+	.person-social {
+		margin-top: 15px;
+	}
+	
+	.ant-col.ant-col-14.execteam-profilecard-row-details .person-info h1 {
+		font-size: 1.2em;
+	}
+
+	.ant-col.ant-col-14.execteam-profilecard-row-details .person-info h2 {
+		font-size: 0.95em;
+	}
+
+	.ant-col.ant-col-14.execteam-profilecard-row-details .person-info span {
+		font-size: 1em;
 	}
 }

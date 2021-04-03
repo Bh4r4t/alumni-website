@@ -2,17 +2,41 @@ import { useState } from 'react';
 import TextArea from 'antd/lib/input/TextArea';
 import { Row, Col, Form, Input, Button, Alert, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import * as fs from 'fs';
 import './beAMentor.css';
 
 function BeAMentor() {
 	const [fileList, updateFileList] = useState([] as any);
+	const [img, setImage] = useState('');
 	const [isLoading, setLoading] = useState(false);
-	const [errors, setErrors] = useState('');
+	const [errors, setErrors] = useState<any>(undefined);
+
+	const fileToBase = (file: any) => {
+		return new Promise((resolve) => {
+			const reader = new FileReader();
+			reader.onload = () => {
+				console.log(file);
+				resolve({
+					name: file.name,
+					file_type: file.type,
+					data: reader.result,
+					size: file.size,
+				});
+			};
+			reader.readAsDataURL(file);
+		});
+	};
 
 	const handleSubmit = async (payload: any) => {
 		try {
 			setLoading(true);
+			const payloadFile: Array<any> = [];
+			for (let i = 0; i < fileList.length; i++) {
+				const res = await fileToBase(fileList[i]);
+				payloadFile.push(res);
+			}
 			// TODO: API call and send data to backend
+			console.log(payloadFile[0].data)
 			setLoading(false);
 		} catch (err) {
 			setErrors(err.message);
@@ -27,7 +51,13 @@ function BeAMentor() {
 			const newFileList = fileList;
 			newFileList.splice(index, 1);
 			updateFileList(newFileList);
+			return true;
 		},
+		beforeUpload: (file: any) => {
+			updateFileList([...fileList, file]);
+			return false;
+		},
+		fileList,
 	};
 
 	const [form] = Form.useForm();

@@ -1,15 +1,20 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import auth from './auth/index';
 import refreshToken from './auth/refresh_token';
 import user from './routes/user';
+import execCommittee from './routes/execCommittee';
 import connectDB from './db/index';
+
+// const upload = multer();
 
 dotenv.config();
 const app = express();
 app.use(cookieParser());
+
+app.use('../uploads', express.static('uploads'));
 
 // middleware
 app.use(
@@ -36,8 +41,10 @@ app.use('/auth', auth);
 app.use('/refresh_token', refreshToken);
 // user routes
 app.use('/user', user);
+// exec committee view routes
+app.use('/execCommittee', execCommittee);
 
-app.get('/', (req, res) => {
+app.get('/', (_req: Request, res: Response) => {
     res.send({ error: false });
 });
 

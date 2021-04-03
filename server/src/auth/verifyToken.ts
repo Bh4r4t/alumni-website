@@ -4,7 +4,6 @@ import { jwtpayload } from '.';
 
 function verifyToken(req: Request, res: Response, next: any) {
     try {
-        console.log(req.headers['authorization']);
         const auth = req.headers['authorization'] as String;
         if (!auth.split(' ')[1]) {
             throw new Error('please login first! (Not Authenticated)');
@@ -13,7 +12,6 @@ function verifyToken(req: Request, res: Response, next: any) {
             auth.split(' ')[1],
             process.env.ACCESS_TOKEN_SECRET as jwt.Secret
         ) as jwtpayload;
-        console.log(payload)
         res.locals.payload = payload;
         return next();
     } catch (err) {
