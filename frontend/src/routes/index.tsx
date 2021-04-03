@@ -38,8 +38,7 @@ export const Routes: React.FC<RoutesProp> = () => {
 			</PrivateRoute>
 			<div className="page-container">
 				<TopNavbar />
-				<PrivateNavBar username={user?.first_name + ' ' + user?.last_name}/>
-				{/* {user ? <PrivateNavBar /> : null} */}
+				{user ? <PrivateNavBar username={user?.first_name + ' ' + user?.last_name}/> : null}
 				<div className="content-wrap">
 					{/* Private Routes*/}
 					<PrivateRoute path="/dashboard" exact>

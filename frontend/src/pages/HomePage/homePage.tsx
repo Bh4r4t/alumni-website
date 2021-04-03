@@ -1,4 +1,6 @@
-import { Row, Col, Grid, Carousel, Card } from 'antd';
+import { Row, Col, Grid, Card } from 'antd';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.css';
 import EventsCard from '../../components/EventsCard/eventsCard.component';
 import StoriesCard from '../../components/StoriesCard/storiesCard.component';
 import './homePage.css';
@@ -22,26 +24,42 @@ function Home() {
 }
 
 function ImgCarousel() {
+	const configurableProps = {
+		showArrows: true,
+		showStatus: false,
+		showThumbs: false,
+		showIndicators: true,
+		infiniteLoop: true,
+		useKeyboardArrows: true,
+		autoPlay: true,
+		stopOnHover: true,
+		swipeable: true,
+		dynamicHeight: true,
+		emulateTouch: true,
+		autoFocus: false,
+		thumbWidth: 100,
+		selectedItem: 0,
+		interval: 2000,
+		transitionTime: 500,
+		swipeScrollTolerance: 5,
+	};
+
 	return (
 		<section className="imgcarousel-section">
+			<div />
 			<div className="imgcarousel-container">
-				<Card>
-					<Carousel autoplay effect="fade">
+				<Card className="imgCarousel-card">
+					<Carousel {...configurableProps}>
 						<div className="carousal-card">
 							<img src={img1} />
-							<h1> Welcome </h1>
+							<h1 className="legend" style={{ fontSize: '2em' }}>
+								{' '}
+								Welcome{' '}
+							</h1>
 						</div>
 						<div className="carousal-card">
 							<img src={img2} />
-							<h1> Welcome 2 </h1>
-						</div>
-						<div className="carousal-card">
-							<img src={img1} />
-							<h1> Welcome 3 </h1>
-						</div>
-						<div className="carousal-card">
-							<img src={img2} />
-							<h1> Welcome 4 </h1>
+							<p> Welcome 2 </p>
 						</div>
 					</Carousel>
 				</Card>

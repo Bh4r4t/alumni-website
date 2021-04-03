@@ -262,3 +262,22 @@
 		color: rgb(114, 211, 127);
 	}
 }
+
+/* Carousal */
+.imgcarousel-container {
+	margin: 0 8vw 0 8vw;
+}
+
+.ant-card.imgCarousel-card {
+	margin : 40px 0 40px 0;
+}
+
+.ant-card.imgCarousel-card .ant-card-body {
+	padding : 10px 10px 10px 10px;
+}
+
+@media screen and (max-width: 692px) {
+	.imgcarousel-container {
+		margin: 0 3vw 0 3vw;
+	}
+}
