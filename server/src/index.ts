@@ -8,6 +8,7 @@ import user from './routes/user';
 import execCommittee from './routes/execCommittee';
 import events from './routes/events';
 import connectDB from './db/index';
+import job from './routes/job';
 
 // const upload = multer();
 
@@ -46,6 +47,8 @@ app.use('/user', user);
 app.use('/execCommittee', execCommittee);
 // events committee view routes
 app.use('events', events);
+// jobs view routes
+app.use('/jobs', job);
 
 app.get('/', (_req: Request, res: Response) => {
     res.send({ error: false });
