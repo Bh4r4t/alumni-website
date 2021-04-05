@@ -4,7 +4,7 @@ import Job, { IJob } from '../models/job.model';
 
 const app = Router();
 
-app.get('/', async (_req, res) => {
+app.get('/', async (_req: Request, res:Response) => {
     try {
         const allJobs = await Job.find();
         if (!allJobs) {
