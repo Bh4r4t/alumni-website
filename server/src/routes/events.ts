@@ -2,8 +2,8 @@ import express, { Request, Response } from 'express';
 import User, { IUser } from '../models/user.model';
 import { IEvent, eventConfirmed, eventPending } from '../models/events.model';
 import verifyToken from '../auth/verifyToken';
-import { createPendingRequest } from 'src/auth/utils';
-import pendingVerificationModel from 'src/models/pendingVerification.model';
+import { createPendingRequest } from '../auth/utils';
+import pendingVerificationModel from '../models/pendingVerification.model';
 
 const app = express.Router();
 
