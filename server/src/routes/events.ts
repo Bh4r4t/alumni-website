@@ -51,9 +51,18 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
 // return only 3 confirmed events.
 app.get('/conf_recent', async (_req: Request, res: Response) => {
     try {
-        const events = await eventConfirmed.find({}, [], {limit:3});
-        const copy_events:any = [...events];
-        copy_events.forEach((event:any) => {
+        const events = await eventConfirmed.find(
+            { event_date: { $gte: new Date(Date.now()) } },
+            [],
+            {
+                limit: 3,
+                sort: {
+                    event_date: 1, // asc on event date
+                },
+            }
+        );
+        const copy_events: any = [...events];
+        copy_events.forEach((event: any) => {
             delete event.created_by_id;
             delete event.pending_req_id;
         });
