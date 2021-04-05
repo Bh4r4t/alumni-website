@@ -7,6 +7,7 @@ import refreshToken from './auth/refresh_token';
 import user from './routes/user';
 import execCommittee from './routes/execCommittee';
 import events from './routes/events';
+import members from './routes/members';
 import connectDB from './db/index';
 import job from './routes/job';
 
@@ -46,9 +47,11 @@ app.use('/user', user);
 // exec committee view routes
 app.use('/execCommittee', execCommittee);
 // events committee view routes
-app.use('events', events);
+app.use('/events', events);
 // jobs view routes
 app.use('/jobs', job);
+// members view routes
+app.use('/members', members);
 
 app.get('/', (_req: Request, res: Response) => {
     res.send({ error: false });

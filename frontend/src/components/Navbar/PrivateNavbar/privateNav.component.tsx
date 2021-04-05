@@ -13,7 +13,7 @@ import './privateNav.component.css';
 const { useBreakpoint } = Grid;
 
 const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
-	const user_name = username.length > 8 ? username.slice(0, 8) : username;
+	const user_name = username.length > 8 ? username.slice(0, 8)+'...' : username;
 	const { md } = useBreakpoint();
 	return !md ? (
 		// <Affix offsetTop={0} className="privatenav-block-affix">

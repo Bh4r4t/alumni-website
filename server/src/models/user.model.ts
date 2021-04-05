@@ -4,7 +4,7 @@ export interface IUser extends Document {
     isAdmin: boolean;
     basic_info: IUserBasicInfo;
     location_contact_info: IUserLocationContactInfo;
-    professional_info: Array<IUserProfessionalInfo>;
+    professional_info: IUserProfessionalInfo;
     educational_info: Array<IUserEducationalInfo>;
     membership_type: String;
     attachments: Array<IUserAttachments>;
@@ -37,7 +37,7 @@ export enum e_relationship_status {
 export enum e_profile_role {
     faculty = 'Faculty',
     alumnus = 'Alumnus',
-    student = 'Student'
+    student = 'Student',
 }
 // TODO: update profile_role
 
@@ -107,8 +107,14 @@ export interface IUserLocationContactInfo {
 }
 
 export interface IUserProfessionalInfo {
-    role: String;
-    company: String;
+    total_exp: Number;
+    orgs: Array<{
+        role: String;
+        company: String;
+        exp: Number;
+        curr: Boolean;
+        industry: String;
+    }>;
 }
 
 export interface IUserEducationalInfo {
@@ -191,16 +197,27 @@ const userSchema: Schema = new Schema({
             instagram: String,
         },
     },
-    professional_info: [{ role: String, company: String }],
+    professional_info: {
+        total_exp: Number,
+        orgs: [
+            {
+                role: String,
+                company: String,
+                exp: Number,
+                curr: Boolean,
+                industry: String,
+            },
+        ],
+    },
     educational_info: [
         {
             editable: { type: Boolean, default: true },
-            name_of_organization: { type: String},
-            start_date: { type: Date},
-            end_date: { type: Date},
-            degree_name: { type: String},
-            stream_name: {type:String},
-            score_obtained: { type: String},
+            name_of_organization: { type: String },
+            start_date: { type: Date },
+            end_date: { type: Date },
+            degree_name: { type: String },
+            stream_name: { type: String },
+            score_obtained: { type: String },
         },
     ],
     membership_type: {

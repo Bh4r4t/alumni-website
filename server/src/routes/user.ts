@@ -85,7 +85,7 @@ app.post('/remove_me', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-app.get('/:username', verifyToken, async (req: Request, res: Response) => {
+app.get('/:userid', verifyToken, async (req: Request, res: Response) => {
     try {
         const users = User.find({});
         res.send(users);
