@@ -18,7 +18,7 @@ app.get('/', async (_req: Request, res: Response) => {
     }
 });
 
-app.post('/create', async (req: Request, res: Response) => {
+app.post('/create', async (req, res) => {
     try {
         await createjob(req.body);
         res.send({
