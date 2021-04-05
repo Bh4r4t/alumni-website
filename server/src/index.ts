@@ -6,6 +6,7 @@ import auth from './auth/index';
 import refreshToken from './auth/refresh_token';
 import user from './routes/user';
 import execCommittee from './routes/execCommittee';
+import events from './routes/events';
 import connectDB from './db/index';
 
 // const upload = multer();
@@ -43,6 +44,8 @@ app.use('/refresh_token', refreshToken);
 app.use('/user', user);
 // exec committee view routes
 app.use('/execCommittee', execCommittee);
+// events committee view routes
+app.use('events', events);
 
 app.get('/', (_req: Request, res: Response) => {
     res.send({ error: false });

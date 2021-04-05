@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import { jwtpayload } from '../auth';
 import verifyToken from '../auth/verifyToken';
 import User, { IUserEducationalInfo } from '../models/user.model';
-import { e_request_admin } from '../models/requestToAdmin/pendingVerification.model';
+import { e_request_admin } from '../models/pendingVerification.model';
 import { createPendingRequest } from '../auth/utils';
 import * as dotenv from 'dotenv';
 

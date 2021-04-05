@@ -7,8 +7,9 @@ export interface IPendingVerification extends Document {
 }
 
 export enum e_request_admin {
-    accountRegisteration = 'Account Registeration',
-    accountDeletion = 'Account Deletion',
+    accountRegisteration = 'register_account',
+    accountDeletion = 'delete_account',
+    createEvent = 'create_event',
 }
 
 const pendingVericationSchema: Schema = new Schema({
