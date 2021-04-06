@@ -17,6 +17,8 @@ import BeAMentor from '../pages/Support/beAMentor/beAMentor';
 import BeAVolunteer from '../pages/Support/beAVolunteer/beAVolunteer';
 import Contribute from '../pages/Support/Contribute/contribute';
 import { useSelector } from 'react-redux';
+import JobPortal from '../pages/Support/JobPortal/JobPortal';
+import Dash from '../pages/Support/Dashboard/Dashboard';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
