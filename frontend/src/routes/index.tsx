@@ -1,6 +1,8 @@
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Footer from '../components/Footer/mainFooter/mainFooter.component';
-import Dashboard from '../components/Dashboard/dashboard.component';
+// import Dashboard from '../components/Dashboard/dashboard.component';
+import Dashboard from '../pages/Support/Dashboard/Dashboard';
+import JobBoard from '../pages/Support/JobPortal/JobPortal';
 import ProfilePage from '../components/Profile/profile.component';
 import TopNavbar from '../components/Navbar/TopNavbar/topNavbar.component';
 import PrivateNavBar from '../components/Navbar/PrivateNavbar/privateNav.component';
@@ -20,7 +22,7 @@ import { useSelector } from 'react-redux';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
-	const user = useSelector((state:any) => state.authReducer.user);
+	const user = useSelector((state: any) => state.authReducer.user);
 	return (
 		<Switch>
 			{/* Auth routes */}
@@ -38,6 +40,7 @@ export const Routes: React.FC<RoutesProp> = () => {
 			</PrivateRoute>
 			<div className="page-container">
 				<TopNavbar />
+				{/* <PrivateNavBar username=""/> */}
 				{user ? <PrivateNavBar username={user?.first_name + ' ' + user?.last_name}/> : null}
 				<div className="content-wrap">
 					{/* Private Routes*/}
