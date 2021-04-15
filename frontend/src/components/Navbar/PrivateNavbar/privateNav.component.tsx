@@ -13,8 +13,93 @@ import './privateNav.component.css';
 const { useBreakpoint } = Grid;
 
 const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
-	const user_name = username.length > 8 ? username.slice(0, 8)+'...' : username;
+	const user_name =
+		username.length > 8 ? username.slice(0, 8) + '...' : username;
 	const { md } = useBreakpoint();
+
+	const home = (
+		<a href="/">
+			<HomeTwoToneIcon
+				style={{
+					fontSize: 30,
+					marginBottom: '5px',
+				}}
+			/>
+			{md ? <span>Home</span> : null}
+		</a>
+	);
+
+	const dashboard = (
+		<a href="/dashboard">
+			<DashboardTwoToneIcon
+				style={{
+					fontSize: 30,
+					marginBottom: '5px',
+				}}
+			/>
+			{md ? <span>Dashboard</span> : null}
+		</a>
+	);
+
+	const job_board = (
+		<a href="/job_portal">
+			<WorkTwoToneIcon
+				style={{
+					fontSize: 30,
+					marginBottom: '5px',
+				}}
+			/>
+			{md ? <span>Job Board</span> : null}
+		</a>
+	);
+
+	const members = (
+		<a>
+			<GroupTwoToneIcon
+				style={{
+					fontSize: 30,
+					marginBottom: '5px',
+				}}
+			/>
+			{md ? <span>Members</span> : null}
+		</a>
+	);
+
+	const events = (
+		<a>
+			<EventTwoToneIcon
+				style={{
+					fontSize: 30,
+					marginBottom: '5px',
+				}}
+			/>
+			{md ? <span>Events</span> : null}
+		</a>
+	);
+
+	const newsroom = (
+		<a>
+			<AnnouncementTwoToneIcon
+				style={{
+					fontSize: 30,
+					marginBottom: '5px',
+				}}
+			/>
+			{md ? <span>Newsroom</span> : null}
+		</a>
+	);
+
+	const profile = (
+		<a>
+			<AccountBoxTwoToneIcon
+				style={{
+					fontSize: 35,
+					marginRight: '5px',
+				}}
+			/>
+			{user_name}
+		</a>
+	);
 	return !md ? (
 		// <Affix offsetTop={0} className="privatenav-block-affix">
 		<nav className="privatenav">
@@ -22,52 +107,22 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 				<Col span={24} className="privatenav-wrapper-col">
 					<Col span={24} className="privatenav-block">
 						<Col span={4} className="privatenav-block-item">
-							<HomeTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
+							{home}
 						</Col>
 						<Col span={4} className="privatenav-block-item">
-							<DashboardTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
+							{dashboard}
 						</Col>
 						<Col span={4} className="privatenav-block-item">
-							<WorkTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
+							{job_board}
 						</Col>
 						<Col span={4} className="privatenav-block-item">
-							<GroupTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
+							{members}
 						</Col>
 						<Col span={4} className="privatenav-block-item">
-							<EventTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
+							{events}
 						</Col>
 						<Col span={4} className="privatenav-block-item">
-							<AnnouncementTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
+							{newsroom}
 						</Col>
 					</Col>
 					<Col span={24} className="privatenav-block1">
@@ -84,79 +139,35 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 							</Badge>
 						</Col>
 						<Col span={12} className="private-block1-item">
-							<div>
-								<AccountBoxTwoToneIcon
-									style={{
-										fontSize: 30,
-										marginRight: '5px',
-									}}
-								/>
-								<span>{user_name}</span>
-							</div>
+							{profile}
 						</Col>
 					</Col>
 				</Col>
 			</Row>
 		</nav>
-		// </Affix>
 	) : (
+		// </Affix>
 		<Affix offsetTop={0} className="privatenav-block-affix">
 			<nav className="privatenav">
 				<Row className="privatenav-wrapper-row">
 					<Col span={24} className="privatenav-wrapper-col">
 						<Col span={2} className="privatenav-block-item">
-							<HomeTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
-							Home
+							{home}
 						</Col>
 						<Col span={2} className="privatenav-block-item">
-							<DashboardTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
-							Dashboard
+							{dashboard}
 						</Col>
 						<Col span={2} className="privatenav-block-item">
-							<WorkTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
-							Job Board
+							{job_board}
 						</Col>
 						<Col span={2} className="privatenav-block-item">
-							<GroupTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
-							Members
+							{members}
 						</Col>
 						<Col span={2} className="privatenav-block-item">
-							<EventTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
-							Events
+							{events}
 						</Col>
 						<Col span={2} className="privatenav-block-item">
-							<AnnouncementTwoToneIcon
-								style={{
-									fontSize: 30,
-									marginBottom: '5px',
-								}}
-							/>
-							Newsroom
+							{newsroom}
 						</Col>
 						<Col span={6} className="privatenav-block-item">
 							<Col span={12}>
@@ -171,14 +182,8 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 									</a>
 								</Badge>
 							</Col>
-							<Col span={12}>
-								<AccountBoxTwoToneIcon
-									style={{
-										fontSize: 35,
-										marginRight: '5px',
-									}}
-								/>
-								{user_name}
+							<Col span={12} className="profile">
+								{profile}
 							</Col>
 						</Col>
 					</Col>
