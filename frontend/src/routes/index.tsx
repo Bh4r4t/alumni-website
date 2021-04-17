@@ -19,7 +19,15 @@ import BeAMentor from '../pages/Support/beAMentor/beAMentor';
 import BeAVolunteer from '../pages/Support/beAVolunteer/beAVolunteer';
 import Contribute from '../pages/Support/Contribute/contribute';
 import { useSelector } from 'react-redux';
-import { ProfileMenuMap } from '../components/ProfileInfo/menuMap';
+import JobPortal from '../pages/Support/JobPortal/JobPortal';
+import Dash from '../pages/Support/Dashboard/Dashboard';
+import Members from '../pages/Members/members';
+import Institute from '../pages/Members/institute';
+import Location from '../pages/Members/location';
+import ProfessionalSkills from '../pages/Members/prof_skills';
+import Company from '../pages/Members/company';
+import Roles from '../pages/Members/roles';
+import Industry from '../pages/Members/industry';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
@@ -94,6 +102,27 @@ export const Routes: React.FC<RoutesProp> = () => {
 					{/* landing Page */}
 					<Route path="/" exact>
 						<HomePage />
+					</Route>
+					<Route path="/members" exact>
+						<Members />
+					</Route>
+					<Route path="/members/institute" exact>
+						<Institute />
+					</Route>
+					<Route path="/members/location" exact>
+						<Location />
+					</Route>
+					<Route path="/members/prof_skills" exact>
+						<ProfessionalSkills />
+					</Route>
+					<Route path="/members/company" exact>
+						<Company />
+					</Route>
+					<Route path="/members/roles" exact>
+						<Roles />
+					</Route>
+					<Route path="/members/industry" exact>
+						<Industry />
 					</Route>
 					{/* <Route path="*">
 						<Redirect to="/" />

@@ -9,7 +9,8 @@ const job: Schema = new Schema({
     contact_email: { type: String, required: true },
     skills: { type: String, required: true },
     job_desc: { type: String, required: true },
-    application_deadline: {type: Date, required:true}
+    application_deadline: { type: Date, required: true },
+    date_created:{type:Date, default:Date.now(),required: true}
 });
 
 export interface IJob extends Document{
@@ -21,7 +22,8 @@ export interface IJob extends Document{
     contact_email: String,
     skills: String,
     job_desc: String,
-    application_deadline: Date
+    application_deadline: Date,
+    date_created: Date
 }
 
 export default mongoose.model<IJob>('Job', job);

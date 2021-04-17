@@ -1,18 +1,41 @@
 import { Layout, Row, Col, Divider } from 'antd';
 import { Card, Avatar } from 'antd';
 import './JobPortal.css';
-import {  Input, Select, Button } from 'antd';
+import { Input, Select, Button } from 'antd';
+import { useState, useEffect } from 'react';
+import { getJob } from '../../../services/api/job';
 
 const { Content } = Layout;
 const { Option } = Select;
 
 
 export default function JobPortal() {
+
+    const [job, setjobs] = useState<any>(null);
+    useEffect(() => {
+        getJob().then((res) => {
+            if (res?.data?.error) {
+                throw new Error(res.data.message);
+            }
+
+            else {
+                console.log(res.data);
+
+                setjobs(res.data.jobs);
+
+                console.log(job);
+            }
+        })
+            .catch((err) => {
+            });
+    }, []);
+
+
     return (
         <Layout>
             <Content>
 
-                <Row style={{ backgroundSize:"contain", backgroundImage: 'url("http://utouchdesign.com/themes/envato/escort/assets/img/slider_bg.jpg")', opacity: 1.3, height: "85vh" }}>
+                <Row style={{ backgroundRepeat: "no-repeat", backgroundSize: "contain", backgroundImage: 'url("http://utouchdesign.com/themes/envato/escort/assets/img/slider_bg.jpg")', opacity: 1.3, height: "55em" }}>
                     <Col xs={12} style={{ marginTop: 200, marginLeft: 50, height: "15vh" }}>
                         <div className="job-statement">Search Between More<br></br> Than <span className="number-jobs">100</span> Open Jobs.</div>
 
@@ -34,7 +57,7 @@ export default function JobPortal() {
                                 placeholder="Location"
                             >
                                 <Option value="Delhi">Delhi</Option>
-                                <Option value="Mumsi">Mumbai</Option>
+                                <Option value="Mumbai">Mumbai</Option>
                             </Select>
                             <Select
                                 size="large"
@@ -83,7 +106,7 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Product Redesign</h1>
+                                    <h1>Software Developer</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
@@ -110,12 +133,12 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Product Redesign</h1>
+                                    <h1>App Developer</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Delhi</h2>
+                                    <h2 style={{ fontWeight: 200 }}>Mumbai</h2>
                                 </Col>
                             </Row>
                             <Row justify="center">
@@ -137,12 +160,12 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Product Redesign</h1>
+                                    <h1>ML</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Delhi</h2>
+                                    <h2 style={{ fontWeight: 200 }}>Chennai</h2>
                                 </Col>
                             </Row>
                             <Row justify="center">
@@ -164,12 +187,12 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Product Redesign</h1>
+                                    <h1>AI</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Delhi</h2>
+                                    <h2 style={{ fontWeight: 200 }}>Hyderabad</h2>
                                 </Col>
                             </Row>
                             <Row justify="center">
@@ -193,12 +216,12 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Product Redesign</h1>
+                                    <h1>.Net Developer</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Delhi</h2>
+                                    <h2 style={{ fontWeight: 200 }}>Chandigarh</h2>
                                 </Col>
                             </Row>
                             <Row justify="center">
@@ -220,12 +243,12 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Product Redesign</h1>
+                                    <h1>Photoshop Designer</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Delhi</h2>
+                                    <h2 style={{ fontWeight: 200 }}>Kolkata</h2>
                                 </Col>
                             </Row>
                             <Row justify="center">
@@ -247,12 +270,12 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Product Redesign</h1>
+                                    <h1>MERN Developer</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Delhi</h2>
+                                    <h2 style={{ fontWeight: 200 }}>Pune</h2>
                                 </Col>
                             </Row>
                             <Row justify="center">
@@ -274,12 +297,12 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Product Redesign</h1>
+                                    <h1>MEAN Developer</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Delhi</h2>
+                                    <h2 style={{ fontWeight: 200 }}>Indore</h2>
                                 </Col>
                             </Row>
                             <Row justify="center">
@@ -293,7 +316,7 @@ export default function JobPortal() {
                 <Row>
                     <Divider orientation="center">
 
-                        <Button style={{ width: 250, margin: '0px 5px', backgroundColor: "green", color: "white", fontSize: "2vh", fontWeight: 600, height:50}} size="large">
+                        <Button style={{ width: 250, margin: '0px 5px', backgroundColor: "green", color: "white", fontSize: "2vh", fontWeight: 600, height: 50 }} size="large">
                             BROWSE  ALL  JOBS</Button>
 
 

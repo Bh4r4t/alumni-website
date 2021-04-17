@@ -6,11 +6,22 @@ const app = Router();
 
 app.get('/', async (_req: Request, res:Response) => {
     try {
-        const allJobs = await Job.find();
+        const allJobs = await Job.find(
+            /*{ application_deadline: { $gte: new Date(Date.now()) } },
+            [],
+            {
+                limit: 6,
+                sort: {
+                    application_deadline: 1, // asc on event date
+                },
+            }*/
+        );
         if (!allJobs) {
             throw new Error('No jobs.');
         }
-        res.send({ allJobs });
+        const copyJobs = [...allJobs];
+        res.send({ jobs:copyJobs });
+
         
     }
     catch (err){
@@ -40,7 +51,8 @@ async function createjob(jobInfo: any) {
         contact_email: jobInfo.contact_email,
         skills: jobInfo.skills,
         job_desc: jobInfo.job_desc,
-        application_deadline: jobInfo.application_deadline
+        application_deadline: jobInfo.application_deadline,
+        date_created: jobInfo.date_created
     } as IJob);
     return await jobentry.save();
 }
