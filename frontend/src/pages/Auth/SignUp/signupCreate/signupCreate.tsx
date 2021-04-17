@@ -139,6 +139,7 @@ function SignUpCreate() {
 									initialValue={email}
 									className="signupCreate-form-email"
 									name="email"
+									tooltip="This email will be used as login email Id"
 									label="Primary Email Id"
 									rules={[
 										{
@@ -243,7 +244,7 @@ function SignUpCreate() {
 												showSearch
 												className="mobile-num-selector"
 												placeholder="--"
-												style={{ width: '30%' }}
+												style={{ width: '20%' }}
 												onChange={(val: string) =>
 													setCCode(codes[val])
 												}

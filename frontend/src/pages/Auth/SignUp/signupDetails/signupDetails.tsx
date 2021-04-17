@@ -22,7 +22,10 @@ import {
 } from './coursesInfo';
 import moment from 'moment';
 import { ILocationState } from '../signupCreate/signupCreate';
-import { initDetailsFaculty, initDetailsStd } from '../../../../services/api/user';
+import {
+	initDetailsFaculty,
+	initDetailsStd,
+} from '../../../../services/api/user';
 
 interface ICatForm {
 	alumnusForm: FormInstance<any>;
@@ -57,6 +60,7 @@ function SignUpDetails() {
 			if (res?.data?.error === true) {
 				throw new Error(res.data.message);
 			}
+			history.push('/auth/signin');
 			setLoading(false);
 		} catch (err) {
 			setError(err.message);

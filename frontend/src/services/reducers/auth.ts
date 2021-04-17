@@ -22,7 +22,7 @@ function authReducer(state = initState, action: any) {
 			return { user: undefined };
 		}
 		default: {
-			return initState;
+			return state;
 		}
 	}
 }

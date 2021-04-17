@@ -11,8 +11,6 @@ import members from './routes/members';
 import connectDB from './db/index';
 import job from './routes/job';
 
-// const upload = multer();
-
 dotenv.config();
 const app = express();
 app.use(cookieParser());
@@ -22,7 +20,7 @@ app.use('../uploads', express.static('uploads'));
 // middleware
 app.use(
     cors({
-        origin: `http://localhost:${process.env.REACT_APP_SERVER_PORT}`,
+        origin: process.env.CLIENT_URL! ?? '/',
         credentials: true,
     })
 );
@@ -57,6 +55,6 @@ app.get('/', (_req: Request, res: Response) => {
     res.send({ error: false });
 });
 
-app.listen(process.env.SERVER_PORT ?? 3000, () => {
-    console.log(`server is running at port:${process.env.SERVER_PORT ?? 3000}`);
+app.listen(process.env.PORT ?? 3000, () => {
+    console.log(`server is running at port:${process.env.PORT ?? 3000}`);
 });
