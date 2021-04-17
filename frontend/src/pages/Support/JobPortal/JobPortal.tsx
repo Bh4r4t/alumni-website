@@ -22,6 +22,7 @@ export default function JobPortal() {
                 console.log(res.data);
 
                 setjobs(res.data.jobs);
+
                 console.log(job);
             }
         })
@@ -105,7 +106,7 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>job[0].title as string</h1>
+                                    <h1>Software Developer</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
