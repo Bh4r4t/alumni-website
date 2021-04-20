@@ -199,6 +199,10 @@ const userSchema: Schema = new Schema({
     },
     professional_info: {
         total_exp: Number,
+        prof_head: { type: String },
+        skills: [String],
+        roles: [String],
+        industries: [String],
         orgs: [
             {
                 role: String,

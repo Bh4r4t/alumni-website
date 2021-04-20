@@ -90,7 +90,7 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 	);
 
 	const profile = (
-		<a>
+		<a href="/profile">
 			<AccountBoxTwoToneIcon
 				style={{
 					fontSize: 35,

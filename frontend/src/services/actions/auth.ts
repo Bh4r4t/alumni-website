@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { loginUser, logoutUser, refreshToken } from '../api/auth';
-import { LOGIN_SUCCESS, LOGOUT_SUCCESS } from './actionTypes';
+import { LOGIN_SUCCESS, LOGOUT_SUCCESS, SET_LOADING_F } from './actionTypes';
 
 export interface signInPayload {
 	email: String;
@@ -14,7 +14,9 @@ export const checkAuthAction = () => async (dispatch: Dispatch) => {
 			throw new Error(res.data.message);
 		}
 		dispatch({ type: LOGIN_SUCCESS, payload: res.data });
+		dispatch({ type: SET_LOADING_F });
 	} catch (error) {
+		dispatch({ type: SET_LOADING_F, error: error.message });
 		console.log(error.message);
 	}
 };
@@ -40,7 +42,7 @@ export const logoutAction = (token: string) => async (dispatch: Dispatch) => {
 		if (res?.data?.error === true) {
 			throw new Error(res.data.message);
 		}
-		console.log('/')
+		console.log('/');
 		dispatch({ type: LOGOUT_SUCCESS, payload: undefined });
 	} catch (error) {
 		console.log(error.message);

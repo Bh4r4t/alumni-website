@@ -1,9 +1,9 @@
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Footer from '../components/Footer/mainFooter/mainFooter.component';
 // import Dashboard from '../components/Dashboard/dashboard.component';
 import Dashboard from '../pages/Support/Dashboard/Dashboard';
 import JobBoard from '../pages/Support/JobPortal/JobPortal';
-import ProfilePage from '../components/Profile/profile.component';
+import ProfilePage from '../pages/ProfilePage/profilePage';
 import TopNavbar from '../components/Navbar/TopNavbar/topNavbar.component';
 import PrivateNavBar from '../components/Navbar/PrivateNavbar/privateNav.component';
 import PrivateRoute from '../components/PrivateRoute/privateRoute';
@@ -50,7 +50,11 @@ export const Routes: React.FC<RoutesProp> = () => {
 			<div className="page-container">
 				<TopNavbar />
 				{/* <PrivateNavBar username=""/> */}
-				{user ? <PrivateNavBar username={user?.first_name + ' ' + user?.last_name}/> : null}
+				{user ? (
+					<PrivateNavBar
+						username={user?.first_name + ' ' + user?.last_name}
+					/>
+				) : null}
 				<div className="content-wrap">
 					{/* Private Routes*/}
 					<PrivateRoute path="/dashboard" exact>
@@ -66,6 +70,17 @@ export const Routes: React.FC<RoutesProp> = () => {
 						<BeAVolunteer />
 					</PrivateRoute>
 
+					{/* profile routes */}
+					{/* <PrivateRoute path="/profile/basic" exact>
+						<ProfilePage />
+					</PrivateRoute>
+					<PrivateRoute path="/profile/contact" exact>
+						<ProfilePage />
+					</PrivateRoute>
+					<PrivateRoute path="/profile/contact" exact>
+						<ProfilePage />
+					</PrivateRoute> */}
+
 					{/* public routes */}
 					<Route path="/about/contact">
 						<ContactUs />
@@ -78,6 +93,10 @@ export const Routes: React.FC<RoutesProp> = () => {
 					</Route>
 					<Route path="/about/director">
 						<Director />
+					</Route>
+
+					<Route path="/user/me">
+						<ProfilePage />
 					</Route>
 
 					{/* landing Page */}
