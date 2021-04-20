@@ -12,7 +12,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import { Card, Avatar,Tag } from 'antd';
+import { Card, Avatar, Tag } from 'antd';
 const { Meta } = Card;
 
 const { TabPane } = Tabs;
@@ -32,15 +32,15 @@ export default function Location() {
             <div className="member-contain">
                 <Row>
 
-                    
+
                 </Row>
                 <Row style={{ marginLeft: "3vh" }}>
-                <Col span={1} style={{marginTop:"1vh"}}>
-                        <Button href="http://localhost:3000" icon={<ArrowBackIcon />} size="large">
-                            
-                        
+                    <Col span={1} style={{ marginTop: "1vh" }}>
+                        <Button href="http://localhost:3000/members" icon={<ArrowBackIcon />} size="large">
+
+
                         </Button>
-                        </Col>
+                    </Col>
                     <Col span={3}>
                         <h1 style={{ fontSize: 45, fontWeight: 400 }}>Members </h1>
                     </Col>
@@ -53,16 +53,16 @@ export default function Location() {
 
                     <Menu selectedKeys={[values]} mode="horizontal" style={{ width: "140vh" }}>
 
-                    <Menu.Item key="location" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<LocationOnIcon style={{ fontSize: "2vh", color: "blue" }} />} >
-                        <Link to="/members/location" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
-                                 Location
+                        <Menu.Item key="location" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<LocationOnIcon style={{ fontSize: "2vh", color: "blue" }} />} >
+                            <Link to="/members/location" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                                Location
           </Link>
-        </Menu.Item>
+                        </Menu.Item>
                         <Menu.Item key="company" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<BusinessIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                        <Link to="/members/company" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                            <Link to="/members/company" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
                                 Company
           </Link>
-        </Menu.Item>
+                        </Menu.Item>
 
                         <Menu.Item key="institute" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<SchoolIcon style={{ fontSize: "2vh", color: "blue" }} />}>
                             <Link to="/members/institute" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
@@ -70,17 +70,17 @@ export default function Location() {
           </Link>
                         </Menu.Item>
                         <Menu.Item key="roles" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<BusinessCenterIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                        <Link to="/members/roles" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                            <Link to="/members/roles" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
                                 Roles
           </Link>
                         </Menu.Item>
                         <Menu.Item key="professional" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<ReceiptIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                        <Link to="/members/prof_skills" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                            <Link to="/members/prof_skills" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
                                 Professional Skills
           </Link>
                         </Menu.Item>
                         <Menu.Item key="industry" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<ApartmentIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                        <Link to="/members/industry" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                            <Link to="/members/industry" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
                                 Industry
           </Link>
                         </Menu.Item>
@@ -100,79 +100,67 @@ export default function Location() {
 
                     </Row>
                     <br></br>
-                    <Row style={{marginBottom:"2vh"}}>
+                    <Row style={{ marginBottom: "2vh" }}>
                         <Col span={5} offset={1}>
-                        <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+                                Delhi                            </Link>
                         </Col>
                         <Col span={5} >
-                        <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+                                Mumbai                            </Link>
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+Chennai                            </Link>
                         </Col>
                         <Col span={1}></Col>
 
                         <Col span={5} >
-                        <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+Bangalore                            </Link>
                         </Col>
                     </Row>
-                    <Row style={{marginBottom:"2vh"}}>
+                    <Row style={{ marginBottom: "2vh" }}>
                         <Col span={5} offset={1}>
-                        <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+Pune                            </Link>
                         </Col>
                         <Col span={5} >
-                        <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+Ahmedabad                            </Link>
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+Kolkata                            </Link>
                         </Col>
                         <Col span={1}></Col>
 
                         <Col span={5} >
-                        <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+Lucknow                            </Link>
                         </Col>
                     </Row>
-                    <Row style={{marginBottom:"2vh"}}>
+                    <Row style={{ marginBottom: "2vh" }}>
                         <Col span={5} offset={1}>
-                        <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+Chandigarh                            </Link>
                         </Col>
                         <Col span={5} >
-                        <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+New York                            </Link>
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+London                            </Link>
                         </Col>
                         <Col span={1}></Col>
 
                         <Col span={5} >
-                        <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
-                            </Link>
+                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
+Paris                            </Link>
                         </Col>
                     </Row>
                 </div>

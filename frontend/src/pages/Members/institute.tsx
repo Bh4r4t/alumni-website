@@ -36,7 +36,7 @@ export default function Institute() {
                 </Row>
                 <Row style={{ marginLeft: "3vh" }}>
                 <Col span={1} style={{marginTop:"1vh"}}>
-                        <Button href="http://localhost:3000" icon={<ArrowBackIcon />} size="large">
+                        <Button href="http://localhost:3000/members" icon={<ArrowBackIcon />} size="large">
                             
                         
                         </Button>
@@ -108,70 +108,70 @@ export default function Institute() {
                         </Col>
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Technology Delhi
                             </Link>
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5} >
                             <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Technology Bombay
                             </Link>
                         </Col>
                         <Col span={1}></Col>
 
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Technology Kanpur
                             </Link>
                         </Col>
                     </Row>
                     <Row style={{marginBottom:"2vh"}}>
                         <Col span={5} offset={1}>
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Technology <br></br>Guwahati
                             </Link>
                         </Col>
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Technology Roorkee
                             </Link>
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5} >
                             <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Technology Kharagpur
                             </Link>
                         </Col>
                         <Col span={1}></Col>
 
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Management Ahmedabad
                             </Link>
                         </Col>
                     </Row>
                     <Row style={{marginBottom:"2vh"}}>
                         <Col span={5} offset={1}>
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Management<br></br> Kolkata
                             </Link>
                         </Col>
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Sciences Bangalore
                             </Link>
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5} >
                             <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Technology BHU
                             </Link>
                         </Col>
                         <Col span={1}></Col>
 
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Indian Institute Of Management Indore
                             </Link>
                         </Col>
                     </Row>

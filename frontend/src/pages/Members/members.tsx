@@ -12,6 +12,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Card, Avatar } from 'antd';
 import { Link } from 'react-router-dom';
 import RollbackOutlined from '@ant-design/icons'
+import img1 from '../../assets/profile.png';
 
 const { Meta } = Card;
 
@@ -24,6 +25,19 @@ const { Content } = Layout;
 
 export default function Members() {
     const [values, setvalues] = useState("location");
+    //const [users, setusers] = useState(any);
+    fetch('http://localhost:3000/members/all', {
+        method: 'get',
+        headers: {     'Accept': 'application/json',
+        'Content-Type': 'application/json' },
+
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+        })
+
+
     const handleClick = ({ e }: { e: any }) => {
         console.log('click ', e);
         setvalues(e.key);
@@ -87,8 +101,13 @@ export default function Members() {
                             <Tabs type="card">
                                 <TabPane tab="Name, Email" key="1">
                                     <Row style={{ marginTop: "2vh" }}>
-                                        <Col span={20}>
-                                            <Input placeholder="Name or Email" id="name" size="large" />
+                                        <Col span={8}>
+                                            <Input placeholder="Name" id="name" size="large" />
+                                        </Col>
+                                        <Col span={1}>
+                                        </Col>
+                                        <Col span={8}>
+                                            <Input placeholder="Email" id="email" size="large" />
                                         </Col>
                                         <Col span={1}>
                                         </Col>
@@ -291,10 +310,7 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
@@ -311,17 +327,14 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Bharat</h1>}
                                     description="B.Tech 2018,CSE"
                                 />
                             </Divider>
@@ -331,17 +344,14 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Vishal</h1>}
                                     description="B.Tech 2018,CSE"
                                 />
                             </Divider>
@@ -351,18 +361,15 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
-                                    description="B.Tech 2018,CSE"
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Akshay</h1>}
+                                    description="B.Tech 2019,CSE"
                                 />
                             </Divider>
                         </Card>
@@ -373,18 +380,15 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
-                                    description="B.Tech 2018,CSE"
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Rajesh</h1>}
+                                    description="B.Tech 2016,CSE"
                                 />
                             </Divider>
                         </Card>
@@ -393,18 +397,15 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
-                                    description="B.Tech 2018,CSE"
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Mohan</h1>}
+                                    description="B.Tech 2015,Mechanical"
                                 />
                             </Divider>
                         </Card>
@@ -413,18 +414,15 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
-                                    description="B.Tech 2018,CSE"
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Aman</h1>}
+                                    description="B.Tech 2020,CSE"
                                 />
                             </Divider>
                         </Card>
@@ -433,18 +431,15 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
-                                    description="B.Tech 2018,CSE"
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Parth</h1>}
+                                    description="B.Tech 2014,Civil"
                                 />
                             </Divider>
                         </Card>
@@ -455,18 +450,15 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />}/>
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
-                                    description="B.Tech 2018,CSE"
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Lokesh</h1>}
+                                    description="B.Tech 2013,Chemical"
                                 />
                             </Divider>
                         </Card>
@@ -475,17 +467,14 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Karan</h1>}
                                     description="B.Tech 2018,CSE"
                                 />
                             </Divider>
@@ -495,18 +484,15 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
-                                    description="B.Tech 2018,CSE"
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Shiv</h1>}
+                                    description="B.Tech 2017,CSE"
                                 />
                             </Divider>
                         </Card>
@@ -515,18 +501,15 @@ export default function Members() {
                         <Card
                             style={{ width: 300 }}
                             cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img
-                                    alt="example"
-                                    src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-                                />} />
+                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
                             }
 
                         >
                             <Divider orientation="center">
                                 <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
-                                    description="B.Tech 2018,CSE"
+                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naman</h1>}
+                                    description="B.Tech 2015,Mechanical"
                                 />
                             </Divider>
                         </Card>

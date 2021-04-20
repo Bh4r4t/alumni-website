@@ -4,7 +4,7 @@ import User, { IUser } from '../models/user.model';
 
 const app = express.Router();
 
-app.get('/all/:page', verifyToken, async (req: Request, res: Response) => {
+app.get('/all/:page',verifyToken, async (req: Request, res: Response) => {
     try {
         const resultsPerPage = 20;
         const page: number = (((req.params.page as unknown) as number) >= 0

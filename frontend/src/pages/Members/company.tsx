@@ -36,7 +36,7 @@ export default function Company() {
                 </Row>
                 <Row style={{ marginLeft: "3vh" }}>
                 <Col span={1} style={{marginTop:"1vh"}}>
-                        <Button href="http://localhost:3000" icon={<ArrowBackIcon />} size="large">
+                        <Button href="http://localhost:3000/members" icon={<ArrowBackIcon />} size="large">
                             
                         
                         </Button>
@@ -103,75 +103,75 @@ export default function Company() {
                     <Row style={{marginBottom:"2vh"}}>
                         <Col span={5} offset={1}>
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Amazon
                             </Link>
                         </Col>
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Flipkart
                             </Link>
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5} >
                             <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                               Snapdeal
                             </Link>
                         </Col>
                         <Col span={1}></Col>
 
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Microsoft
                             </Link>
                         </Col>
                     </Row>
                     <Row style={{marginBottom:"2vh"}}>
                         <Col span={5} offset={1}>
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Apple
                             </Link>
                         </Col>
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Samsung
                             </Link>
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5} >
                             <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                DE Shaw
                             </Link>
                         </Col>
                         <Col span={1}></Col>
 
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                               Goldman Sachs
                             </Link>
                         </Col>
                     </Row>
                     <Row style={{marginBottom:"2vh"}}>
                         <Col span={5} offset={1}>
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Codeninja
                             </Link>
                         </Col>
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Myntra
                             </Link>
                         </Col>
                         <Col span={1}></Col>
                         <Col span={5} >
                             <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Google
                             </Link>
                         </Col>
                         <Col span={1}></Col>
 
                         <Col span={5} >
                         <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{color:"black"}}>
-                                Indian Institute Of Technology Ropar
+                                Paypal
                             </Link>
                         </Col>
                     </Row>

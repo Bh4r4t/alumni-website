@@ -54,7 +54,7 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 	);
 
 	const members = (
-		<a>
+		<a href="/members">
 			<GroupTwoToneIcon
 				style={{
 					fontSize: 30,
