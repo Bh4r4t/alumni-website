@@ -28,6 +28,10 @@ import ProfessionalSkills from '../pages/Members/prof_skills';
 import Company from '../pages/Members/company';
 import Roles from '../pages/Members/roles';
 import Industry from '../pages/Members/industry';
+import EventsSection from '../pages/Events/events';
+import Event from '../pages/Events/Event';
+import Event2 from '../pages/Events/Event2';
+import Event3 from '../pages/Events/Event3';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
@@ -123,6 +127,18 @@ export const Routes: React.FC<RoutesProp> = () => {
 					</Route>
 					<Route path="/members/industry" exact>
 						<Industry />
+					</Route>
+					<Route path="/events" exact>
+						<EventsSection />
+					</Route>
+					<Route path="/events/create_event_1" exact>
+						<Event />
+					</Route>
+					<Route path="/events/create_event_2" exact>
+						<Event2 />
+					</Route>
+					<Route path="/events/create_event_3" exact>
+						<Event3 />
 					</Route>
 					{/* <Route path="*">
 						<Redirect to="/" />

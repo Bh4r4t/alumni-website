@@ -2,7 +2,7 @@ import { Row, Col, Card } from 'antd';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import './eventsCard.component.css';
 
-function EventsCard() {
+function EventsCard(props:any) {
 	return (
 		<Card className="events-items-card" hoverable>
 			<Row className="events-items-card-row">

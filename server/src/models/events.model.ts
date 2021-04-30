@@ -9,6 +9,11 @@ export interface IEvent extends Document {
     created_by: String;
     created_by_id?: String;
     pending_req_id?: String;
+    event_category: String;
+    event_time: String;
+    event_end_time: String;
+    address: String;
+
 }
 
 const eventConfirmedSchema: Schema = new Schema({
@@ -19,6 +24,11 @@ const eventConfirmedSchema: Schema = new Schema({
     date_created: { type: Date, required: true, default: Date.now() },
     created_by: { type: String, required: true },
     created_by_id: { type: String, required: true },
+    event_category: { type: String },
+    event_time: { type: String },
+    event_end_time: { type: String },
+    address: { type: String }
+
 });
 
 const eventPendingSchema: Schema = new Schema({
@@ -29,7 +39,12 @@ const eventPendingSchema: Schema = new Schema({
     date_created: { type: Date, required: true, default: Date.now() },
     created_by: { type: String, required: true },
     created_by_id: { type: String, required: true },
-    pending_req_id: { type: String, required:true},
+    pending_req_id: { type: String, required: true },
+    event_category: { type: String },
+    event_time: { type: String },
+    event_end_time: { type: String },
+    address: { type: String }
+    
 });
 
 export const eventConfirmed = mongoose.model<IEvent>(

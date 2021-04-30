@@ -24,7 +24,12 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
                 event_description: req.body.event_description,
                 created_by: `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                 created_by_id: user._id,
+                event_category: req.body.event_category,
+                event_time: req.body.event_time,
+                event_end_time: req.body.event_end_time,
+                address: req.body.address
             } as IEvent);
+            console.log(event)
             await event.save();
         } else {
             const pending_req = await createPendingRequest(
@@ -39,7 +44,12 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
                 created_by: `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                 created_by_id: user._id,
                 pending_req_id: pending_req._id,
+                event_category: req.body.event_category,
+                event_time: req.body.event_time,
+                event_end_time: req.body.event_end_time,
+                address: req.body.address
             } as IEvent);
+            console.log(event)
             await event.save();
         }
         res.send({ error: false, message: 'successfully added event!' });

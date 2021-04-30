@@ -1,6 +1,7 @@
 import { Layout, Row, Col, Divider, Menu } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './members.css';
+import querystring from 'querystring'
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import BusinessIcon from '@material-ui/icons/Business';
 import SchoolIcon from '@material-ui/icons/School';
@@ -13,6 +14,7 @@ import { Card, Avatar } from 'antd';
 import { Link } from 'react-router-dom';
 import RollbackOutlined from '@ant-design/icons'
 import img1 from '../../assets/profile.png';
+import axios from 'axios';
 
 const { Meta } = Card;
 
@@ -24,18 +26,39 @@ const { Content } = Layout;
 
 
 export default function Members() {
-    const [values, setvalues] = useState("location");
-    //const [users, setusers] = useState(any);
-    fetch('http://localhost:3000/members/all', {
-        method: 'get',
-        headers: {     'Accept': 'application/json',
-        'Content-Type': 'application/json' },
 
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
+    const [members, setmembers] = useState([])
+    useEffect(() => {
+        axios.get('http://localhost:3000/members/all/:1', {
+
         })
+            .then(response => {
+                setmembers(response.data.users)
+                console.log(members)
+            })
+
+    }, [])
+
+    const [values, setvalues] = useState("location");
+    const [name_s, setname_s] = useState("");
+    const [degree, setdegree] = useState("");
+    const [course, setcourse] = useState("");
+    const [stream, setstream] = useState("");
+    const [city, setcity] = useState("");
+    const [location, setlocation] = useState({ city: "", state: "", country: "" });
+    const [year, setyear] = useState("");
+
+
+    const handleInputChange = (e: any) => {
+        console.log(e.target.id)
+        setname_s(e.target.value);
+        console.log(name_s)
+    }
+
+    const handleLocationChange = (e: any) => {
+        setlocation({ ...location,[e.target.id]: e.target.value });
+        console.log(location)
+    }
 
 
     const handleClick = ({ e }: { e: any }) => {
@@ -43,10 +66,61 @@ export default function Members() {
         setvalues(e.key);
     };
 
+    const handleCourseSelect = (option: any) => {
+        console.log(option)
+        setcourse(option);
+
+    }
+
+    const handleStreamSelect = (option: any) => {
+        setstream(option);
+
+    }
+
+    const handleYearSelect = (option: any) => {
+        setyear(option);
+
+    }
+
+
+
+    const handleNameSubmit = (e: any) => {
+        axios.get('http://localhost:3000/members/search?name=' + name_s,
+            {
+                withCredentials: true
+            })
+            .then(response => {
+                console.log(response.data);
+                setmembers(response.data.user)
+            })
+    }
+
+    const handleCourseSubmit = (e: any) => {
+        axios.get('http://localhost:3000/members/search?course=' + course + '&stream=' + stream + '&year=' + year, {
+            withCredentials: true
+        })
+            .then(response => {
+                console.log(response.data);
+                setmembers(response.data.user)
+            })
+            .catch(err => console.log(err))
+    }
+
+    const handleLocationSubmit = (e: any) => {
+        axios.get('http://localhost:3000/members/search?city=' + location.city + '&state=' + location.state + '&country=' + location.country, {
+            withCredentials: true
+        })
+            .then(response => {
+                console.log(response.data);
+                setmembers(response.data.user)
+            })
+            .catch(err => console.log(err))
+    }
+
     return (
         <div className="main-contain">
             <div className="member-contain">
-                
+
                 <Row style={{ marginLeft: "10vh" }}>
                     <Col span={3}>
                         <h1 style={{ fontSize: 45, fontWeight: 400 }}>Members </h1>
@@ -58,20 +132,20 @@ export default function Members() {
                 </Row>
                 <Row style={{ marginLeft: "10vh", marginTop: -15 }}>
 
-                    <Menu  mode="horizontal" style={{ width: "140vh" }}>
-                        
+                    <Menu mode="horizontal" style={{ width: "140vh" }}>
+
 
 
                         <Menu.Item key="location" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<LocationOnIcon style={{ fontSize: "2vh", color: "blue" }} />} >
-                        <Link to="/members/location" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
-                                 Location
+                            <Link to="/members/location" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                                Location
           </Link>
-        </Menu.Item>
+                        </Menu.Item>
                         <Menu.Item key="company" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<BusinessIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                        <Link to="/members/company" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                            <Link to="/members/company" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
                                 Company
           </Link>
-        </Menu.Item>
+                        </Menu.Item>
 
                         <Menu.Item key="institute" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<SchoolIcon style={{ fontSize: "2vh", color: "blue" }} />}>
                             <Link to="/members/institute" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
@@ -79,17 +153,17 @@ export default function Members() {
           </Link>
                         </Menu.Item>
                         <Menu.Item key="roles" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<BusinessCenterIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                        <Link to="/members/roles" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                            <Link to="/members/roles" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
                                 Roles
           </Link>
                         </Menu.Item>
                         <Menu.Item key="professional" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<ReceiptIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                        <Link to="/members/prof_skills" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                            <Link to="/members/prof_skills" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
                                 Professional Skills
           </Link>
                         </Menu.Item>
                         <Menu.Item key="industry" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<ApartmentIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                        <Link to="/members/industry" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
+                            <Link to="/members/industry" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
                                 Industry
           </Link>
                         </Menu.Item>
@@ -102,7 +176,7 @@ export default function Members() {
                                 <TabPane tab="Name, Email" key="1">
                                     <Row style={{ marginTop: "2vh" }}>
                                         <Col span={8}>
-                                            <Input placeholder="Name" id="name" size="large" />
+                                            <Input placeholder="Name" id="name" size="large" onChange={handleInputChange} />
                                         </Col>
                                         <Col span={1}>
                                         </Col>
@@ -113,7 +187,7 @@ export default function Members() {
                                         </Col>
                                         <Col span={2}>
                                             <Tooltip title="search">
-                                                <Button type="primary" size="large" shape="circle" icon={<SearchOutlined />} style={{ color: "white", backgroundColor: "green" }} />
+                                                <Button type="primary" size="large" shape="circle" icon={<SearchOutlined />} style={{ color: "white", backgroundColor: "green" }} onClick={handleNameSubmit} />
                                             </Tooltip>
 
                                         </Col>
@@ -121,48 +195,38 @@ export default function Members() {
                                 </TabPane>
                                 <TabPane tab="Course & Year" key="2">
                                     <Row style={{ marginTop: "2vh" }}>
-                                        <Col span={4}>
-                                            <Select size="large" style={{ width: "27vh" }} placeholder="Select Degree" >
-                                                <Option value="undergrad">UnderGraduate</Option>
-                                                <Option value="postgrad">PostGraduate</Option>
-                                                <Option value="doctoral">Doctoral</Option>
-                                                <Option value="dualdegree">Dual Degree</Option>
+
+                                        <Col span={5}>
+                                            <Select size="large" style={{ width: "33vh" }} placeholder="Select Course" onSelect={handleCourseSelect}>
+                                                <Option value="Bachelor of Technology - B.Tech.">Bachelor of Technology - B.Tech.</Option>
+                                                <Option value="Master of Science - M.Sc.">Master of Science - M.Sc.</Option>
+                                                <Option value="Master of Technology - M.Tech.">Master of Technology - M.Tech.</Option>
+                                                <Option value="Doctor of Philosophy - Ph.D.">Doctor of Philosophy - Ph.D.</Option>
+                                                <Option value="Dual Degree (Bachelor of Technology + Master of Technology) - B.Tech. + M.Tech.">Dual Degree (Bachelor of Technology + Master of Technology) - B.Tech. + M.Tech.</Option>
 
                                             </Select>
                                         </Col>
                                         <Col span={1}></Col>
-                                        <Col span={4}>
-                                            <Select size="large" style={{ width: "27vh" }} placeholder="Select Course" >
-                                                <Option value="btech">B.Tech</Option>
-                                                <Option value="msc">M.Sc.</Option>
-                                                <Option value="mtech">M.Tech.</Option>
-                                                <Option value="phd">Ph.D.</Option>
-                                                <Option value="dd">Dual Degree</Option>
+                                        <Col span={5}>
+                                            <Select size="large" style={{ width: "33vh" }} placeholder="Select Stream" onSelect={handleStreamSelect}>
+                                                <Option value="">-- Select Stream --</Option>
+                                                <Option value="Biomedical Engineering">Biomedical Engineering</Option>
+                                                <Option value="Chemical Engineering">Chemical Engineering</Option>
+                                                <Option value="Chemistry">Chemistry</Option>
+                                                <Option value="Civil Engineering">Civil Engineering</Option>
+                                                <Option value="Computer Science and Engineering">Computer Science & Engineering</Option>
+                                                <Option value="Electrical Engineering">Electrical Engineering</Option>
+                                                <Option value="Humanities and Social Sciences">Humanities and Social Sciences</Option>
+                                                <Option value="Materials and Energy Engineering">Materials & Energy Engineering</Option>
+                                                <Option value="Mathematics">Mathematics</Option>
+                                                <Option value="Mechanical Engineering">Mechanical Engineering</Option>
+                                                <Option value="Physics">Physics</Option>
 
                                             </Select>
                                         </Col>
                                         <Col span={1}></Col>
-                                        <Col span={4}>
-                                            <Select size="large" style={{ width: "27vh" }} placeholder="Select Stream" >
-                                                <Option value="0">-- Select Stream --</Option>
-                                                <Option value="96">Biomedical Engineering</Option>
-                                                <Option value="20">Chemical Engineering</Option>
-                                                <Option value="52">Chemistry</Option>
-                                                <Option value="10">Civil Engineering</Option>
-                                                <Option value="27">Computer Science &amp; Engineering</Option>
-                                                <Option value="54">Computer Science Engineering</Option>
-                                                <Option value="104">Electrical Engineering</Option>
-                                                <Option value="1536">Humanities and Social Sciences</Option>
-                                                <Option value="1626">Materials &amp; Energy Engineering</Option>
-                                                <Option value="53">Mathematics</Option>
-                                                <Option value="11">Mechanical Engineering</Option>
-                                                <Option value="51">Physics</Option>
-
-                                            </Select>
-                                        </Col>
-                                        <Col span={1}></Col>
-                                        <Col span={4}>
-                                            <Select size="large" style={{ width: "27vh" }} placeholder="Select Graduation Year" >
+                                        <Col span={5}>
+                                            <Select size="large" style={{ width: "33vh" }} placeholder="Select Graduation Year" onSelect={handleYearSelect} >
                                                 <Option value="">Graduation Year</Option>
                                                 <Option value="2008">2008</Option>
                                                 <Option value="2009">2009</Option>
@@ -188,7 +252,7 @@ export default function Members() {
                                         </Col>
                                         <Col span={2} style={{ marginLeft: "7vh" }}>
                                             <Tooltip title="search">
-                                                <Button type="primary" size="large" shape="circle" icon={<SearchOutlined />} style={{ color: "white", backgroundColor: "green" }} />
+                                                <Button type="primary" size="large" shape="circle" icon={<SearchOutlined />} style={{ color: "white", backgroundColor: "green" }} onClick={handleCourseSubmit} />
                                             </Tooltip>
 
                                         </Col>
@@ -197,17 +261,17 @@ export default function Members() {
                                 <TabPane tab="Location" key="3">
                                     <Row style={{ marginTop: "2vh" }}>
                                         <Col span={6}>
-                                            <Input size="large" placeholder="City" id="city" />
+                                            <Input size="large" placeholder="City" id="city" onChange={handleLocationChange} />
                                         </Col>
                                         <Col span={1}>
                                         </Col>
                                         <Col span={6}>
-                                            <Input size="large" placeholder="State" id="state" />
+                                            <Input size="large" placeholder="State" id="state" onChange={handleLocationChange} />
 
                                         </Col>
                                         <Col span={1}> </Col>
                                         <Col span={6}>
-                                            <Input size="large" placeholder="Country" id="country" />
+                                            <Input size="large" placeholder="Country" id="country" onChange={handleLocationChange}/>
 
 
                                         </Col>
@@ -217,7 +281,7 @@ export default function Members() {
 
                                         <Col span={2}>
                                             <Tooltip title="search">
-                                                <Button type="primary" size="large" shape="circle" icon={<SearchOutlined />} style={{ color: "white", backgroundColor: "green" }} />
+                                                <Button type="primary" size="large" shape="circle" icon={<SearchOutlined />} style={{ color: "white", backgroundColor: "green" }} onClick={handleLocationSubmit} />
                                             </Tooltip>
 
                                         </Col>
@@ -304,217 +368,26 @@ export default function Members() {
 
                     </Row>
                 </div>
-
                 <Row style={{ marginLeft: "10vh", marginTop: "2vh", width: "170vh" }}>
-                    <Col span={5}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
+                    {members.map((member: any) => (
 
-                            }
 
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naveen</h1>}
-                                    description="B.Tech 2018,CSE"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                    <Col span={5} style={{ marginRight: "0" }}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
+                        <Col span={5} style={{ marginBottom: "2vh" }}>
+                            <Card
+                                style={{ width: 300, height: 360 }}
+                                cover={
+                                    <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
-                            }
+                                }
 
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Bharat</h1>}
-                                    description="B.Tech 2018,CSE"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                    <Col span={5}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
-
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Vishal</h1>}
-                                    description="B.Tech 2018,CSE"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                    <Col span={5}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
-
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Akshay</h1>}
-                                    description="B.Tech 2019,CSE"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
+                            >
+                                <h1 style={{ width: "20vh", fontSize: 20, marginBottom: "0", marginLeft: "6vh" }}>{member.basic_info.first_name + " " + member.basic_info.last_name}</h1>
+                                <h3 style={{ fontSize: 16, fontWeight: 300, marginLeft: "6vh" }}>{member.educational_info[0]?.degree_name+" "+member.educational_info[0]?.end_date}</h3>
+                            </Card>
+                        </Col>
+                    ))}
                 </Row>
-                <Row style={{ marginLeft: "10vh", marginTop: "2vh", width: "170vh" }}>
-                    <Col span={5}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
 
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Rajesh</h1>}
-                                    description="B.Tech 2016,CSE"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                    <Col span={5} style={{ marginRight: "0" }}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
-
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Mohan</h1>}
-                                    description="B.Tech 2015,Mechanical"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                    <Col span={5}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
-
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Aman</h1>}
-                                    description="B.Tech 2020,CSE"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                    <Col span={5}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
-
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Parth</h1>}
-                                    description="B.Tech 2014,Civil"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                </Row>
-                <Row style={{ marginLeft: "10vh", marginTop: "2vh", width: "170vh" }}>
-                    <Col span={5}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />}/>
-
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Lokesh</h1>}
-                                    description="B.Tech 2013,Chemical"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                    <Col span={5} style={{ marginRight: "0" }}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
-
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Karan</h1>}
-                                    description="B.Tech 2018,CSE"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                    <Col span={5}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
-
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Shiv</h1>}
-                                    description="B.Tech 2017,CSE"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                    <Col span={5}>
-                        <Card
-                            style={{ width: 300 }}
-                            cover={
-                                <Avatar style={{ marginLeft: "5vh", marginTop: "2vh" }} size={200} icon={<img src={img1} />} />
-
-                            }
-
-                        >
-                            <Divider orientation="center">
-                                <Meta
-                                    title={<h1 style={{ fontSize: "3vh", marginBottom: "0" }}>Naman</h1>}
-                                    description="B.Tech 2015,Mechanical"
-                                />
-                            </Divider>
-                        </Card>
-                    </Col>
-                </Row>
             </div>
         </div>
     )

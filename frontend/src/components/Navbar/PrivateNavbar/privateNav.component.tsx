@@ -66,7 +66,7 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 	);
 
 	const events = (
-		<a>
+		<a href="/events">
 			<EventTwoToneIcon
 				style={{
 					fontSize: 30,

@@ -1,6 +1,7 @@
 import { Layout, Row, Col, Divider, Menu } from 'antd';
 import { useState } from 'react';
 import './members.css';
+import { useEffect } from 'react';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import BusinessIcon from '@material-ui/icons/Business';
 import SchoolIcon from '@material-ui/icons/School';
@@ -13,6 +14,7 @@ import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { Card, Avatar, Tag } from 'antd';
+import axios from 'axios';
 const { Meta } = Card;
 
 const { TabPane } = Tabs;
@@ -21,6 +23,23 @@ const { Option } = Select;
 const { Content } = Layout;
 
 export default function Location() {
+    const [cities, setcities] = useState([]);
+    useEffect(() => {
+        axios.get('http://localhost:3000/members/all_loc', {
+            withCredentials: true,
+        })
+            .then(response => {
+                //console.log(response)
+                //  console.log(response.data.locs[0])
+                setcities(response?.data?.locs);
+                console.log(cities[0])
+            })
+            .catch(err => console.log(err))
+
+
+
+    }, [])
+
     const [values, setvalues] = useState("location");
     const handleClick = ({ e }: { e: any }) => {
         console.log('click ', e);
@@ -101,67 +120,12 @@ export default function Location() {
                     </Row>
                     <br></br>
                     <Row style={{ marginBottom: "2vh" }}>
-                        <Col span={5} offset={1}>
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-                                Delhi                            </Link>
-                        </Col>
-                        <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-                                Mumbai                            </Link>
-                        </Col>
-                        <Col span={1}></Col>
-                        <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-Chennai                            </Link>
-                        </Col>
-                        <Col span={1}></Col>
-
-                        <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-Bangalore                            </Link>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginBottom: "2vh" }}>
-                        <Col span={5} offset={1}>
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-Pune                            </Link>
-                        </Col>
-                        <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-Ahmedabad                            </Link>
-                        </Col>
-                        <Col span={1}></Col>
-                        <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-Kolkata                            </Link>
-                        </Col>
-                        <Col span={1}></Col>
-
-                        <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-Lucknow                            </Link>
-                        </Col>
-                    </Row>
-                    <Row style={{ marginBottom: "2vh" }}>
-                        <Col span={5} offset={1}>
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-Chandigarh                            </Link>
-                        </Col>
-                        <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-New York                            </Link>
-                        </Col>
-                        <Col span={1}></Col>
-                        <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-London                            </Link>
-                        </Col>
-                        <Col span={1}></Col>
-
-                        <Col span={5} >
-                            <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-Paris                            </Link>
-                        </Col>
+                        {cities.map((city: String) => (
+                            <Col span={5} offset={1}>
+                                <Link to="/members" style={{ color: "black" }}>
+                                    {city}                            </Link>
+                            </Col>
+                        ))}
                     </Row>
                 </div>
             </div>
