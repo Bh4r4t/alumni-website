@@ -1,6 +1,5 @@
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Footer from '../components/Footer/mainFooter/mainFooter.component';
-// import Dashboard from '../components/Dashboard/dashboard.component';
 import Dashboard from '../pages/Support/Dashboard/Dashboard';
 import JobBoard from '../pages/Support/JobPortal/JobPortal';
 import ProfilePage from '../pages/ProfilePage/profilePage';
@@ -87,6 +86,12 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<PrivateRoute path="/profile/contact" exact>
 						<ProfilePage />
 					</PrivateRoute> */}
+					{/* <Route path="/admin_dashboard" exact>
+						<Admindashboard />
+					</Route> */}
+					{/* <Route path="/admin_dashboard/pending_events" exact>
+						<PendingEvents />
+					</Route> */}
 
 					{/* public routes */}
 					<Route path="/about/contact">

@@ -24,7 +24,6 @@ app.post('/create_post', verifyToken, async (req, res) => {
 
 app.get('/all_posts', verifyToken, async (req, res) => {
     Post.find({}, [], { sort: { post_date: 'descending' } }, (err, posts) => {
-        console.log(posts);
         res.json(posts);
     });
 });

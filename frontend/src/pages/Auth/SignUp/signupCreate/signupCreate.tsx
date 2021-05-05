@@ -57,9 +57,6 @@ function SignUpCreate() {
 			const formBody = { ...payload };
 			formBody.salutation = salutation_dict[payload.salutation as string];
 			formBody.gender = gender_dict[payload.gender as string];
-			// formBody.date_of_birth = moment(payload.date_of_birth).format(
-			// 	'YYYY-MM-DD[T00:00:00.000Z]'
-			// );
 			formBody.date_of_birth = payload.date_of_birth.unix() * 1000;
 			formBody.mobile_num = [
 				ccode,

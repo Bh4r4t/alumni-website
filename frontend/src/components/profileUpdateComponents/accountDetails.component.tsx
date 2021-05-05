@@ -3,6 +3,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 
 function AccountDetails(props: any) {
+	const [error, setError] = useState('');
 	const [updateEmail, setUpdateEmail] = useState(false);
 	const handleSubmit = () => {};
 	const formItemLayout = {
@@ -14,6 +15,20 @@ function AccountDetails(props: any) {
 			xs: { span: 24 },
 			sm: { span: 24 },
 		},
+	};
+
+	const updateLoginIdFormSubmit = (payload: any) => {
+		try {
+		} catch (err) {
+			setError(err.message);
+		}
+	};
+
+	const updatePassFormSubmit = (payload: any) => {
+		try {
+		} catch (err) {
+			setError(err.message);
+		}
 	};
 
 	const [updateLoginIdForm] = Form.useForm();
@@ -29,7 +44,7 @@ function AccountDetails(props: any) {
 				form={updateLoginIdForm}
 				name="updateLoginIdForm"
 				{...formItemLayout}
-				onFinish={handleSubmit}
+				onFinish={updateLoginIdFormSubmit}
 				labelAlign="left"
 				initialValues={{ prefix: '91' }}
 				scrollToFirstError
