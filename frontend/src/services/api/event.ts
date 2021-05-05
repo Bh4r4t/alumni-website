@@ -15,3 +15,12 @@ export const GetPendingEvents = async (token:any) => {
         },
 	});
 };
+
+export const GetEventDetails = async (token: any,eventid:string) => {
+    return await axios.get(`${url}/events/event_description?id=${eventid}`, {
+        withCredentials: true,
+        headers: {
+            authorization: 'Bearer ' + token
+        },
+	});
+}

@@ -29,12 +29,12 @@ export default function Members() {
 
     const [members, setmembers] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:8080/members/all/:1', {
+        axios.get('http://localhost:3000/members/all/:1', {
 
         })
             .then(response => {
                 setmembers(response.data.users)
-                console.log(members)
+                //console.log(members)
             })
 
     }, [])

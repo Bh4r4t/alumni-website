@@ -30,7 +30,7 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
                 event_time: req.body.event_time,
                 event_end_time: req.body.event_end_time,
                 address: req.body.address,
-                pending: true,
+                pending: false,
             } as unknown) as IEvent);
             console.log(event);
             await event.save();
@@ -213,5 +213,14 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
         res.send({ error: true, message: err.message });
     }
 });
+
+app.get('/event_description', verifyToken,async (req, res) => {
+    Events.findById(req.query.id, (err:any, event:any) => {
+        if (err) return res.send("Error in getting event details")
+        else {
+            return res.json(event)
+        }
+    })
+})
 
 export default app;

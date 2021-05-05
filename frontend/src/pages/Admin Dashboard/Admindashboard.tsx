@@ -29,7 +29,7 @@ export default function Admindashboard() {
                     <Col span={3}>
                         <h1 style={{ fontSize: 30, fontWeight: 400 }}>Admin Panel </h1>
                     </Col>
-                    <Col span={5} style={{ marginTop: 6, marginLeft: "1vh" }}>
+                    <Col span={5} style={{ marginTop: 6 }}>
                         <h1 style={{ fontSize: 25, fontWeight: 400, color: "gray" }}>
                             Manage your site content
         </h1></Col>
@@ -56,7 +56,7 @@ export default function Admindashboard() {
                         <h1 style={{ fontSize: 25, fontWeight: 200 }}>Pending Actions: </h1>
                     </Col>
                     <Col span={1} style={{ marginTop: 0 }}>
-                        <Button type="link" href="/admin_dashboard/pending_events" size="large" style={{marginLeft:-70,fontSize:"20px",color:"black"}}>Pending Events Approval</Button>
+                        <Button type="dashed" href="/admin_dashboard/pending_events" size="large" style={{ marginLeft: -60, fontSize: "20px", color: "black", fontWeight:400}}>Pending Events Approval</Button>
                     </Col>
                 </Row>
             </div>

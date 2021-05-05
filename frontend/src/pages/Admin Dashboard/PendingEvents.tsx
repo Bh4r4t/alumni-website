@@ -68,13 +68,13 @@ export default function PendingEvents() {
             dataIndex: 'View'
         }
     ];
-    var rows_regular :any= [];
+    var rows_regular: any = [];
     useEffect(() => {
 
         GetPendingEvents(global_state.token)
             .then(response => {
                 console.log(response.data.events)
-                response.data.events.map((details:any,) => (
+                response.data.events.map((details: any,) => (
                     rows_regular.push({
                         event_name: details.event_name,
                         event_date: details.event_date,
@@ -83,7 +83,7 @@ export default function PendingEvents() {
                         created_by: details.created_by,
                         Action: <Button color="primary" style={{ backgroundColor: "blue", color: "white", fontWeight: 600 }}>Confirm</Button>,
                         Cancel: <Button color="secondary" style={{ backgroundColor: "red", color: "white", fontWeight: 600 }}>Cancel</Button>,
-                        View: <Button color="lightsecondary" href="/admin_dashboard/pending_events/event_description/123" onClick={() => { return <EventDescription id="hi" /> }}> View </Button>
+                        View: <Button color="lightsecondary" href={"/admin_dashboard/pending_events/event_description/" + details._id} > View </Button>
                     })
                 ))
                 setrowsregular(rows_regular)
@@ -93,6 +93,11 @@ export default function PendingEvents() {
     return (
         <div className="admain-contain">
             <div className="addash-contain">
+                <Row>
+                    <Col span={6}>
+                        <h1 style={{ fontSize: 30, fontWeight: 400 }}>Pending Events</h1>
+                    </Col>
+                </Row>
                 <Row>
                     <Col span={23}>
 
