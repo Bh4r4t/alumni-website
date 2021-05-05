@@ -1,6 +1,5 @@
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Footer from '../components/Footer/mainFooter/mainFooter.component';
-// import Dashboard from '../components/Dashboard/dashboard.component';
 import Dashboard from '../pages/Support/Dashboard/Dashboard';
 import JobBoard from '../pages/Support/JobPortal/JobPortal';
 import ProfilePage from '../pages/ProfilePage/profilePage';
@@ -32,6 +31,8 @@ import EventsSection from '../pages/Events/events';
 import Event from '../pages/Events/Event';
 import Event2 from '../pages/Events/Event2';
 import Event3 from '../pages/Events/Event3';
+// import Admindashboard from '../components/AdminVerify/Admindashboard';
+// import PendingEvents from '../components/AdminVerify/PendingEvents';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
@@ -84,6 +85,12 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<PrivateRoute path="/profile/contact" exact>
 						<ProfilePage />
 					</PrivateRoute> */}
+					{/* <Route path="/admin_dashboard" exact>
+						<Admindashboard />
+					</Route> */}
+					{/* <Route path="/admin_dashboard/pending_events" exact>
+						<PendingEvents />
+					</Route> */}
 
 					{/* public routes */}
 					<Route path="/about/contact">
