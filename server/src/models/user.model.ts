@@ -1,4 +1,6 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
+import { IEvent } from './events.model';
+import { Ipost } from './post.model';
 
 export interface IUser extends Document {
     isAdmin: boolean;
@@ -13,6 +15,8 @@ export interface IUser extends Document {
     password: String;
     status: String;
     token: String;
+    posts?: Array<String> | Array<Ipost>;
+    events?: Array<String> | Array<IEvent>;
 }
 
 export enum e_salutation {
@@ -69,17 +73,17 @@ export interface IUserContactInfoPrivacy {
 }
 
 export interface IUserBasicInfo {
-    salutation: String;
+    salutation?: String;
     first_name: String;
     last_name: String;
-    nick_name: String;
+    nick_name?: String;
     gender: String;
-    date_of_birth: Date;
-    relationship_status: String;
-    wedding_anniversary: Date;
-    profile_role: String;
-    privacy_info: IUserBasicInfoPrivacy;
-    about_me: String;
+    date_of_birth: Number;
+    relationship_status?: String;
+    wedding_anniversary?: Number;
+    profile_role?: String;
+    privacy_info?: IUserBasicInfoPrivacy;
+    about_me?: String;
 }
 
 export interface IUserContactInfoSocial {
@@ -107,8 +111,12 @@ export interface IUserLocationContactInfo {
 }
 
 export interface IUserProfessionalInfo {
-    total_exp: Number;
-    orgs: Array<{
+    total_exp?: Number;
+    prof_head?: String;
+    skills?: String[];
+    roles?: String[];
+    industries?: String[];
+    orgs?: Array<{
         role: String;
         company: String;
         exp: Number;
@@ -118,20 +126,22 @@ export interface IUserProfessionalInfo {
 }
 
 export interface IUserEducationalInfo {
+    id: String;
     editable: boolean;
     name_of_organization: String;
-    start_date: Date;
-    end_date: Date;
+    start_date: Number;
+    end_date: Number;
     degree_name: String;
     stream_name: String;
     score_obtained?: String;
 }
 
 export interface IUserAttachments {
+    id: String;
     title: String;
     attachment_type: e_attach_type;
     attachement: String;
-    show_on_profile: boolean;
+    show_on_profile?: boolean;
 }
 
 const userSchema: Schema = new Schema({
@@ -142,11 +152,11 @@ const userSchema: Schema = new Schema({
         last_name: String,
         nick_name: String,
         gender: { type: String },
-        date_of_birth: { type: Date, trim: true },
+        date_of_birth: { type: Number, trim: true },
         relationship_status: {
             type: String,
         },
-        wedding_anniversary: { type: Date, trim: true },
+        wedding_anniversary: { type: Number, trim: true },
         profile_role: { type: String },
         privacy_info: {
             show_day_of_birth: {
@@ -215,10 +225,11 @@ const userSchema: Schema = new Schema({
     },
     educational_info: [
         {
+            id: { type: String, required: true },
             editable: { type: Boolean, default: true },
             name_of_organization: { type: String },
-            start_date: { type: Date },
-            end_date: { type: Date },
+            start_date: { type: Number },
+            end_date: { type: Number },
             degree_name: { type: String },
             stream_name: { type: String },
             score_obtained: { type: String },
@@ -231,6 +242,7 @@ const userSchema: Schema = new Schema({
     },
     attachments: [
         {
+            id: String,
             title: String,
             attachment_type: {
                 type: String,
@@ -244,6 +256,8 @@ const userSchema: Schema = new Schema({
     primary_email: { type: String, unique: true }, // unique id
     password: String,
     token: String,
+    events: [{ type: Schema.Types.ObjectId, ref: 'events' }],
+    posts: [{ type: Schema.Types.ObjectId, ref: 'posts' }],
 });
 
 export default mongoose.model<IUser>('Users', userSchema);

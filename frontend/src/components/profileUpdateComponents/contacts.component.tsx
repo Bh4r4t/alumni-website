@@ -112,7 +112,7 @@ function ContactsMenu(props: any) {
 						</Input.Group>
 					</div>
 				</Form.Item>
-				<Form.Item name="home_phone_no" label="Home Phone No.">
+				<Form.Item name="home_phone_num" label="Home Phone No.">
 					<div className="mobile-num">
 						<Input.Group compact>
 							<Select
@@ -140,7 +140,7 @@ function ContactsMenu(props: any) {
 						</Input.Group>
 					</div>
 				</Form.Item>
-				<Form.Item name="work_phone_no" label="Work Phone No.">
+				<Form.Item name="work_phone_num" label="Work Phone No.">
 					<div className="mobile-num">
 						<Input.Group compact>
 							<Select
@@ -194,6 +194,12 @@ function ContactsMenu(props: any) {
 					<Input />
 				</Form.Item>
 				<Form.Item name="twitter" label="Twitter Profile">
+					<Input />
+				</Form.Item>
+				<Form.Item name="youtube" label="Youtube Profile">
+					<Input />
+				</Form.Item>
+				<Form.Item name="instagram" label="Instagram Profile">
 					<Input />
 				</Form.Item>
 				<div className="signupCreate-form-submit-button-div">

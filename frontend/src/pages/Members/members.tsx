@@ -29,7 +29,7 @@ export default function Members() {
 
     const [members, setmembers] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:3000/members/all/:1', {
+        axios.get('http://localhost:8080/members/all/:1', {
 
         })
             .then(response => {
@@ -85,7 +85,7 @@ export default function Members() {
 
 
     const handleNameSubmit = (e: any) => {
-        axios.get('http://localhost:3000/members/search?name=' + name_s,
+        axios.get('http://localhost:8080/members/search?name=' + name_s,
             {
                 withCredentials: true
             })
@@ -96,7 +96,7 @@ export default function Members() {
     }
 
     const handleCourseSubmit = (e: any) => {
-        axios.get('http://localhost:3000/members/search?course=' + course + '&stream=' + stream + '&year=' + year, {
+        axios.get('http://localhost:8080/members/search?course=' + course + '&stream=' + stream + '&year=' + year, {
             withCredentials: true
         })
             .then(response => {
@@ -107,7 +107,7 @@ export default function Members() {
     }
 
     const handleLocationSubmit = (e: any) => {
-        axios.get('http://localhost:3000/members/search?city=' + location.city + '&state=' + location.state + '&country=' + location.country, {
+        axios.get('http://localhost:8080/members/search?city=' + location.city + '&state=' + location.state + '&country=' + location.country, {
             withCredentials: true
         })
             .then(response => {

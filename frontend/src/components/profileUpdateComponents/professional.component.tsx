@@ -81,8 +81,8 @@ function ProfessionalDetails(props: any) {
 						Enter multiple comma seperated fields
 					</span>
 				</Form.Item>
-				<Form.Item name="corrs_postal_code" label="Postal Code">
-					<Input placeholder="postal code" />
+				<Form.Item name="skills" label="Skills">
+					<Input placeholder="skill_1, skill_2" />
 				</Form.Item>
 				<div className="signupCreate-form-submit-button-div">
 					<Form.Item className="profileupdate-form-submit">

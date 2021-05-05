@@ -29,7 +29,7 @@ app.post('/', async (req, res) => {
             throw new Error('Please login first! (user not in db)');
         }
         const pload: jwtpayload = {
-            id: payload.id,
+            id: payload._id,
             email: payload.email,
             first_name: payload.first_name,
             last_name: payload.last_name,

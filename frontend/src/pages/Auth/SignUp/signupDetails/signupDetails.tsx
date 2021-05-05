@@ -49,13 +49,14 @@ function SignUpDetails() {
 			setLoading(true);
 			const formData = { ...payload };
 			formData.profile_role = profile_role;
-			formData.start_date = moment(payload.start_date).format(
-				'YYYY-MM-DD[T00:00:00.000Z]'
-			);
-			formData.end_date = moment(payload.end_date).format(
-				'YYYY-MM-DD[T00:00:00.000Z]'
-			);
-			console.log(formData);
+			// formData.start_date = moment(payload.start_date).format(
+			// 	'YYYY-MM-DD[T00:00:00.000Z]'
+			// );
+			// formData.end_date = moment(payload.end_date).format(
+			// 	'YYYY-MM-DD[T00:00:00.000Z]'
+			// );
+			formData.start_date = payload.start_date.unix() * 1000;
+			formData.end_date = payload.end_date.unix() * 1000;
 			const res = await initDetailsStd(formData, accessToken);
 			if (res?.data?.error === true) {
 				throw new Error(res.data.message);
@@ -72,12 +73,14 @@ function SignUpDetails() {
 		try {
 			setLoading(true);
 			const formData = { ...payload };
-			formData.start_date = moment(payload.start_date).format(
-				'YYYY-MM-DD[T00:00:00.000Z]'
-			);
-			formData.end_date = moment(payload.end_date).format(
-				'YYYY-MM-DD[T00:00:00.000Z]'
-			);
+			// formData.start_date = moment(payload.start_date).format(
+			// 	'YYYY-MM-DD[T00:00:00.000Z]'
+			// );
+			// formData.end_date = moment(payload.end_date).format(
+			// 	'YYYY-MM-DD[T00:00:00.000Z]'
+			// );
+			formData.start_date = payload.start_date.unix() * 1000;
+			formData.end_date = payload.end_date.unix() * 1000;
 			console.log(formData);
 			const res = await initDetailsFaculty(formData, accessToken);
 			if (res?.data?.error === true) {
@@ -441,8 +444,8 @@ function RenderCatForm(
 								</Select>
 							</Form.Item>
 							<Form.Item
-								name="end_date"
-								label="End Date(expected/left)"
+								name="start_date"
+								label="Start Date"
 								rules={[{ required: true }]}
 							>
 								<DatePicker
