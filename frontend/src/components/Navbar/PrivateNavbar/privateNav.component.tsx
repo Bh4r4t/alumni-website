@@ -9,6 +9,8 @@ import AccountBoxTwoToneIcon from '@material-ui/icons/AccountBoxTwoTone';
 import NotificationsNoneRoundedIcon from '@material-ui/icons/NotificationsNoneRounded';
 import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
 import './privateNav.component.css';
+import { Menu, Dropdown } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
 const { useBreakpoint } = Grid;
 
@@ -89,6 +91,15 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 		</a>
 	);
 
+	const menu = (
+		<Menu>
+			<Menu.Item>
+				<a  rel="noopener noreferrer" href="/admin_dashboard">
+					Admin Panel
+			</a>
+			</Menu.Item>
+		</Menu>)
+
 	const profile = (
 		<a href="/profile">
 			<AccountBoxTwoToneIcon
@@ -139,7 +150,11 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 							</Badge>
 						</Col>
 						<Col span={12} className="private-block1-item">
-							{profile}
+							<Dropdown overlay={menu}>
+								<a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+									{profile} <DownOutlined />
+								</a>
+							</Dropdown>,
 						</Col>
 					</Col>
 				</Col>
@@ -183,7 +198,11 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 								</Badge>
 							</Col>
 							<Col span={12} className="profile">
-								{profile}
+							<Dropdown overlay={menu}>
+								<a className="ant-dropdown-link" href="">
+									{profile} <DownOutlined />
+								</a>
+							</Dropdown>
 							</Col>
 						</Col>
 					</Col>

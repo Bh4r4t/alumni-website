@@ -32,6 +32,9 @@ import EventsSection from '../pages/Events/events';
 import Event from '../pages/Events/Event';
 import Event2 from '../pages/Events/Event2';
 import Event3 from '../pages/Events/Event3';
+import Admindashboard from '../pages/Admin Dashboard/Admindashboard';
+import PendingEvents from '../pages/Admin Dashboard/PendingEvents';
+import EventDescription from '../pages/Admin Dashboard/EventDescription';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
@@ -140,6 +143,16 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<Route path="/events/create_event_3" exact>
 						<Event3 />
 					</Route>
+					<Route path="/admin_dashboard" exact>
+						<Admindashboard />
+					</Route>
+					<Route path="/admin_dashboard/pending_events" exact>
+						<PendingEvents />
+					</Route>
+					<Route path="/admin_dashboard/pending_events/event_description/:id" exact>
+						<EventDescription />
+					</Route>
+					
 					{/* <Route path="*">
 						<Redirect to="/" />
 					</Route> */}

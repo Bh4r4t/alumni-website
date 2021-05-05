@@ -21,7 +21,7 @@ app.use('../uploads', express.static('uploads'));
 // middleware
 app.use(
     cors({
-        origin: process.env.CLIENT_URL! ?? '/',
+        origin: true,
         credentials: true,
     })
 );
