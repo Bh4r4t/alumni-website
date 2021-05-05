@@ -1,11 +1,11 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IEvent extends Document {
-    event_date: Date;
+    event_date: Number;
     event_name: String;
     event_venue: String;
     event_description?: String;
-    date_created: Date;
+    date_created: Number;
     created_by: String;
     created_by_id?: String;
     pending_req_id?: String;
@@ -13,45 +13,21 @@ export interface IEvent extends Document {
     event_time: String;
     event_end_time: String;
     address: String;
-
 }
 
-const eventConfirmedSchema: Schema = new Schema({
-    event_date: { type: Date, required: true },
+const eventSchema: Schema = new Schema({
+    event_date: { type: Number, required: true },
     event_name: { type: String, required: true },
     event_venue: { type: String, required: true },
     event_description: String,
-    date_created: { type: Date, required: true, default: Date.now() },
+    date_created: { type: Number, required: true, default: Date.now() },
     created_by: { type: String, required: true },
     created_by_id: { type: String, required: true },
     event_category: { type: String },
     event_time: { type: String },
     event_end_time: { type: String },
-    address: { type: String }
-
+    address: { type: String },
+    pending: { type: Boolean, default: true, required: true },
 });
 
-const eventPendingSchema: Schema = new Schema({
-    event_date: { type: Date, required: true },
-    event_name: { type: String, required: true },
-    event_venue: { type: String, required: true },
-    event_description: String,
-    date_created: { type: Date, required: true, default: Date.now() },
-    created_by: { type: String, required: true },
-    created_by_id: { type: String, required: true },
-    pending_req_id: { type: String, required: true },
-    event_category: { type: String },
-    event_time: { type: String },
-    event_end_time: { type: String },
-    address: { type: String }
-    
-});
-
-export const eventConfirmed = mongoose.model<IEvent>(
-    'events_confirmed',
-    eventConfirmedSchema
-);
-export const eventPending = mongoose.model<IEvent>(
-    'events_pending',
-    eventPendingSchema
-);
+export default mongoose.model<IEvent>('events', eventSchema, 'events');

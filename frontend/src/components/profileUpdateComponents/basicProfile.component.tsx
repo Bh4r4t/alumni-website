@@ -98,11 +98,7 @@ function BasicProfileMenu(props: any) {
 						<Input placeholder="Last Name" />
 					</Form.Item>
 
-					<Form.Item
-						name="gender"
-						label="Gender"
-						rules={[{ required: true }]}
-					>
+					<Form.Item name="gender" label="Gender">
 						<Radio.Group
 							onChange={(e) => setGender(e.target.value)}
 						>
@@ -112,16 +108,7 @@ function BasicProfileMenu(props: any) {
 						</Radio.Group>
 					</Form.Item>
 
-					<Form.Item
-						name="date_of_birth"
-						label="Date of Birth"
-						rules={[
-							{
-								required: true,
-								message: 'Please select your DOB!',
-							},
-						]}
-					>
+					<Form.Item name="date_of_birth" label="Date of Birth">
 						<DatePicker />
 					</Form.Item>
 					<Form.Item

@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use(express.json());
 
 export interface jwtpayload {
-    id?: String;
+    _id?: String;
     email: String;
     first_name: String;
     last_name: String;
@@ -81,7 +81,10 @@ app.post('/signup', signupValidation, async (req: Request, res: Response) => {
         if (instance) {
             throw new Error(`User already exists!`);
         }
-        const hashedPassword = await bcrypt.hash(req.body.password, await bcrypt.genSalt(6));
+        const hashedPassword = await bcrypt.hash(
+            req.body.password,
+            await bcrypt.genSalt(6)
+        );
         const user = await createUser(req.body, hashedPassword);
         await createPendingRequest(user._id);
         const payload: jwtpayload = {
@@ -89,12 +92,12 @@ app.post('/signup', signupValidation, async (req: Request, res: Response) => {
             last_name: req.body.last_name,
             email: req.body.email,
         };
-        const accessToken = genAccessToken(payload)
+        const accessToken = genAccessToken(payload);
         res.send({
             message: `user:${
                 req.body.first_name + ' ' + req.body.last_name
             }'s info successfully added into db!!`,
-            accessToken : accessToken
+            accessToken: accessToken,
         });
     } catch (err) {
         res.send({ error: true, message: err.message });
@@ -132,7 +135,7 @@ app.post('/signin', signinValidation, async (req: Request, res: Response) => {
         //     throw new Error('user is not verified yet!');
         // }
         const payload: jwtpayload = {
-            id: instance._id,
+            _id: instance._id,
             first_name: instance.basic_info.first_name,
             last_name: instance.basic_info.last_name,
             email: instance.primary_email,

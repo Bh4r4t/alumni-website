@@ -25,7 +25,7 @@ app.get('/all/:page', async (req: Request, res: Response) => {
 app.get('/all_loc', async (_req: Request, res: Response) => {
     try {
         const locs = await User.distinct('location_contact_info.current_city');
-        console.log(locs)
+        console.log(locs);
         res.send({ locs });
     } catch (err) {
         res.send({ error: true, message: err.messagee });
@@ -70,7 +70,7 @@ app.get('/search_by_inst', async (req: Request, res: Response) => {
 app.get('/all_comps', async (_req: Request, res: Response) => {
     try {
         const comps = await User.distinct('professional_info.company');
-        console.log(comps)
+        console.log(comps);
         res.send({ comps });
     } catch (err) {
         res.send({ error: true, message: err.messagee });
@@ -92,7 +92,7 @@ app.get('/search_by_comp', async (req: Request, res: Response) => {
 app.get('/all_inds', async (_req: Request, res: Response) => {
     try {
         const inds = await User.distinct('professional_info.industry');
-        console.log(inds)
+        console.log(inds);
         res.send({ inds });
     } catch (err) {
         res.send({ error: true, message: err.messagee });
@@ -113,9 +113,8 @@ app.get('/search_by_inds', async (req: Request, res: Response) => {
 // generale filter in searching at homepage of members
 app.get('/search', async (req: Request, res: Response) => {
     try {
-        console.log(req.query)
+        console.log(req.query);
         if (req.query.name) {
-            
             const user = await User.find({
                 $or: [
                     {
@@ -138,75 +137,91 @@ app.get('/search', async (req: Request, res: Response) => {
             res.send({ user });
         }
         // course and year
-        else if (req.query.course || req.query.year||req.query.stream) {
-            if (req.query.course!=="" && req.query.year !== ""&&req.query.stream!=="") {
+        else if (req.query.course || req.query.year || req.query.stream) {
+            if (
+                req.query.course !== '' &&
+                req.query.year !== '' &&
+                req.query.stream !== ''
+            ) {
                 const user = await User.find({
                     'educational_info.name_of_organization': 'IIT Ropar',
                     'educational_info.degree_name': req.query.course,
                     'educational_info.end_date': req.query.year,
-                   'educational_info.stream_name':req.query.stream
+                    'educational_info.stream_name': req.query.stream,
+                });
+                res.send({ user });
+            } else if (
+                req.query.course === '' &&
+                req.query.year !== '' &&
+                req.query.stream !== ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'educational_info.end_date': req.query.year,
+                    'educational_info.stream_name': req.query.stream,
+                });
+                res.send({ user });
+            } else if (
+                req.query.course !== '' &&
+                req.query.year === '' &&
+                req.query.stream !== ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'educational_info.degree_name': req.query.course,
+
+                    'educational_info.stream_name': req.query.stream,
+                });
+                res.send({ user });
+            } else if (
+                req.query.course !== '' &&
+                req.query.year !== '' &&
+                req.query.stream === ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'educational_info.degree_name': req.query.course,
+
+                    'educational_info.end_date': req.query.year,
+                });
+                res.send({ user });
+            } else if (
+                req.query.course === '' &&
+                req.query.year === '' &&
+                req.query.stream !== ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'educational_info.stream_name': req.query.stream,
+                });
+                res.send({ user });
+            } else if (
+                req.query.course === '' &&
+                req.query.year !== '' &&
+                req.query.stream === ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'educational_info.end_date': req.query.year,
+                });
+                res.send({ user });
+            } else if (
+                req.query.course !== '' &&
+                req.query.year === '' &&
+                req.query.stream === ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'educational_info.degree_name': req.query.course,
                 });
                 res.send({ user });
             }
-            else if(req.query.course==="" && req.query.year !== ""&&req.query.stream!=="")
-            {
-                const user = await User.find({
-                    'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.end_date': req.query.year,
-                   'educational_info.stream_name':req.query.stream
-                    });
-                    res.send({ user });
-            }
-            else if(req.query.course!=="" && req.query.year === ""&&req.query.stream!=="")
-            {
-                const user = await User.find({
-                    'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.degree_name': req.query.course,
-
-                   'educational_info.stream_name':req.query.stream
-                    });
-                    res.send({ user });
-            }
-            else if(req.query.course!=="" && req.query.year !== ""&&req.query.stream==="")
-            {
-                const user = await User.find({
-                    'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.degree_name': req.query.course,
-
-                    'educational_info.end_date': req.query.year,
-                    });
-                    res.send({ user });
-            }
-            else if(req.query.course==="" && req.query.year === ""&&req.query.stream!=="")
-            {
-                const user = await User.find({
-                    'educational_info.name_of_organization': 'IIT Ropar',
-                   'educational_info.stream_name':req.query.stream
-                    });
-                    res.send({ user });
-            }
-            else if(req.query.course==="" && req.query.year !== ""&&req.query.stream==="")
-            {
-                const user = await User.find({
-                    'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.end_date': req.query.year,
-                    });
-                    res.send({ user });
-            }
-            else if(req.query.course!=="" && req.query.year === ""&&req.query.stream==="")
-            {
-                const user = await User.find({
-                    'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.degree_name': req.query.course,
-
-                    });
-                    res.send({ user });
-            }
-
         }
         // location
-        else if (req.query.city||req.query.state||req.query.country) {
-            const user = await User.find({'location_contact_info.current_city':req.query.city});
+        else if (req.query.city || req.query.state || req.query.country) {
+            const user = await User.find({
+                'location_contact_info.current_city': req.query.city,
+            });
             res.send({ user });
         }
         // company

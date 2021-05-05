@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express';
 import User, { IUser } from '../models/user.model';
-import { IEvent, eventConfirmed, eventPending } from '../models/events.model';
+import Events, { IEvent } from '../models/events.model';
 import verifyToken from '../auth/verifyToken';
 import { createPendingRequest } from '../auth/utils';
-import pendingVerificationModel from '../models/pendingVerification.model';
+import pendingVerificationModel, {
+    e_request_admin,
+} from '../models/pendingVerification.model';
 
 const app = express.Router();
 
@@ -17,7 +19,7 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
             throw new Error('User does not exist!');
         }
         if (user.isAdmin) {
-            const event = new eventConfirmed({
+            const event = new Events(({
                 event_date: req.body.event_date,
                 event_name: req.body.event_name,
                 event_venue: req.body.event_venue,
@@ -27,16 +29,17 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
                 event_category: req.body.event_category,
                 event_time: req.body.event_time,
                 event_end_time: req.body.event_end_time,
-                address: req.body.address
-            } as IEvent);
-            console.log(event)
+                address: req.body.address,
+                pending: true,
+            } as unknown) as IEvent);
+            console.log(event);
             await event.save();
         } else {
             const pending_req = await createPendingRequest(
                 user._id,
-                'create_event'
+                e_request_admin.createEvent
             );
-            const event = new eventPending({
+            const event = new Events({
                 event_date: req.body.event_date,
                 event_name: req.body.event_name,
                 event_venue: req.body.event_venue,
@@ -47,9 +50,9 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
                 event_category: req.body.event_category,
                 event_time: req.body.event_time,
                 event_end_time: req.body.event_end_time,
-                address: req.body.address
+                address: req.body.address,
             } as IEvent);
-            console.log(event)
+            console.log(event);
             await event.save();
         }
         res.send({ error: false, message: 'successfully added event!' });
@@ -59,18 +62,14 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
 });
 
 // return only 3 confirmed events.
-app.get('/conf_recent', async (_req: Request, res: Response) => {
+app.get('/conf_recent', verifyToken, async (_req: Request, res: Response) => {
     try {
-        const events = await eventConfirmed.find(
-            { event_date: { $gte: new Date(Date.now()) } },
-            [],
-            {
-                limit: 3,
-                sort: {
-                    event_date: 1, // asc on event date
-                },
-            }
-        );
+        const events = await Events.find({ pending: false }, [], {
+            limit: 3,
+            sort: {
+                event_date: 1, // asc on event date
+            },
+        });
         const copy_events: any = [...events];
         copy_events.forEach((event: any) => {
             delete event.created_by_id;
@@ -85,7 +84,7 @@ app.get('/conf_recent', async (_req: Request, res: Response) => {
 // return all the confirmed events.
 app.get('/confirmed', async (_req: Request, res: Response) => {
     try {
-        const events = await eventConfirmed.find();
+        const events = await Events.find({ pending: false });
         const copy_events = [...events];
         copy_events.forEach((event) => {
             delete event.created_by_id;
@@ -107,7 +106,7 @@ app.get('/pending', verifyToken, async (_req: Request, res: Response) => {
         if (!user) {
             throw new Error('Not Accessible by Moderator');
         }
-        const events = await eventPending.find();
+        const events = await Events.find({ pending: true });
         const copy_events = [...events];
         res.send({ events: copy_events });
     } catch (err) {
@@ -124,15 +123,21 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
         if (!user) {
             throw new Error('User does not exist!');
         }
-        const event_p = await eventPending.findById({ id: req.body._id });
+        const event_p = await Events.findOne({
+            pending: true,
+            id: req.body._id,
+        });
         if (!event_p) {
-            const event_c = await eventConfirmed.findById({ id: req.body._id });
+            const event_c = await Events.findOne({
+                pending: false,
+                id: req.body._id,
+            });
             if (!event_c) {
                 throw new Error(`No event with id: ${req.body._id}`);
             }
             if (user.isAdmin) {
-                await eventPending.findByIdAndUpdate(
-                    { id: req.body._id },
+                await Events.findOneAndUpdate(
+                    { pending: true, id: req.body._id },
                     {
                         event_date: req.body.event_date ?? event_c.event_date,
                         event_name: req.body.event_name ?? event_c.event_name,
@@ -148,9 +153,9 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
             } else {
                 const pendingReq = await createPendingRequest(
                     user._id,
-                    'create_event'
+                    e_request_admin.createEvent
                 );
-                const newEvent = new eventPending({
+                const newEvent = new Events({
                     event_date: req.body.event_date,
                     event_name: req.body.event_name,
                     event_venue: req.body.event_venue,
@@ -163,7 +168,8 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
             }
         } else {
             if (user.isAdmin) {
-                const newEvent = new eventConfirmed({
+                const newEvent = new Events(({
+                    pending: false,
                     event_date: req.body.event_date ?? event_p.event_date,
                     event_name: req.body.event_name ?? event_p.event_name,
                     event_venue: req.body.event_venue ?? event_p.event_venue,
@@ -171,19 +177,19 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
                         req.body.event_description ?? event_p.event_description,
                     created_by: `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                     created_by_id: user._id,
-                } as IEvent);
+                } as unknown) as IEvent);
                 await newEvent.save();
-                await eventPending.deleteOne({ _id: event_p._id });
+                await Events.deleteOne({ pending: true, _id: event_p._id });
             } else {
                 await pendingVerificationModel.deleteOne({
                     _id: event_p.pending_req_id,
                 });
                 const pendingReq = await createPendingRequest(
                     user._id,
-                    'create_event'
+                    e_request_admin.createEvent
                 );
-                await eventPending.findByIdAndUpdate(
-                    { id: req.body._id },
+                await Events.findOneAndUpdate(
+                    { pending: true, id: req.body._id },
                     {
                         event_date: req.body.event_date ?? event_p.event_date,
                         event_name: req.body.event_name ?? event_p.event_name,

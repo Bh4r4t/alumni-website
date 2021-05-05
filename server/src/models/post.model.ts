@@ -5,17 +5,15 @@ const postSchema = new Schema({
     post_date: Date,
     content: String,
     avatar: String,
-    like_count: {type:Number,default:0}
+    like_count: { type: Number, default: 0 },
+});
 
-})
-
-export interface Ipost extends Document{
-    user_name: String,
-    post_date: Date,
-    avatar:String,
-    content: String,
-    like_count: Number
-
+export interface Ipost extends Document {
+    user_name: String;
+    post_date: Date;
+    avatar: String;
+    content: String;
+    like_count: Number;
 }
 
-export default mongoose.model<Ipost>('Posts', postSchema);
+export default mongoose.model<Ipost>('posts', postSchema, 'posts');
