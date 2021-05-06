@@ -157,7 +157,9 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<Route path="/admin_dashboard/pending_events/event_description/:id" exact>
 						<EventDescription />
 					</Route>
-					
+					<Route path="/job_portal" exact>
+						<JobPortal />
+					</Route>
 					{/* <Route path="*">
 						<Redirect to="/" />
 					</Route> */}

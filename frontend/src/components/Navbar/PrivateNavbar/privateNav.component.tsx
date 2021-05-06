@@ -11,6 +11,12 @@ import MailOutlineRoundedIcon from '@material-ui/icons/MailOutlineRounded';
 import './privateNav.component.css';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import * as dotenv from 'dotenv';
+import { useSelector } from 'react-redux';
+dotenv.config();
+export let url = process.env.REACT_APP_SERVER_URL;
 
 const { useBreakpoint } = Grid;
 
@@ -18,7 +24,20 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 	const user_name =
 		username.length > 8 ? username.slice(0, 8) + '...' : username;
 	const { md } = useBreakpoint();
-
+	const [user, setuser] = useState<any>();
+	const global_state = useSelector((state: any) => state.authReducer.user);
+	useEffect(() => {
+		axios.get(`${url}/user/me`,
+			{
+				withCredentials: true,
+				headers: {
+					authorization: 'Bearer ' + global_state.token
+				},
+			})
+			.then(response => {
+				setuser(response.data)
+			})
+	}, [])
 	const home = (
 		<a href="/">
 			<HomeTwoToneIcon
@@ -94,7 +113,7 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 	const menu = (
 		<Menu>
 			<Menu.Item>
-				<a  rel="noopener noreferrer" href="/admin_dashboard">
+				<a rel="noopener noreferrer" href="/admin_dashboard">
 					Admin Panel
 			</a>
 			</Menu.Item>
@@ -111,6 +130,21 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 			{user_name}
 		</a>
 	);
+	var userprofile: any;
+	if (user?.isAdmin) {
+		userprofile = (
+			<Dropdown overlay={menu}>
+				<a className="ant-dropdown-link" href="">
+					{profile} <DownOutlined />
+				</a>
+			</Dropdown>)
+	}
+	else {
+		userprofile = (
+			<a className="ant-dropdown-link" href="">
+				{profile}
+			</a>)
+	}
 	return !md ? (
 		// <Affix offsetTop={0} className="privatenav-block-affix">
 		<nav className="privatenav">
@@ -150,11 +184,9 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 							</Badge>
 						</Col>
 						<Col span={12} className="private-block1-item">
-							<Dropdown overlay={menu}>
-								<a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-									{profile} <DownOutlined />
-								</a>
-							</Dropdown>,
+
+							{userprofile}
+
 						</Col>
 					</Col>
 				</Col>
@@ -198,11 +230,7 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 								</Badge>
 							</Col>
 							<Col span={12} className="profile">
-							<Dropdown overlay={menu}>
-								<a className="ant-dropdown-link" href="">
-									{profile} <DownOutlined />
-								</a>
-							</Dropdown>
+								{userprofile}
 							</Col>
 						</Col>
 					</Col>

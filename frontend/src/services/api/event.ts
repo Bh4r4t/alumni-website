@@ -24,3 +24,21 @@ export const GetEventDetails = async (token: any,eventid:string) => {
         },
 	});
 }
+
+export const ConfirmEvent = async (token: any,eventid:any) => {
+    return await axios.post(`${url}/events/confirm_event`, { id: eventid }, {
+        withCredentials: true,
+        headers: {
+            authorization: 'Bearer ' + token
+        },
+	});
+}
+
+export const CancelEvent = async (token: any,eventid:any) => {
+    return await axios.post(`${url}/events/cancel_event`,{ id: eventid }, {
+        withCredentials: true,
+        headers: {
+            authorization: 'Bearer ' + token
+        },
+	});
+}

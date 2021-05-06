@@ -12,8 +12,12 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
+
 import { Card, Avatar, Tag } from 'antd';
 import axios from 'axios';
+import * as dotenv from 'dotenv';
+dotenv.config();
+export let url = process.env.REACT_APP_SERVER_URL;
 const { Meta } = Card;
 
 const { TabPane } = Tabs;
@@ -25,7 +29,7 @@ export default function Institute() {
 
     const [institutes, setinstitutes] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:3000/members/all_inst', {
+        axios.get(`${url}/members/all_inst`, {
             withCredentials: true,
         })
             .then(response => {
@@ -55,7 +59,7 @@ export default function Institute() {
                 </Row>
                 <Row style={{ marginLeft: "3vh" }}>
                     <Col span={1} style={{ marginTop: "1vh" }}>
-                        <Button href="http://localhost:3000/members" icon={<ArrowBackIcon />} size="large">
+                        <Button href="/members" icon={<ArrowBackIcon />} size="large">
 
 
                         </Button>

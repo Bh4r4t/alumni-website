@@ -14,6 +14,9 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { Card, Avatar, Tag } from 'antd';
 import axios from 'axios';
+import * as dotenv from 'dotenv';
+dotenv.config();
+export let url = process.env.REACT_APP_SERVER_URL;
 const { Meta } = Card;
 
 const { TabPane } = Tabs;
@@ -25,7 +28,7 @@ export default function Industry() {
 
     const [industries, setindustries] = useState([])
     useEffect(() => {
-        axios.get('http://localhost:3000/members/all_inds', {
+        axios.get(`${url}/members/all_inds`, {
             withCredentials: true,
         })
             .then(response => {
@@ -55,7 +58,7 @@ export default function Industry() {
                 </Row>
                 <Row style={{ marginLeft: "3vh" }}>
                     <Col span={1} style={{ marginTop: "1vh" }}>
-                        <Button href="http://localhost:3000/members" icon={<ArrowBackIcon />} size="large">
+                        <Button href="/members" icon={<ArrowBackIcon />} size="large">
 
 
                         </Button>

@@ -15,6 +15,9 @@ import { Link } from 'react-router-dom';
 import RollbackOutlined from '@ant-design/icons';
 import img1 from '../../assets/profile.png';
 import axios from 'axios';
+import * as dotenv from 'dotenv';
+dotenv.config();
+export let url = process.env.REACT_APP_SERVER_URL;
 
 const { Meta } = Card;
 
@@ -27,7 +30,7 @@ export default function Members() {
 	const [members, setmembers] = useState([]);
 	useEffect(() => {
 		axios
-			.get('http://localhost:8080/members/all/:1', {})
+			.get(`${url}/members/all/:1`, {})
 			.then((response) => {
 				setmembers(response.data.users);
 				console.log(members);
@@ -78,7 +81,7 @@ export default function Members() {
 
 	const handleNameSubmit = (e: any) => {
 		axios
-			.get('http://localhost:8080/members/search?name=' + name_s, {
+			.get(`${url}/members/search?name=` + name_s, {
 				withCredentials: true,
 			})
 			.then((response) => {
@@ -90,7 +93,7 @@ export default function Members() {
 	const handleCourseSubmit = (e: any) => {
 		axios
 			.get(
-				'http://localhost:8080/members/search?course=' +
+				`${url}/members/search?course=` +
 					course +
 					'&stream=' +
 					stream +
@@ -110,7 +113,7 @@ export default function Members() {
 	const handleLocationSubmit = (e: any) => {
 		axios
 			.get(
-				'http://localhost:8080/members/search?city=' +
+				`${url}/members/search?city=` +
 					location.city +
 					'&state=' +
 					location.state +

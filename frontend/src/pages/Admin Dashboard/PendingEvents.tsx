@@ -1,29 +1,44 @@
-import { Layout, Row, Col, Divider, Menu } from 'antd';
+import {  Row, Col } from 'antd';
 import { useEffect, useState } from 'react';
 import './Admindashboard.css';
-import querystring from 'querystring'
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import BusinessIcon from '@material-ui/icons/Business';
-import SchoolIcon from '@material-ui/icons/School';
-import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
-import ReceiptIcon from '@material-ui/icons/Receipt';
-import ApartmentIcon from '@material-ui/icons/Apartment';
-import { Tabs, Input, Button, Tooltip, Select } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
-import { Card, Avatar } from 'antd';
-import { Link } from 'react-router-dom';
-import RollbackOutlined from '@ant-design/icons'
-import React from 'react';
+import {  Button } from 'antd';
 import { Table, Tag, Space } from 'antd';
-import { MDBTable, MDBTableBody, MDBTableHead } from 'mdbreact';
 import EventDescription from './EventDescription';
-import { GetPendingEvents } from '../../services/api/event';
+import { CancelEvent, ConfirmEvent, GetPendingEvents } from '../../services/api/event';
 import { useDispatch, useSelector } from 'react-redux';
 
 
 export default function PendingEvents() {
     const global_state = useSelector((state: any) => state.authReducer.user);
     const [rowsregular, setrowsregular] = useState<any>(null);
+    const [refresh, setrefresh] = useState(false);
+    const handleConfirm = (eventid: any) => {
+        console.log(eventid)
+        ConfirmEvent(global_state.token,eventid)
+            .then(response => {
+                if (response.data === "success") {
+                    alert('Event confirmed')
+                    setrefresh(!refresh)
+                }
+                else
+                    alert("Error in confirming event")
+            }
+        )
+    }
+
+    const handleCancel = (eventid:any) => {
+        CancelEvent(global_state.token,eventid)
+            .then(response => {
+                if (response.data === "success") {
+                    alert('Event cancelled')
+                    setrefresh(!refresh)
+                }
+                else
+                    alert("Error in cancelling event")
+            }
+        )
+    }
+
     const columns = [
 
         {
@@ -81,14 +96,14 @@ export default function PendingEvents() {
                         event_time: details.event_time,
                         event_venue: details.event_venue,
                         created_by: details.created_by,
-                        Action: <Button color="primary" style={{ backgroundColor: "blue", color: "white", fontWeight: 600 }}>Confirm</Button>,
-                        Cancel: <Button color="secondary" style={{ backgroundColor: "red", color: "white", fontWeight: 600 }}>Cancel</Button>,
+                        Action: <Button color="primary" onClick={() => { handleConfirm(details._id) }} style={{ backgroundColor: "blue", color: "white", fontWeight: 600 }}>Confirm</Button>,
+                        Cancel: <Button color="secondary" onClick={()=>{handleCancel(details._id)}} style={{ backgroundColor: "red", color: "white", fontWeight: 600 }}>Cancel</Button>,
                         View: <Button color="lightsecondary" href={"/admin_dashboard/pending_events/event_description/" + details._id} > View </Button>
                     })
                 ))
                 setrowsregular(rows_regular)
             })
-    }, [])
+    }, [refresh])
 
     return (
         <div className="admain-contain">

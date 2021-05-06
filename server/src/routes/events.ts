@@ -214,11 +214,34 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-app.get('/event_description', verifyToken,async (req, res) => {
-    Events.findById(req.query.id, (err:any, event:any) => {
+app.get('/event_description', verifyToken, async (req, res) => {
+    Events.findById(req.query.id, (err: any, event: any) => {
         if (err) return res.send("Error in getting event details")
         else {
             return res.json(event)
+        }
+    })
+})
+
+app.post('/confirm_event', verifyToken, async (req, res) => {
+    console.log(req.body.id)
+    Events.findById(req.body.id, (err: any, event: any) => {
+        if (err) res.send("Error in getting event details")
+        else {
+            event.pending = false;
+            event.save()
+                .then((response:any) => res.send("success"))
+                .then((err:any) => res.send('error'))
+        }
+    })
+})
+
+app.post('/cancel_event', verifyToken, async (req, res) => {
+    Events.findByIdAndDelete(req.body.id, [] ,(err: any, event: any) => {
+        if (err) res.send("Error in getting event details")
+        else {
+            res.send("success")
+
         }
     })
 })
