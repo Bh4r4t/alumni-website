@@ -5,8 +5,20 @@ dotenv.config();
 
 export let url = process.env.REACT_APP_SERVER_URL;
 
-export const getJob = async () => {
-    return await axios.get('http://localhost:3000/jobs', {
+export const postJob = async (jobData:any,token: any) => {
+    return await axios.post(`${url}/jobs/create`,jobData ,{
+        withCredentials: true,
+        headers: {
+            authorization: 'Bearer ' + token
+        },
+	});
+};
 
+export const getJob = async (token: any) => {
+    return await axios.get(`${url}/jobs/` ,{
+        withCredentials: true,
+        headers: {
+            authorization: 'Bearer ' + token
+        },
 	});
 };

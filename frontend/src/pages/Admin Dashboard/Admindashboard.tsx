@@ -43,10 +43,10 @@ export default function Admindashboard() {
                             Post News
                             </Button>
 
-                        <Button type="primary" shape="round" size="middle" style={{ backgroundColor: "green", marginRight: 6 }}>
+                        <Button type="primary" shape="round" size="middle" style={{ backgroundColor: "green", marginRight: 6 }} href="/events/create_event_1">
                             Create Event
                             </Button>
-                        <Button type="primary" shape="round" size="middle" style={{ backgroundColor: "orange", marginRight: 6 }}>
+                        <Button type="primary" shape="round" size="middle" style={{ backgroundColor: "orange", marginRight: 6 }} href="/post_job">
                             Post a Job
                             </Button>
                     </Col>

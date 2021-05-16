@@ -4,16 +4,19 @@ import './JobPortal.css';
 import { Input, Select, Button } from 'antd';
 import { useState, useEffect } from 'react';
 import { getJob } from '../../../services/api/job';
+import { useSelector } from 'react-redux';
 
 const { Content } = Layout;
 const { Option } = Select;
 
 
 export default function JobPortal() {
+    const global_state = useSelector((state: any) => state.authReducer.user);
 
-    const [job, setjobs] = useState<any>(null);
+
+    const [job, setjobs] = useState<any>([]);
     useEffect(() => {
-        getJob().then((res) => {
+        getJob(global_state.token).then((res) => {
             if (res?.data?.error) {
                 throw new Error(res.data.message);
             }
@@ -51,31 +54,22 @@ export default function JobPortal() {
                                 placeholder="Search Keywords"
                                 style={{ width: 200, margin: '0' }}
                             />
-                            <Select
+                            <Input
                                 size="large"
                                 style={{ width: 200, margin: '0 8px' }}
                                 placeholder="Location"
                             >
-                                <Option value="Delhi">Delhi</Option>
-                                <Option value="Mumbai">Mumbai</Option>
-                            </Select>
-                            <Select
-                                size="large"
-                                style={{ width: 200, margin: '0' }}
-                                placeholder="Category"
-                            >
-                                <Option value="WebDev">Web Developer</Option>
-                                <Option value="AppDev">App Developer</Option>
-                            </Select>
+                              
+                            </Input>
+                            
 
-                            <Select
+                            <Input
                                 size="large"
                                 style={{ width: 200, margin: '0 8px' }}
                                 placeholder="Company"
                             >
-                                <Option value="Amazon">Amazon</Option>
-                                <Option value="Flipkart">Flipkart</Option>
-                            </Select>
+                                
+                            </Input>
 
                             <Button style={{ width: 200, margin: '0px 5px', backgroundColor: "green", color: "white", fontSize: "2vh", fontWeight: 500 }} size="large">
                                 SEARCH</Button>
@@ -97,7 +91,7 @@ export default function JobPortal() {
                     <Col xs={24} md={12} lg={6}>
                         <Card style={{ width: "1000" }}>
                             <Col xs={15} style={{ color: "green" }}>
-                                <span className="full-type">FULL TIME</span>
+                                <span className="full-type">{job[0]?.job_type}</span>
                             </Col>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
@@ -106,25 +100,22 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Software Developer</h1>
+                                    <h1>{job[0]?.title}</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Delhi</h2>
+                                    <h2 style={{ fontWeight: 200 }}>{job[0]?.job_location}</h2>
                                 </Col>
                             </Row>
-                            <Row justify="center">
-                                <Button style={{ width: 200, margin: '8px 8px', backgroundColor: "white", color: "green", fontSize: "2vh", fontWeight: 500, borderColor: "green" }} size="large">
-                                    APPLY NOW</Button>
-                            </Row>
+                          
 
                         </Card>
                     </Col>
                     <Col xs={24} md={12} lg={6}>
                         <Card style={{ width: "1000" }}>
                             <Col xs={15} style={{ color: "green" }}>
-                                <span className="full-type">FULL TIME</span>
+                                <span className="full-type">{job[1]?.job_type}</span>
                             </Col>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
@@ -133,25 +124,22 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>App Developer</h1>
+                                    <h1>{job[1]?.title}</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Mumbai</h2>
+                                    <h2 style={{ fontWeight: 200 }}>{job[1]?.job_location}</h2>
                                 </Col>
                             </Row>
-                            <Row justify="center">
-                                <Button style={{ width: 200, margin: '8px 8px', backgroundColor: "white", color: "green", fontSize: "2vh", fontWeight: 500, borderColor: "green" }} size="large">
-                                    APPLY NOW</Button>
-                            </Row>
+                            
 
                         </Card>
                     </Col>
                     <Col xs={24} md={12} lg={6}>
                         <Card style={{ width: "1000" }}>
                             <Col xs={15} style={{ color: "green" }}>
-                                <span className="part-type">PART TIME</span>
+                                <span className="part-type">{job[2]?.job_type}</span>
                             </Col>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
@@ -160,25 +148,22 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>ML</h1>
+                                    <h1>{job[2]?.title}</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Chennai</h2>
+                                    <h2 style={{ fontWeight: 200 }}>{job[2]?.job_location}</h2>
                                 </Col>
                             </Row>
-                            <Row justify="center">
-                                <Button style={{ width: 200, margin: '8px 8px', backgroundColor: "white", color: "green", fontSize: "2vh", fontWeight: 500, borderColor: "green" }} size="large">
-                                    APPLY NOW</Button>
-                            </Row>
+                            
 
                         </Card>
                     </Col>
                     <Col xs={24} md={12} lg={6}>
                         <Card style={{ width: "1000" }}>
                             <Col xs={15} style={{ color: "green" }}>
-                                <span className="part-type">PART TIME</span>
+                                <span className="part-type">{job[3]?.job_type}</span>
                             </Col>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
@@ -187,18 +172,15 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>AI</h1>
+                                    <h1>{job[3]?.title}</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Hyderabad</h2>
+                                    <h2 style={{ fontWeight: 200 }}>{job[3]?.job_location}</h2>
                                 </Col>
                             </Row>
-                            <Row justify="center">
-                                <Button style={{ width: 200, margin: '8px 8px', backgroundColor: "white", color: "green", fontSize: "2vh", fontWeight: 500, borderColor: "green" }} size="large">
-                                    APPLY NOW</Button>
-                            </Row>
+                           
 
                         </Card>
                     </Col>
@@ -207,7 +189,7 @@ export default function JobPortal() {
                     <Col xs={24} md={12} lg={6}>
                         <Card style={{ width: "1000" }}>
                             <Col xs={15} style={{ color: "green" }}>
-                                <span className="intern-type">INTERNSHIP</span>
+                                <span className="intern-type">{job[4]?.job_type}</span>
                             </Col>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
@@ -216,25 +198,22 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>.Net Developer</h1>
+                                    <h1>{job[4]?.title}</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Chandigarh</h2>
+                                    <h2 style={{ fontWeight: 200 }}>{job[4]?.job_location}</h2>
                                 </Col>
                             </Row>
-                            <Row justify="center">
-                                <Button style={{ width: 200, margin: '8px 8px', backgroundColor: "white", color: "green", fontSize: "2vh", fontWeight: 500, borderColor: "green" }} size="large">
-                                    APPLY NOW</Button>
-                            </Row>
+                            
 
                         </Card>
                     </Col>
                     <Col xs={24} md={12} lg={6}>
                         <Card style={{ width: "1000" }}>
                             <Col xs={15} style={{ color: "green" }}>
-                                <span className="full-type">FULL TIME</span>
+                                <span className="full-type">{job[5]?.job_type}</span>
                             </Col>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
@@ -243,25 +222,22 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>Photoshop Designer</h1>
+                                    <h1>{job[5]?.title}</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Kolkata</h2>
+                                    <h2 style={{ fontWeight: 200 }}>{job[5]?.job_location}</h2>
                                 </Col>
                             </Row>
-                            <Row justify="center">
-                                <Button style={{ width: 200, margin: '8px 8px', backgroundColor: "white", color: "green", fontSize: "2vh", fontWeight: 500, borderColor: "green" }} size="large">
-                                    APPLY NOW</Button>
-                            </Row>
+                           
 
                         </Card>
                     </Col>
                     <Col xs={24} md={12} lg={6}>
                         <Card style={{ width: "1000" }}>
                             <Col xs={15} style={{ color: "green" }}>
-                                <span className="part-type">PART TIME</span>
+                                <span className="part-type">{job[6]?.job_type}</span>
                             </Col>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
@@ -270,25 +246,22 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>MERN Developer</h1>
+                                    <h1>{job[6]?.title}</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Pune</h2>
+                                    <h2 style={{ fontWeight: 200 }}>{job[6]?.job_location}</h2>
                                 </Col>
                             </Row>
-                            <Row justify="center">
-                                <Button style={{ width: 200, margin: '8px 8px', backgroundColor: "white", color: "green", fontSize: "2vh", fontWeight: 500, borderColor: "green" }} size="large">
-                                    APPLY NOW</Button>
-                            </Row>
+                           
 
                         </Card>
                     </Col>
                     <Col xs={24} md={12} lg={6}>
                         <Card style={{ width: "1000" }}>
                             <Col xs={15} style={{ color: "green" }}>
-                                <span className="intern-type">INTERNSHIP</span>
+                                <span className="intern-type">{job[7]?.job_type}</span>
                             </Col>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
@@ -297,18 +270,15 @@ export default function JobPortal() {
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 20 }} >
-                                    <h1>MEAN Developer</h1>
+                                    <h1>{job[7]?.title}</h1>
                                 </Col>
                             </Row>
                             <Row justify="center">
                                 <Col style={{ marginTop: 0 }} >
-                                    <h2 style={{ fontWeight: 200 }}>Indore</h2>
+                                    <h2 style={{ fontWeight: 200 }}>{job[7]?.job_location}</h2>
                                 </Col>
                             </Row>
-                            <Row justify="center">
-                                <Button style={{ width: 200, margin: '8px 8px', backgroundColor: "white", color: "green", fontSize: "2vh", fontWeight: 500, borderColor: "green" }} size="large">
-                                    APPLY NOW</Button>
-                            </Row>
+                          
 
                         </Card>
                     </Col>
@@ -316,7 +286,7 @@ export default function JobPortal() {
                 <Row>
                     <Divider orientation="center">
 
-                        <Button style={{ width: 250, margin: '0px 5px', backgroundColor: "green", color: "white", fontSize: "2vh", fontWeight: 600, height: 50 }} size="large">
+                        <Button style={{ width: 250, margin: '0px 5px', backgroundColor: "green", color: "white", fontSize: "2vh", fontWeight: 600, height: 50 }} size="large" href="/all_jobs">
                             BROWSE  ALL  JOBS</Button>
 
 

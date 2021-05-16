@@ -34,6 +34,8 @@ import Event3 from '../pages/Events/Event3';
 import Admindashboard from '../pages/Admin Dashboard/Admindashboard';
 import PendingEvents from '../pages/Admin Dashboard/PendingEvents';
 import EventDescription from '../pages/Admin Dashboard/EventDescription';
+import PostInternship from '../pages/Support/PostJob/PostInternship';
+import JobSection from '../pages/Support/JobPortal/jobs';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
@@ -159,6 +161,12 @@ export const Routes: React.FC<RoutesProp> = () => {
 					</Route>
 					<Route path="/job_portal" exact>
 						<JobPortal />
+					</Route>
+					<Route path="/post_job" exact>
+						<PostInternship />
+					</Route>
+					<Route path="/all_jobs" exact>
+						<JobSection />
 					</Route>
 					{/* <Route path="*">
 						<Redirect to="/" />
