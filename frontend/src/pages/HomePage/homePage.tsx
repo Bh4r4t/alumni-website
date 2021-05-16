@@ -1,12 +1,14 @@
+import { useState, useEffect } from 'react';
 import { Row, Col, Grid, Card } from 'antd';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.css';
 import EventsCard from '../../components/EventsCard/eventsCard.component';
 import StoriesCard from '../../components/StoriesCard/storiesCard.component';
-import './homePage.css';
 import img1 from '../../assets/landingpage/img1.jpg';
 import img2 from '../../assets/landingpage/img2.jpg';
 import { useSelector } from 'react-redux';
+import { getConfRecentEvents } from '../../services/api/event';
+import './homePage.css';
 
 const { useBreakpoint } = Grid;
 
@@ -14,16 +16,16 @@ function Home() {
 	const user = useSelector((state: any) => state.authReducer.user);
 	return (
 		<div className="homepage">
-			<ImgCarousel />
-			<AlumniStats />
-			<EventsSection />
-			<LatestStories />
+			<ImgCarousel user={user} />
+			<AlumniStats user={user} />
+			<EventsSection user={user} />
+			<LatestStories user={user} />
 			{!user ? <GetConnected /> : null}
 		</div>
 	);
 }
 
-function ImgCarousel() {
+function ImgCarousel(_props: any) {
 	const configurableProps = {
 		showArrows: true,
 		showStatus: false,
@@ -68,7 +70,7 @@ function ImgCarousel() {
 	);
 }
 
-function AlumniStats() {
+function AlumniStats(_props: any) {
 	const { md } = useBreakpoint();
 	const Items = (val?: string, key?: string) => (
 		<Col
@@ -105,7 +107,25 @@ function AlumniStats() {
 	);
 }
 
-function EventsSection() {
+function EventsSection(props: any) {
+	const [recentEvents, setRecentEvents] = useState<any>(null);
+
+	useEffect(() => {
+		const fetchRecentEvents = async () => {
+			try {
+				const events = await getConfRecentEvents();
+				if (events?.data?.error) {
+					throw new Error(events?.data?.message);
+				} else {
+					setRecentEvents(events?.data?.events.slice(0, 3));
+				}
+			} catch (err) {
+				console.log(err.message);
+			}
+		};
+		fetchRecentEvents();
+	}, []);
+
 	const { md } = useBreakpoint();
 	return (
 		<section className="events-section">
@@ -117,34 +137,51 @@ function EventsSection() {
 					</div>
 				</Row>
 				<Row className="events-section-items-row">
-					<Col
-						span={md ? 8 : 24}
-						className="events-section-items-col"
-					>
-						<EventsCard />
-					</Col>
-					<Col
-						span={md ? 8 : 24}
-						className="events-section-items-col"
-					>
-						<EventsCard />
-					</Col>
-					<Col
-						span={md ? 8 : 24}
-						className="events-section-items-col"
-					>
-						<EventsCard />
-					</Col>
+					{recentEvents
+						? recentEvents.map((event: any) => (
+								<Col
+									span={md ? 8 : 24}
+									className="events-section-items-col"
+								>
+									<EventsCard
+										event_name={event.event_name}
+										event_venue={event.event_venue}
+										event_date={event.event_date}
+										event_id={event._id}
+									/>
+								</Col>
+						  ))
+						: null}
 				</Row>
 				<Row className="events-section-more-row">
-					<a className="events-section-more">Explore More Events</a>
+					<a href="/events" className="events-section-more">
+						Explore More Events
+					</a>
 				</Row>
 			</div>
 		</section>
 	);
 }
 
-function LatestStories() {
+function LatestStories(props: any) {
+	const [recentStories, setRecentStories] = useState<any>(null);
+
+	useEffect(() => {
+		const fetchRecentStories = async () => {
+			try {
+				const events = await getConfRecentEvents();
+				if (events?.data?.error) {
+					throw new Error(events?.data?.message);
+				} else {
+					setRecentStories(events?.data?.events.slice(0, 3));
+				}
+			} catch (err) {
+				console.log(err.message);
+			}
+		};
+		fetchRecentStories();
+	}, []);
+
 	const { md } = useBreakpoint();
 	return (
 		<section className="latestStories-section">
@@ -156,24 +193,20 @@ function LatestStories() {
 					</div>
 				</Row>
 				<Row className="latestStories-section-items-row">
-					<Col
-						span={md ? 7 : 24}
-						className="latestStories-section-items-col"
-					>
-						<StoriesCard />
-					</Col>
-					<Col
-						span={md ? 7 : 24}
-						className="latestStories-section-items-col"
-					>
-						<StoriesCard />
-					</Col>
-					<Col
-						span={md ? 7 : 24}
-						className="latestStories-section-items-col"
-					>
-						<StoriesCard />
-					</Col>
+					{recentStories
+						? recentStories.map((story: any) => (
+								<Col
+									span={md ? 7 : 24}
+									className="latestStories-section-items-col"
+								>
+									<StoriesCard
+										thumbnail={story.thumbnail}
+										id={story._id}
+										title={story.title}
+									/>
+								</Col>
+						  ))
+						: null}
 				</Row>
 				<Row className="events-section-more-row">
 					<a className="events-section-more">View More Stories</a>

@@ -1,15 +1,40 @@
 import { Row, Col, Card } from 'antd';
+import { useHistory } from 'react-router-dom';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import './eventsCard.component.css';
 
-function EventsCard(props:any) {
+function EventsCard(props: any) {
+	const months = [
+		'Jan',
+		'Feb',
+		'Mar',
+		'Apr',
+		'May',
+		'Jun',
+		'Jul',
+		'Aug',
+		'Sept',
+		'Oct',
+		'Nov',
+		'Dec',
+	];
+	const history = useHistory();
+	const event_date = new Date(props.event_date);
+	const month = months[event_date.getMonth()];
+	const date = event_date.getDate();
+	const event_status = props.event_date < Date.now() ? 'PAST' : 'UPCOMING';
+
+	const handleClick = () => {
+		history.push({ pathname: `/events/${props.event_id}`, state: props.event_id });
+	};
+
 	return (
-		<Card className="events-items-card" hoverable>
+		<Card className="events-items-card" hoverable onClick={handleClick}>
 			<Row className="events-items-card-row">
 				<Col span={8}>
 					<div className="events-date">
-						<span className="month">APR</span>
-						<span className="date">15</span>
+						<span className="month">{month}</span>
+						<span className="date">{date}</span>
 					</div>
 				</Col>
 				<Col span={16}>
@@ -18,18 +43,22 @@ function EventsCard(props:any) {
 							style={{
 								color: 'grey',
 								fontWeight: 500,
-								fontSize:'1.25em'
+								fontSize: '1.25em',
 							}}
 						>
-							PAST
+							{event_status}
 						</span>
 					</div>
 					<div className="event-title">
-						<span> Alumni Meet and interaction with director </span>
+						<span> {props.event_name} </span>
 					</div>
 					<div
 						className="event-location"
-						style={{ display: 'flex', alignItems: 'center', paddingTop: '10px' }}
+						style={{
+							display: 'flex',
+							alignItems: 'center',
+							paddingTop: '10px',
+						}}
 					>
 						<LocationOnOutlinedIcon style={{ fontSize: 18 }} />
 						<span
@@ -40,7 +69,7 @@ function EventsCard(props:any) {
 								marginLeft: '5px',
 							}}
 						>
-							IIT Ropar
+							{props.event_venue}
 						</span>
 					</div>
 				</Col>

@@ -1,29 +1,18 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import Container from '@material-ui/core/Container';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import './Dashboard.css';
-import { Card, Avatar } from 'antd';
-import {
-	ReadOutlined,
-	EllipsisOutlined,
-	SettingOutlined,
-} from '@ant-design/icons';
-import { Input } from 'antd';
+import { Row, Col, Card, Avatar, Input } from 'antd';
+import { ReadOutlined } from '@ant-design/icons';
 import { Upload, message, Button, List, Space } from 'antd';
 import {
 	UploadOutlined,
-	MessageOutlined,
 	LikeOutlined,
 	CalendarTwoTone,
-	StarOutlined,
 } from '@ant-design/icons';
-import { BorderAll } from '@material-ui/icons';
-import { orange } from '@material-ui/core/colors';
 import axios from 'axios';
-import { couldStartTrivia } from 'typescript';
-import { Redirect, useHistory, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const { TextArea } = Input;
 const { Meta } = Card;
@@ -87,8 +76,7 @@ const listData = [
 	{
 		href: 'https://ant.design',
 		title: 'Naveen Yadav',
-		avatar:
-			'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+		avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
 		description: '31 March 2021 10:00 AM',
 		content: 'Hi I am Naveen Yadav.',
 	},
@@ -97,8 +85,7 @@ for (let i = 2; i < 23; i++) {
 	listData.push({
 		href: 'https://ant.design',
 		title: `Naveen Yadav`,
-		avatar:
-			'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+		avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
 		description: '31 March 2021 5:00 PM',
 		content: 'Hi I am Naveen Yadav.',
 	});
@@ -110,7 +97,6 @@ const initialValues = {
 export default function Dash() {
 	const global_state = useSelector((state: any) => state.authReducer.user);
 	console.log(global_state.token);
-	const history = useHistory();
 	const [post_des, setpost_des] = useState('');
 	const [likechange, setlikechange] = useState(false);
 	const [refresh, setrefresh] = useState(false);
@@ -142,7 +128,7 @@ export default function Dash() {
 			.catch((error) => console.log(error));
 	};
 
-	const handlePostSubmit = (e: any) => {
+	const handlePostSubmit = (_e: any) => {
 		axios
 			.post(
 				'http://localhost:8080/posts/create_post',
@@ -199,8 +185,6 @@ export default function Dash() {
 	};
 	const [values, setvalues] = useState(initialValues);
 	const [posts, setposts] = useState<any[]>([]);
-	// const location: ILocationState = useLocation().state as ILocationState;
-	//const accessToken: string = location.accessToken as string;
 
 	const bodya = {
 		email: 'nav@gmail.com',
@@ -229,16 +213,10 @@ export default function Dash() {
 	};
 	const classes = useStyles();
 	return (
-		<Container maxWidth="xl">
+		<div className="dashboard-container">
 			<div className="dashboard-body">
 				<div className={classes.root}>
 					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<div className="dashboard-head">
-								<h1>Dashboard</h1>
-								<hr />
-							</div>
-						</Grid>
 						<Grid item xs={6}>
 							<Grid container direction="row" spacing={1}>
 								{' '}
@@ -527,6 +505,6 @@ export default function Dash() {
 					</Grid>
 				</div>
 			</div>
-		</Container>
+		</div>
 	);
 }

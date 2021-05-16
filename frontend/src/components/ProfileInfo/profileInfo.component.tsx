@@ -1,15 +1,13 @@
 import { useState } from 'react';
-import { Menu, Affix, Card, Row, Col, Grid } from 'antd';
-import './profileInfo.component.css';
+import { Menu, Card, Row, Col, Grid } from 'antd';
 import BasicProfileMenu from '../profileUpdateComponents/basicProfile.component';
 import ContactsMenu from '../profileUpdateComponents/contacts.component';
 import EducationalMenu from '../profileUpdateComponents/educational.component';
 import ProfessionalMenu from '../profileUpdateComponents/professional.component';
 import AttachmentsMenu from '../profileUpdateComponents/attachments.component';
 import AccountDetailMenu from '../profileUpdateComponents/accountDetails.component';
-import { useHistory } from 'react-router-dom';
-import { ProfileMenuMap } from './menuMap';
 import SocialAccountMenu from '../profileUpdateComponents/socialAccount.component';
+import './profileInfo.component.css';
 
 const { useBreakpoint } = Grid;
 

@@ -15,6 +15,9 @@ import { Link } from 'react-router-dom';
 import RollbackOutlined from '@ant-design/icons';
 import img1 from '../../assets/profile.png';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { getMembers, memberSearch } from '../../services/api/members';
+import { DriveEtaTwoTone } from '@material-ui/icons';
 
 const { Meta } = Card;
 
@@ -26,12 +29,18 @@ const { Content } = Layout;
 export default function Members() {
 	const [members, setmembers] = useState([]);
 	useEffect(() => {
-		axios
-			.get('http://localhost:8080/members/all/:1', {})
-			.then((response) => {
-				setmembers(response.data.users);
-				console.log(members);
-			});
+		const fetchMembers = async () => {
+			try {
+				const memb = await getMembers(
+					1 as unknown as string,
+					user.token
+				);
+				setmembers(memb?.data.user);
+			} catch (err) {
+				console.log(err.message);
+			}
+		};
+		fetchMembers();
 	}, []);
 
 	const [values, setvalues] = useState('location');
@@ -76,10 +85,15 @@ export default function Members() {
 		setyear(option);
 	};
 
+	const user = useSelector((state: any) => state.authReducer.user);
+
 	const handleNameSubmit = (e: any) => {
 		axios
 			.get('http://localhost:8080/members/search?name=' + name_s, {
 				withCredentials: true,
+				headers: {
+					authorization: `Bearer ${user.token}`,
+				},
 			})
 			.then((response) => {
 				console.log(response.data);
@@ -130,24 +144,18 @@ export default function Members() {
 	return (
 		<div className="main-contain">
 			<div className="member-contain">
-				<Row style={{ marginLeft: '10vh' }}>
-					<Col span={3}>
-						<h1 style={{ fontSize: 45, fontWeight: 400 }}>
-							Members{' '}
-						</h1>
-					</Col>
-					<Col span={5} style={{ marginTop: 22, marginLeft: '1vh' }}>
-						<h1
-							style={{
-								fontSize: 25,
-								fontWeight: 400,
-								color: 'gray',
-							}}
-						>
-							Browse members by
-						</h1>
-					</Col>
-				</Row>
+				<div style={{ marginLeft: '10vh', marginBottom: '20px' }}>
+					<span style={{ fontSize: 40, fontWeight: 400 }}>Members </span>
+					<span
+						style={{
+							fontSize: 25,
+							fontWeight: 400,
+							color: 'gray',
+						}}
+					>
+						Browse members by
+					</span>
+				</div>
 				<Row style={{ marginLeft: '10vh', marginTop: -15 }}>
 					<Menu mode="horizontal" style={{ width: '140vh' }}>
 						<Menu.Item
@@ -692,49 +700,52 @@ export default function Members() {
 						width: '170vh',
 					}}
 				>
-					{members.map((member: any) => (
-						<Col span={5} style={{ marginBottom: '2vh' }}>
-							<Card
-								style={{ width: 300, height: 360 }}
-								cover={
-									<Avatar
+					{members &&
+						members.map((member: any) => (
+							<Col span={5} style={{ marginBottom: '2vh' }}>
+								<Card className="members-card"
+									style={{ width: 300, height: 360 }}
+									cover={
+										<Avatar
+											style={{
+												marginLeft: '5vh',
+												marginTop: '2vh',
+											}}
+											size={150}
+											icon={<img src={img1} />}
+										/>
+									}
+								>
+									<h1
 										style={{
-											marginLeft: '5vh',
-											marginTop: '2vh',
+											width: '20vh',
+											fontSize: 20,
+											marginBottom: '0',
+											marginLeft: '6vh',
 										}}
-										size={200}
-										icon={<img src={img1} />}
-									/>
-								}
-							>
-								<h1
-									style={{
-										width: '20vh',
-										fontSize: 20,
-										marginBottom: '0',
-										marginLeft: '6vh',
-									}}
-								>
-									{member.basic_info.first_name +
-										' ' +
-										member.basic_info.last_name}
-								</h1>
-								<h3
-									style={{
-										fontSize: 16,
-										fontWeight: 300,
-										marginLeft: '6vh',
-									}}
-								>
-									{member.educational_info[0]?.degree_name +
-										' ' +
-										formatDate(
-											member.educational_info[0]?.end_date
-										)}
-								</h3>
-							</Card>
-						</Col>
-					))}
+									>
+										{member.basic_info.first_name +
+											' ' +
+											member.basic_info.last_name}
+									</h1>
+									<h3
+										style={{
+											fontSize: 16,
+											fontWeight: 300,
+											marginLeft: '6vh',
+										}}
+									>
+										{member.educational_info[0]
+											?.degree_name +
+											' ' +
+											formatDate(
+												member.educational_info[0]
+													?.end_date
+											)}
+									</h3>
+								</Card>
+							</Col>
+						))}
 				</Row>
 			</div>
 		</div>

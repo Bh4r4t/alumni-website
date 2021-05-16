@@ -1,10 +1,23 @@
 import axios from 'axios';
-import * as dotenv from 'dotenv';
+import { reqOptions, apiURL } from './common';
 
-dotenv.config();
+export const getPendingEvents = async (token: any) =>
+	await axios.get(`${apiURL}/events/pending`, reqOptions(token));
 
-export const url = process.env.REACT_APP_SERVER_URL;
+export const getConfRecentEvents = async () =>
+	await axios.get(`${apiURL}/events/conf_recent`, reqOptions(null));
 
-export const GetPendingEvents = async(token: any) => {
-    return await axios.get(`${url}/`)
-}
+export const getAllConfEvents = async (token: any) =>
+	await axios.get(`${apiURL}/events/confirmed`, reqOptions(token));
+
+export const updateEvent = async (payload: any, token: any) =>
+	await axios.post(`${apiURL}/events/update`, payload, reqOptions(token));
+
+export const createNewEvent = async (payload: any, token: any) =>
+	axios.post(`${apiURL}/events/create`, payload, reqOptions(token));
+
+export const getAnEvent = async (id: any, token: any) =>
+	axios.get(`${apiURL}/events/e/${id}`, reqOptions(token));
+
+export const getMyEvents = async (token: any) =>
+	axios.get(`${apiURL}/events/myevents`, reqOptions(token));

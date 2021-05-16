@@ -148,6 +148,7 @@ app.post('/signin', signinValidation, async (req: Request, res: Response) => {
             last_name: instance.basic_info.last_name,
             email: instance.primary_email,
             token: genAccessToken(payload),
+            _id: instance._id,
         });
     } catch (err) {
         res.send({ error: true, message: err.message });

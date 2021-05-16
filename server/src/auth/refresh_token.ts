@@ -41,6 +41,7 @@ app.post('/', async (req, res) => {
             first_name: payload.first_name,
             last_name: payload.last_name,
             token: genAccessToken(pload),
+            _id: user._id,
         });
     } catch (err) {
         res.send({ error: true, message: err.message });

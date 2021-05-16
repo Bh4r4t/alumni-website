@@ -1,42 +1,17 @@
 import axios from 'axios';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
-export let url = process.env.REACT_APP_SERVER_URL;
+import { reqOptions, apiURL } from './common';
 
 export const verifyEmail = async (payload: any) =>
-	axios.post(`${url}/auth/check_email`, payload, {
-		withCredentials: true,
-	});
+	await axios.post(`${apiURL}/auth/check_email`, payload, reqOptions());
 
 export const registerUser = async (payload: any) =>
-	axios.post(`${url}/auth/signup`, payload, {
-		withCredentials: true,
-	});
+	await axios.post(`${apiURL}/auth/signup`, payload, reqOptions());
 
-export const loginUser = (payload: any) => 
-	axios.post(`${url}/auth/signin`, payload, {
-		withCredentials: true,
-	});
+export const loginUser = async (payload: any) =>
+	await axios.post(`${apiURL}/auth/signin`, payload, reqOptions());
 
-export const logoutUser = (token: string) =>
-	axios.post(
-		`${url}/auth/logout`,
-		{},
-		{
-			withCredentials: true,
-			headers: {
-				authorization: `Bearer ${token}`,
-			},
-		}
-	);
+export const logoutUser = async (token: string) =>
+	await axios.post(`${apiURL}/auth/logout`, {}, reqOptions(token));
 
-export const refreshToken = () =>
-	axios.post(
-		`${url}/refresh_token`,
-		{},
-		{
-			withCredentials: true,
-		}
-	);
+export const refreshToken = async () =>
+	await axios.post(`${apiURL}/refresh_token`, {}, reqOptions());

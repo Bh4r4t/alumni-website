@@ -4,12 +4,12 @@ import User, { IUser } from '../models/user.model';
 
 const app = express.Router();
 
-app.get('/all/:page', async (req: Request, res: Response) => {
+app.get('/all/:page', verifyToken, async (req: Request, res: Response) => {
     try {
         const resultsPerPage = 20;
-        const page: number = (((req.params.page as unknown) as number) >= 0
-            ? req.params.page
-            : 0) as number;
+        const page: number = (
+            (req.params.page as unknown as number) >= 0 ? req.params.page : 0
+        ) as number;
         const users = await User.find({}, [], {
             limit: resultsPerPage,
             skip: resultsPerPage * page,
@@ -22,7 +22,7 @@ app.get('/all/:page', async (req: Request, res: Response) => {
 });
 
 // location wise
-app.get('/all_loc', async (_req: Request, res: Response) => {
+app.get('/all_loc', verifyToken, async (_req: Request, res: Response) => {
     try {
         const locs = await User.distinct('location_contact_info.current_city');
         console.log(locs);
@@ -32,7 +32,7 @@ app.get('/all_loc', async (_req: Request, res: Response) => {
     }
 });
 
-app.get('/search_by_loc', async (req: Request, res: Response) => {
+app.get('/search_by_loc', verifyToken, async (req: Request, res: Response) => {
     try {
         const users: Array<IUser> = await User.find({
             'location_contact_info.current_city': req.body.current_city,
@@ -44,7 +44,7 @@ app.get('/search_by_loc', async (req: Request, res: Response) => {
 });
 
 // institute wise
-app.get('/all_inst', async (_req: Request, res: Response) => {
+app.get('/all_inst', verifyToken, async (_req: Request, res: Response) => {
     try {
         const institutes = await User.distinct(
             'educational_info.name_of_organization'
@@ -55,7 +55,7 @@ app.get('/all_inst', async (_req: Request, res: Response) => {
     }
 });
 
-app.get('/search_by_inst', async (req: Request, res: Response) => {
+app.get('/search_by_inst', verifyToken, async (req: Request, res: Response) => {
     try {
         const users: Array<IUser> = await User.find({
             'professional_info.company': req.body.company,
@@ -67,7 +67,7 @@ app.get('/search_by_inst', async (req: Request, res: Response) => {
 });
 
 // company wise
-app.get('/all_comps', async (_req: Request, res: Response) => {
+app.get('/all_comps', verifyToken, async (_req: Request, res: Response) => {
     try {
         const comps = await User.distinct('professional_info.company');
         console.log(comps);
@@ -77,7 +77,7 @@ app.get('/all_comps', async (_req: Request, res: Response) => {
     }
 });
 
-app.get('/search_by_comp', async (req: Request, res: Response) => {
+app.get('/search_by_comp', verifyToken, async (req: Request, res: Response) => {
     try {
         const users: Array<IUser> = await User.find({
             'professional_info.company': req.body.company,
@@ -89,7 +89,7 @@ app.get('/search_by_comp', async (req: Request, res: Response) => {
 });
 
 // industry wise
-app.get('/all_inds', async (_req: Request, res: Response) => {
+app.get('/all_inds', verifyToken, async (_req: Request, res: Response) => {
     try {
         const inds = await User.distinct('professional_info.industry');
         console.log(inds);
@@ -99,7 +99,7 @@ app.get('/all_inds', async (_req: Request, res: Response) => {
     }
 });
 
-app.get('/search_by_inds', async (req: Request, res: Response) => {
+app.get('/search_by_inds', verifyToken, async (req: Request, res: Response) => {
     try {
         const users: Array<IUser> = await User.find({
             'professional_info.industry': req.body.industry,
@@ -111,24 +111,25 @@ app.get('/search_by_inds', async (req: Request, res: Response) => {
 });
 
 // generale filter in searching at homepage of members
-app.get('/search', async (req: Request, res: Response) => {
+app.get('/search', verifyToken, async (req: Request, res: Response) => {
+    console.log('req.query: ', req.query);
     try {
-        console.log(req.query);
         if (req.query.name) {
+            const q_name = (req.query.name as string).trim();
             const user = await User.find({
                 $or: [
                     {
                         'basic_info.first_name': {
-                            $regex: (req.query.name as string).split(' ')[0],
+                            $regex: q_name.split(' ')[0],
                             $options: 'i',
                         },
                     },
                     {
                         'basic_info.second_name': {
                             $regex:
-                                (req.query.name as string).split(' ')[1] === ''
-                                    ? req.query.name
-                                    : (req.query.name as string).split(' ')[1],
+                                q_name.split(' ').length > 1
+                                    ? q_name.split(' ')[1]
+                                    : q_name,
                             $options: 'i',
                         },
                     },

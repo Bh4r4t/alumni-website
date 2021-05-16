@@ -1,4 +1,4 @@
-import { Card, Image, Grid, Tag, Col, Row, Button } from 'antd';
+import { Card, Image, Grid, Tag, Col, Row } from 'antd';
 import ProfileInfo from '../../components/ProfileInfo/profileInfo.component';
 import profileImg from '../../assets/profile.png';
 import './profilePage.css';
@@ -8,7 +8,6 @@ import {
 	LinkedinFilled,
 	GlobalOutlined,
 	MailOutlined,
-	EditOutlined,
 } from '@ant-design/icons';
 
 const { useBreakpoint } = Grid;

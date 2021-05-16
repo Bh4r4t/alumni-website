@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
 import { IEvent } from './events.model';
+import { INews } from './news.model';
 import { Ipost } from './post.model';
 
 export interface IUser extends Document {
@@ -17,6 +18,7 @@ export interface IUser extends Document {
     token: String;
     posts?: Array<String> | Array<Ipost>;
     events?: Array<String> | Array<IEvent>;
+    news?: Array<String> | Array<INews>;
 }
 
 export enum e_salutation {
@@ -256,8 +258,10 @@ const userSchema: Schema = new Schema({
     primary_email: { type: String, unique: true }, // unique id
     password: String,
     token: String,
+    // notify: []
     events: [{ type: Schema.Types.ObjectId, ref: 'events' }],
     posts: [{ type: Schema.Types.ObjectId, ref: 'posts' }],
+    news: [{ type: Schema.Types.ObjectId, ref: 'news' }],
 });
 
-export default mongoose.model<IUser>('Users', userSchema);
+export default mongoose.model<IUser>('Users', userSchema, 'users');

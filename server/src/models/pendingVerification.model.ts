@@ -11,6 +11,7 @@ export enum e_request_admin {
     accountRegisteration = 'register_account',
     accountDeletion = 'delete_account',
     createEvent = 'create_event',
+    createNews = 'create_news',
     changePrimaryEmail = 'change_primary_email',
 }
 

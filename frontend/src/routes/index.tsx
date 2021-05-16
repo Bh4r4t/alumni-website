@@ -1,10 +1,10 @@
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import Footer from '../components/Footer/mainFooter/mainFooter.component';
-import Dashboard from '../pages/Support/Dashboard/Dashboard';
-import JobBoard from '../pages/Support/JobPortal/JobPortal';
-import ProfilePage from '../pages/ProfilePage/profilePage';
+import { Route, Switch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import TopNavbar from '../components/Navbar/TopNavbar/topNavbar.component';
 import PrivateNavBar from '../components/Navbar/PrivateNavbar/privateNav.component';
+import Footer from '../components/Footer/mainFooter/mainFooter.component';
+import Dashboard from '../pages/Dashboard/Dashboard';
+import ProfilePage from '../pages/ProfilePage/profilePage';
 import PrivateRoute from '../components/PrivateRoute/privateRoute';
 import ContactUs from '../pages/About/ContactUs/contactUs';
 import Director from '../pages/About/Director/director';
@@ -17,9 +17,7 @@ import HomePage from '../pages/HomePage/homePage';
 import BeAMentor from '../pages/Support/beAMentor/beAMentor';
 import BeAVolunteer from '../pages/Support/beAVolunteer/beAVolunteer';
 import Contribute from '../pages/Support/Contribute/contribute';
-import { useSelector } from 'react-redux';
-import JobPortal from '../pages/Support/JobPortal/JobPortal';
-import Dash from '../pages/Support/Dashboard/Dashboard';
+import JobPortal from '../pages/JobPortal/JobPortal';
 import Members from '../pages/Members/members';
 import Institute from '../pages/Members/institute';
 import Location from '../pages/Members/location';
@@ -31,6 +29,10 @@ import EventsSection from '../pages/Events/events';
 import Event from '../pages/Events/Event';
 import Event2 from '../pages/Events/Event2';
 import Event3 from '../pages/Events/Event3';
+import EventDesc from '../components/EventsDesc/eventsDesc.component';
+import NewsRoom from '../pages/Newsroom/newsroom';
+import { NewsItemIndiv } from '../components/NewsItem/newsItem.component';
+import NewsItemEdit from '../components/newsItemEdit/newsItemEdit.component';
 // import Admindashboard from '../components/AdminVerify/Admindashboard';
 // import PendingEvents from '../components/AdminVerify/PendingEvents';
 
@@ -92,6 +94,24 @@ export const Routes: React.FC<RoutesProp> = () => {
 						<PendingEvents />
 					</Route> */}
 
+					{/* newsroom */}
+					<PrivateRoute path="/newsroom" exact>
+						<NewsRoom />
+					</PrivateRoute>
+					<PrivateRoute path="/newsroom/create/" exact>
+						<NewsItemEdit />
+					</PrivateRoute>
+					<PrivateRoute path="/newsroom/n/:id" exact>
+						<NewsItemIndiv />
+					</PrivateRoute>
+					<PrivateRoute path="/newsroom/:id/edit">
+						<NewsItemEdit />
+					</PrivateRoute>
+
+					<PrivateRoute path="/job_portal">
+						<JobPortal />
+					</PrivateRoute>
+
 					{/* public routes */}
 					<Route path="/about/contact">
 						<ContactUs />
@@ -106,47 +126,55 @@ export const Routes: React.FC<RoutesProp> = () => {
 						<Director />
 					</Route>
 
-					<Route path="/user/me">
+					<PrivateRoute path="/user/me">
 						<ProfilePage />
-					</Route>
+					</PrivateRoute>
 
 					{/* landing Page */}
 					<Route path="/" exact>
 						<HomePage />
 					</Route>
-					<Route path="/members" exact>
+
+					{/* Members' routes */}
+					<PrivateRoute path="/members" exact>
 						<Members />
-					</Route>
-					<Route path="/members/institute" exact>
+					</PrivateRoute>
+					<PrivateRoute path="/members/institute" exact>
 						<Institute />
-					</Route>
-					<Route path="/members/location" exact>
+					</PrivateRoute>
+					<PrivateRoute path="/members/location" exact>
 						<Location />
-					</Route>
-					<Route path="/members/prof_skills" exact>
+					</PrivateRoute>
+					<PrivateRoute path="/members/prof_skills" exact>
 						<ProfessionalSkills />
-					</Route>
-					<Route path="/members/company" exact>
+					</PrivateRoute>
+					<PrivateRoute path="/members/company" exact>
 						<Company />
-					</Route>
-					<Route path="/members/roles" exact>
+					</PrivateRoute>
+					<PrivateRoute path="/members/roles" exact>
 						<Roles />
-					</Route>
-					<Route path="/members/industry" exact>
+					</PrivateRoute>
+					<PrivateRoute path="/members/industry" exact>
 						<Industry />
-					</Route>
-					<Route path="/events" exact>
+					</PrivateRoute>
+
+					{/* events' routes */}
+					<PrivateRoute path="/events" exact>
 						<EventsSection />
-					</Route>
-					<Route path="/events/create_event_1" exact>
+					</PrivateRoute>
+					<PrivateRoute path="/events/create_event_1" exact>
 						<Event />
-					</Route>
-					<Route path="/events/create_event_2" exact>
+					</PrivateRoute>
+					<PrivateRoute path="/events/create_event_2" exact>
 						<Event2 />
-					</Route>
-					<Route path="/events/create_event_3" exact>
+					</PrivateRoute>
+					<PrivateRoute path="/events/create_event_3" exact>
 						<Event3 />
-					</Route>
+					</PrivateRoute>
+
+					<PrivateRoute path="/events/:id">
+						<EventDesc />
+					</PrivateRoute>
 					{/* <Route path="*">
 						<Redirect to="/" />
 					</Route> */}

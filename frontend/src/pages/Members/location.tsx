@@ -15,6 +15,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { Card, Avatar, Tag } from 'antd';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 const { Meta } = Card;
 
 const { TabPane } = Tabs;
@@ -24,10 +25,14 @@ const { Content } = Layout;
 
 export default function Location() {
 	const [cities, setcities] = useState([]);
+	const user = useSelector((state: any) => state.authReducer.user);
 	useEffect(() => {
 		axios
 			.get('http://localhost:8080/members/all_loc', {
 				withCredentials: true,
+				headers: {
+					authorization: `Bearer ${user.token}`,
+				},
 			})
 			.then((response) => {
 				//console.log(response)
@@ -243,7 +248,7 @@ export default function Location() {
 					</Row>
 					<br></br>
 					<Row style={{ marginBottom: '2vh' }}>
-						{cities.map((city: String) => (
+						{cities && cities.map((city: String) => (
 							<Col span={5} offset={1}>
 								<Link to="/members" style={{ color: 'black' }}>
 									{city}{' '}

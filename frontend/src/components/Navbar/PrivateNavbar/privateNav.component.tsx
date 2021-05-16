@@ -80,7 +80,7 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 	);
 
 	const newsroom = (
-		<a>
+		<a href="/newsroom">
 			<AnnouncementTwoToneIcon
 				style={{
 					fontSize: 30,
@@ -94,7 +94,7 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 	const menu = (
 		<Menu>
 			<Menu.Item>
-				<a  rel="noopener noreferrer" href="/admin_dashboard">
+				<a href="/admin_dashboard">
 					Admin Panel
 			</a>
 			</Menu.Item>

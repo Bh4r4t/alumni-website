@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import TextArea from 'antd/lib/input/TextArea';
 import { Row, Col, Form, Input, Button, Alert, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import * as fs from 'fs';
 import './beAMentor.css';
 
 function BeAMentor() {
@@ -36,7 +34,7 @@ function BeAMentor() {
 				payloadFile.push(res);
 			}
 			// TODO: API call and send data to backend
-			console.log(payloadFile[0].data)
+			console.log(payloadFile[0].data);
 			setLoading(false);
 		} catch (err) {
 			setErrors(err.message);
@@ -195,7 +193,7 @@ function BeAMentor() {
 								},
 							]}
 						>
-							<TextArea rows={4} />
+							<Input.TextArea rows={4} />
 						</Form.Item>
 						<Form.Item
 							className="beamentor-formitem"

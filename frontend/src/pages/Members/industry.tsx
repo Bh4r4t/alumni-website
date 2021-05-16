@@ -11,9 +11,9 @@ import { Tabs, Input, Button, Tooltip, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-
 import { Card, Avatar, Tag } from 'antd';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 const { Meta } = Card;
 
 const { TabPane } = Tabs;
@@ -22,116 +22,243 @@ const { Option } = Select;
 const { Content } = Layout;
 
 export default function Industry() {
+	const user = useSelector((state: any) => state.authReducer.user);
+	const [industries, setindustries] = useState([]);
+	useEffect(() => {
+		axios
+			.get('http://localhost:3000/members/all_inds', {
+				withCredentials: true,
+				headers: {
+					authorization: `Bearer ${user.token}`,
+				},
+			})
+			.then((response) => {
+				//console.log(response)
+				//  console.log(response.data.locs[0])
+				setindustries(response?.data?.inds);
+				console.log(industries[0]);
+			})
+			.catch((err) => console.log(err));
+	}, []);
 
-    const [industries, setindustries] = useState([])
-    useEffect(() => {
-        axios.get('http://localhost:3000/members/all_inds', {
-            withCredentials: true,
-        })
-            .then(response => {
-                //console.log(response)
-                //  console.log(response.data.locs[0])
-                setindustries(response?.data?.inds);
-                console.log(industries[0])
-            })
-            .catch(err => console.log(err))
+	const [values, setvalues] = useState('industry');
+	const handleClick = ({ e }: { e: any }) => {
+		console.log('click ', e);
+		setvalues(e.key);
+	};
 
+	return (
+		<div className="main-contain">
+			<div className="member-contain">
+				<Row></Row>
+				<Row style={{ marginLeft: '3vh' }}>
+					<Col span={1} style={{ marginTop: '1vh' }}>
+						<Button
+							href="http://localhost:3000/members"
+							icon={<ArrowBackIcon />}
+							size="large"
+						></Button>
+					</Col>
+					<Col span={3}>
+						<h1 style={{ fontSize: 45, fontWeight: 400 }}>
+							Members{' '}
+						</h1>
+					</Col>
+					<Col span={5} style={{ marginTop: 22, marginLeft: '1vh' }}>
+						<h1
+							style={{
+								fontSize: 25,
+								fontWeight: 400,
+								color: 'gray',
+							}}
+						>
+							Browse members by
+						</h1>
+					</Col>
+				</Row>
+				<Row style={{ marginLeft: '10vh', marginTop: -15 }}>
+					<Menu
+						selectedKeys={[values]}
+						mode="horizontal"
+						style={{ width: '140vh' }}
+					>
+						<Menu.Item
+							key="location"
+							style={{
+								color: 'grey',
+								fontSize: '2vh',
+								fontWeight: 'bold',
+							}}
+							icon={
+								<LocationOnIcon
+									style={{ fontSize: '2vh', color: 'blue' }}
+								/>
+							}
+						>
+							<Link
+								to="/members/location"
+								style={{
+									color: 'grey',
+									fontSize: '2vh',
+									fontWeight: 'bold',
+								}}
+							>
+								Location
+							</Link>
+						</Menu.Item>
+						<Menu.Item
+							key="company"
+							style={{
+								color: 'grey',
+								fontSize: '2vh',
+								fontWeight: 'bold',
+							}}
+							icon={
+								<BusinessIcon
+									style={{ fontSize: '2vh', color: 'blue' }}
+								/>
+							}
+						>
+							<Link
+								to="/members/company"
+								style={{
+									color: 'grey',
+									fontSize: '2vh',
+									fontWeight: 'bold',
+								}}
+							>
+								Company
+							</Link>
+						</Menu.Item>
 
-
-    }, [])
-
-    const [values, setvalues] = useState("industry");
-    const handleClick = ({ e }: { e: any }) => {
-        console.log('click ', e);
-        setvalues(e.key);
-    };
-
-    return (
-        <div className="main-contain">
-            <div className="member-contain">
-                <Row>
-
-
-                </Row>
-                <Row style={{ marginLeft: "3vh" }}>
-                    <Col span={1} style={{ marginTop: "1vh" }}>
-                        <Button href="http://localhost:3000/members" icon={<ArrowBackIcon />} size="large">
-
-
-                        </Button>
-                    </Col>
-                    <Col span={3}>
-                        <h1 style={{ fontSize: 45, fontWeight: 400 }}>Members </h1>
-                    </Col>
-                    <Col span={5} style={{ marginTop: 22, marginLeft: "1vh" }}>
-                        <h1 style={{ fontSize: 25, fontWeight: 400, color: "gray" }}>
-                            Browse members by
-        </h1></Col>
-                </Row>
-                <Row style={{ marginLeft: "10vh", marginTop: -15 }}>
-
-                    <Menu selectedKeys={[values]} mode="horizontal" style={{ width: "140vh" }}>
-
-                        <Menu.Item key="location" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<LocationOnIcon style={{ fontSize: "2vh", color: "blue" }} />} >
-                            <Link to="/members/location" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
-                                Location
-          </Link>
-                        </Menu.Item>
-                        <Menu.Item key="company" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<BusinessIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                            <Link to="/members/company" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
-                                Company
-          </Link>
-                        </Menu.Item>
-
-                        <Menu.Item key="institute" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<SchoolIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                            <Link to="/members/institute" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
-                                Institute
-          </Link>
-                        </Menu.Item>
-                        <Menu.Item key="roles" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<BusinessCenterIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                            <Link to="/members/roles" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
-                                Roles
-          </Link>
-                        </Menu.Item>
-                        <Menu.Item key="professional" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<ReceiptIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                            <Link to="/members/prof_skills" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
-                                Professional Skills
-          </Link>
-                        </Menu.Item>
-                        <Menu.Item key="industry" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }} icon={<ApartmentIcon style={{ fontSize: "2vh", color: "blue" }} />}>
-                            <Link to="/members/industry" style={{ color: "grey", fontSize: "2vh", fontWeight: "bold" }}>
-                                Industry
-          </Link>
-                        </Menu.Item>
-                    </Menu>
-                </Row>
-                <div className="insti-contain">
-                    <Row>
-                        <Col span={24} offset={1}>
-                            <h1>Browse by Industry</h1>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col span={20} offset={1}>
-
-                            <Input id="search-insti" placeholder="Search" size="large" ></Input>
-                        </Col>
-
-                    </Row>
-                    <br></br>
-                    <Row style={{ marginBottom: "2vh" }}>
-                        {industries.map((industry: String) => (
-                            <Col span={5} offset={1}>
-                                <Link to="https://github.com/ant-design/ant-design/issues/1862" style={{ color: "black" }}>
-                                    {industry}                            </Link>
-                            </Col>
-                        ))}
-                    </Row>
-                </div>
-            </div>
-
-        </div>
-    )
+						<Menu.Item
+							key="institute"
+							style={{
+								color: 'grey',
+								fontSize: '2vh',
+								fontWeight: 'bold',
+							}}
+							icon={
+								<SchoolIcon
+									style={{ fontSize: '2vh', color: 'blue' }}
+								/>
+							}
+						>
+							<Link
+								to="/members/institute"
+								style={{
+									color: 'grey',
+									fontSize: '2vh',
+									fontWeight: 'bold',
+								}}
+							>
+								Institute
+							</Link>
+						</Menu.Item>
+						<Menu.Item
+							key="roles"
+							style={{
+								color: 'grey',
+								fontSize: '2vh',
+								fontWeight: 'bold',
+							}}
+							icon={
+								<BusinessCenterIcon
+									style={{ fontSize: '2vh', color: 'blue' }}
+								/>
+							}
+						>
+							<Link
+								to="/members/roles"
+								style={{
+									color: 'grey',
+									fontSize: '2vh',
+									fontWeight: 'bold',
+								}}
+							>
+								Roles
+							</Link>
+						</Menu.Item>
+						<Menu.Item
+							key="professional"
+							style={{
+								color: 'grey',
+								fontSize: '2vh',
+								fontWeight: 'bold',
+							}}
+							icon={
+								<ReceiptIcon
+									style={{ fontSize: '2vh', color: 'blue' }}
+								/>
+							}
+						>
+							<Link
+								to="/members/prof_skills"
+								style={{
+									color: 'grey',
+									fontSize: '2vh',
+									fontWeight: 'bold',
+								}}
+							>
+								Professional Skills
+							</Link>
+						</Menu.Item>
+						<Menu.Item
+							key="industry"
+							style={{
+								color: 'grey',
+								fontSize: '2vh',
+								fontWeight: 'bold',
+							}}
+							icon={
+								<ApartmentIcon
+									style={{ fontSize: '2vh', color: 'blue' }}
+								/>
+							}
+						>
+							<Link
+								to="/members/industry"
+								style={{
+									color: 'grey',
+									fontSize: '2vh',
+									fontWeight: 'bold',
+								}}
+							>
+								Industry
+							</Link>
+						</Menu.Item>
+					</Menu>
+				</Row>
+				<div className="insti-contain">
+					<Row>
+						<Col span={24} offset={1}>
+							<h1>Browse by Industry</h1>
+						</Col>
+					</Row>
+					<Row>
+						<Col span={20} offset={1}>
+							<Input
+								id="search-insti"
+								placeholder="Search"
+								size="large"
+							></Input>
+						</Col>
+					</Row>
+					<br></br>
+					<Row style={{ marginBottom: '2vh' }}>
+						{industries.map((industry: String) => (
+							<Col span={5} offset={1}>
+								<Link
+									to="https://github.com/ant-design/ant-design/issues/1862"
+									style={{ color: 'black' }}
+								>
+									{industry}{' '}
+								</Link>
+							</Col>
+						))}
+					</Row>
+				</div>
+			</div>
+		</div>
+	);
 }
-
-

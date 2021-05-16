@@ -6,6 +6,7 @@ interface AuthState {
 		last_name: string;
 		email: string;
 		token: string;
+		_id: string;
 	};
 }
 

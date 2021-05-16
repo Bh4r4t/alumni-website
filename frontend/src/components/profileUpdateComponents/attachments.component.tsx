@@ -43,6 +43,7 @@ function AttachmentsMenu(props: any) {
 	};
 
 	const fileUploadProps = {
+		maxCount: 1,
 		accept: '.doc,.docx,.pdf',
 		onRemove: (file: any) => {
 			const index = fileList.indexOf(file, 0);
@@ -87,8 +88,18 @@ function AttachmentsMenu(props: any) {
 			</div>
 			<hr />
 			<div className="attachinfo-cards">
-				<AttachCard title="user_cv_jan_2021.pdf" type="Resume" link="" _id="" />
-				<AttachCard title="new_motor_work.docx" type="Published Work" link="" _id="" />
+				<AttachCard
+					title="user_cv_jan_2021.pdf"
+					type="Resume"
+					link=""
+					_id=""
+				/>
+				<AttachCard
+					title="new_motor_work.docx"
+					type="Published Work"
+					link=""
+					_id=""
+				/>
 			</div>
 			<Divider>Add a new attachment</Divider>
 			<div className="profileupdate-menu-form">

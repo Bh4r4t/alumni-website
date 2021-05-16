@@ -53,9 +53,10 @@
 
 .topnavbar-links-logout {
 	display: flex;
-	flex-direction: column;
+	flex-direction: row;
+	gap: 0.5rem;
 	align-items: center;
-	font-size: 0.8em;
+	font-size: 1em;
 	justify-content: center;
 }
 

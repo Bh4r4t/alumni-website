@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import User, { IUser } from '../models/user.model';
+import User from '../models/user.model';
 import Events, { IEvent } from '../models/events.model';
 import verifyToken from '../auth/verifyToken';
 import { createPendingRequest } from '../auth/utils';
@@ -19,20 +19,19 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
             throw new Error('User does not exist!');
         }
         if (user.isAdmin) {
-            const event = new Events(({
-                event_date: req.body.event_date,
+            const event = new Events({
                 event_name: req.body.event_name,
                 event_venue: req.body.event_venue,
                 event_description: req.body.event_description,
-                created_by: `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
+                created_by:
+                    `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                 created_by_id: user._id,
                 event_category: req.body.event_category,
-                event_time: req.body.event_time,
-                event_end_time: req.body.event_end_time,
+                event_start: req.body.event_start,
+                event_end_time: req.body.event_end,
                 address: req.body.address,
-                pending: true,
-            } as unknown) as IEvent);
-            console.log(event);
+                pending: false,
+            } as unknown as IEvent);
             await event.save();
         } else {
             const pending_req = await createPendingRequest(
@@ -40,16 +39,16 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
                 e_request_admin.createEvent
             );
             const event = new Events({
-                event_date: req.body.event_date,
+                event_start: req.body.event_start,
+                event_end: req.body.event_end,
                 event_name: req.body.event_name,
                 event_venue: req.body.event_venue,
                 event_description: req.body.event_description,
-                created_by: `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
+                created_by:
+                    `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                 created_by_id: user._id,
                 pending_req_id: pending_req._id,
                 event_category: req.body.event_category,
-                event_time: req.body.event_time,
-                event_end_time: req.body.event_end_time,
                 address: req.body.address,
             } as IEvent);
             console.log(event);
@@ -61,13 +60,51 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+// return all the events created by user
+app.get('/myevents', verifyToken, async (req: Request, res: Response) => {
+    try {
+        const user = await User.findOne({
+            primary_email: res.locals.payload.email,
+        }).populate('events');
+        if (!user) {
+            throw new Error('Invalid user');
+        } else {
+            const copy_events: any = [...(user?.events as IEvent[])];
+            copy_events.forEach((event: IEvent) => {
+                delete event.created_by_id;
+                delete event.pending_req_id;
+            });
+            res.send({ events: copy_events });
+        }
+    } catch (err) {
+        res.send({ error: true, message: err.message });
+    }
+});
+
+// get an event details
+app.get('/e/:id', verifyToken, async (req: Request, res: Response) => {
+    try {
+        const event = await Events.findById(req.params.id);
+        if (!event) {
+            throw new Error(`No event available with id=${req.params.id}`);
+        } else {
+            const copy_events: any = event;
+            delete copy_events.created_by_id;
+            delete copy_events.pending_req_id;
+            res.send({ event: copy_events });
+        }
+    } catch (err) {
+        res.send({ error: true, message: err.message });
+    }
+});
+
 // return only 3 confirmed events.
-app.get('/conf_recent', verifyToken, async (_req: Request, res: Response) => {
+app.get('/conf_recent', async (_req: Request, res: Response) => {
     try {
         const events = await Events.find({ pending: false }, [], {
             limit: 3,
             sort: {
-                event_date: 1, // asc on event date
+                event_date: 0, // asc on event date
             },
         });
         const copy_events: any = [...events];
@@ -130,23 +167,26 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
         if (!event_p) {
             const event_c = await Events.findOne({
                 pending: false,
-                id: req.body._id,
+                _id: req.body._id,
             });
             if (!event_c) {
                 throw new Error(`No event with id: ${req.body._id}`);
             }
             if (user.isAdmin) {
                 await Events.findOneAndUpdate(
-                    { pending: true, id: req.body._id },
+                    { pending: false, _id: req.body._id },
                     {
-                        event_date: req.body.event_date ?? event_c.event_date,
+                        event_start:
+                            req.body.event_start ?? event_c.event_start,
+                        event_end: req.body.event_end ?? event_c.event_end,
                         event_name: req.body.event_name ?? event_c.event_name,
                         event_venue:
                             req.body.event_venue ?? event_c.event_venue,
                         event_description:
                             req.body.event_description ??
                             event_c.event_description,
-                        created_by: `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
+                        created_by:
+                            `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                         created_by_id: user._id,
                     }
                 );
@@ -156,28 +196,33 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
                     e_request_admin.createEvent
                 );
                 const newEvent = new Events({
-                    event_date: req.body.event_date,
+                    event_start: req.body.event_start,
+                    event_end: req.body.event_end,
                     event_name: req.body.event_name,
                     event_venue: req.body.event_venue,
                     event_description: req.body.event_description,
-                    created_by: `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
+                    created_by:
+                        `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                     created_by_id: user._id,
                     pending_req_id: pendingReq._id,
-                } as IEvent);
+                    pending: true,
+                } as unknown as IEvent);
                 await newEvent.save();
             }
         } else {
             if (user.isAdmin) {
-                const newEvent = new Events(({
+                const newEvent = new Events({
                     pending: false,
-                    event_date: req.body.event_date ?? event_p.event_date,
+                    event_start: req.body.event_start ?? event_p.event_start,
+                    event_end: req.body.event_end ?? event_p.event_end,
                     event_name: req.body.event_name ?? event_p.event_name,
                     event_venue: req.body.event_venue ?? event_p.event_venue,
                     event_description:
                         req.body.event_description ?? event_p.event_description,
-                    created_by: `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
+                    created_by:
+                        `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                     created_by_id: user._id,
-                } as unknown) as IEvent);
+                } as unknown as IEvent);
                 await newEvent.save();
                 await Events.deleteOne({ pending: true, _id: event_p._id });
             } else {
@@ -189,16 +234,19 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
                     e_request_admin.createEvent
                 );
                 await Events.findOneAndUpdate(
-                    { pending: true, id: req.body._id },
+                    { pending: true, _id: req.body._id },
                     {
-                        event_date: req.body.event_date ?? event_p.event_date,
+                        event_start:
+                            req.body.event_start ?? event_p.event_start,
+                        event_end: req.body.event_end ?? event_p.event_end,
                         event_name: req.body.event_name ?? event_p.event_name,
                         event_venue:
                             req.body.event_venue ?? event_p.event_venue,
                         event_description:
                             req.body.event_description ??
                             event_p.event_description,
-                        created_by: `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
+                        created_by:
+                            `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                         created_by_id: user._id,
                         pending_req_id: pendingReq._id,
                     }

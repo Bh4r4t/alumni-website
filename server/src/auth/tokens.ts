@@ -6,7 +6,7 @@ import { jwtpayload } from '../auth/index';
 
 export function genAccessToken(payload: jwtpayload) {
 	return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET! as jwt.Secret, {
-		expiresIn: '10m',
+		expiresIn: '10 day',
 	});
 }
 
