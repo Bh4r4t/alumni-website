@@ -7,20 +7,12 @@ import SchoolIcon from '@material-ui/icons/School';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
-import { Tabs, Input, Button, Tooltip, Select } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Tabs, Input, Button, Select, Card, Avatar, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
-import { Card, Avatar, Tag } from 'antd';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-const { Meta } = Card;
-
-const { TabPane } = Tabs;
-const { Option } = Select;
-
-const { Content } = Layout;
 
 export default function Institute() {
 	const user = useSelector((state: any) => state.authReducer.user);

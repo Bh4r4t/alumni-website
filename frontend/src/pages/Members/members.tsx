@@ -89,7 +89,7 @@ export default function Members() {
 
 	const handleNameSubmit = (e: any) => {
 		axios
-			.get('http://localhost:8080/members/search?name=' + name_s, {
+			.get(`${url}/members/search?name=` + name_s, {
 				withCredentials: true,
 				headers: {
 					authorization: `Bearer ${user.token}`,
@@ -104,7 +104,7 @@ export default function Members() {
 	const handleCourseSubmit = (e: any) => {
 		axios
 			.get(
-				'http://localhost:8080/members/search?course=' +
+				`${url}/members/search?course=` +
 					course +
 					'&stream=' +
 					stream +
@@ -124,7 +124,7 @@ export default function Members() {
 	const handleLocationSubmit = (e: any) => {
 		axios
 			.get(
-				'http://localhost:8080/members/search?city=' +
+				`${url}/members/search?city=` +
 					location.city +
 					'&state=' +
 					location.state +
@@ -145,7 +145,9 @@ export default function Members() {
 		<div className="main-contain">
 			<div className="member-contain">
 				<div style={{ marginLeft: '10vh', marginBottom: '20px' }}>
-					<span style={{ fontSize: 40, fontWeight: 400 }}>Members </span>
+					<span style={{ fontSize: 40, fontWeight: 400 }}>
+						Members{' '}
+					</span>
 					<span
 						style={{
 							fontSize: 25,
@@ -703,7 +705,8 @@ export default function Members() {
 					{members &&
 						members.map((member: any) => (
 							<Col span={5} style={{ marginBottom: '2vh' }}>
-								<Card className="members-card"
+								<Card
+									className="members-card"
 									style={{ width: 300, height: 360 }}
 									cover={
 										<Avatar

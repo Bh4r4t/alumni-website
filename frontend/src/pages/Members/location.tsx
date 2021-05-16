@@ -15,7 +15,10 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { Card, Avatar, Tag } from 'antd';
 import axios from 'axios';
+import * as dotenv from 'dotenv';
 import { useSelector } from 'react-redux';
+dotenv.config();
+export let url = process.env.REACT_APP_SERVER_URL;
 const { Meta } = Card;
 
 const { TabPane } = Tabs;
@@ -28,7 +31,7 @@ export default function Location() {
 	const user = useSelector((state: any) => state.authReducer.user);
 	useEffect(() => {
 		axios
-			.get('http://localhost:8080/members/all_loc', {
+			.get(`${url}/members/all_loc`, {
 				withCredentials: true,
 				headers: {
 					authorization: `Bearer ${user.token}`,
@@ -38,7 +41,6 @@ export default function Location() {
 				//console.log(response)
 				//  console.log(response.data.locs[0])
 				setcities(response?.data?.locs);
-				console.log(cities[0]);
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -56,7 +58,7 @@ export default function Location() {
 				<Row style={{ marginLeft: '3vh' }}>
 					<Col span={1} style={{ marginTop: '1vh' }}>
 						<Button
-							href="http://localhost:3000/members"
+							href="/members"
 							icon={<ArrowBackIcon />}
 							size="large"
 						></Button>

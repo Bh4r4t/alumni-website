@@ -12,7 +12,13 @@ import {
 	CalendarTwoTone,
 } from '@ant-design/icons';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { couldStartTrivia } from 'typescript';
+import { Redirect, useHistory, useLocation } from 'react-router-dom';
+import * as dotenv from 'dotenv';
+dotenv.config();
+export let url = process.env.REACT_APP_SERVER_URL;
+
+
 
 const { TextArea } = Input;
 const { Meta } = Card;
@@ -72,24 +78,6 @@ const tabListNoTitle = [
 	},
 ];
 
-const listData = [
-	{
-		href: 'https://ant.design',
-		title: 'Naveen Yadav',
-		avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-		description: '31 March 2021 10:00 AM',
-		content: 'Hi I am Naveen Yadav.',
-	},
-];
-for (let i = 2; i < 23; i++) {
-	listData.push({
-		href: 'https://ant.design',
-		title: `Naveen Yadav`,
-		avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-		description: '31 March 2021 5:00 PM',
-		content: 'Hi I am Naveen Yadav.',
-	});
-}
 const initialValues = {
 	noTitleKey: 'Make_Post',
 };
@@ -109,7 +97,7 @@ export default function Dash() {
 		console.log(post_id);
 		axios
 			.post(
-				'http://localhost:8080/posts/add_likes',
+				`${url}/posts/add_likes`,
 				{
 					_id: post_id,
 				},
@@ -131,7 +119,7 @@ export default function Dash() {
 	const handlePostSubmit = (_e: any) => {
 		axios
 			.post(
-				'http://localhost:8080/posts/create_post',
+				`${url}/posts/create_post`,
 				{
 					content: post_des,
 				},
@@ -186,12 +174,9 @@ export default function Dash() {
 	const [values, setvalues] = useState(initialValues);
 	const [posts, setposts] = useState<any[]>([]);
 
-	const bodya = {
-		email: 'nav@gmail.com',
-	};
 	useEffect(() => {
 		axios
-			.get('http://localhost:8080/posts/all_posts', {
+			.get(`${url}/posts/all_posts`, {
 				withCredentials: true,
 
 				headers: {

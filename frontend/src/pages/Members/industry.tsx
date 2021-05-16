@@ -7,19 +7,14 @@ import SchoolIcon from '@material-ui/icons/School';
 import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
-import { Tabs, Input, Button, Tooltip, Select } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { Tabs, Input, Button, Select, Card } from 'antd';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
-import { Card, Avatar, Tag } from 'antd';
 import axios from 'axios';
+import * as dotenv from 'dotenv';
 import { useSelector } from 'react-redux';
-const { Meta } = Card;
-
-const { TabPane } = Tabs;
-const { Option } = Select;
-
-const { Content } = Layout;
+dotenv.config();
+export let url = process.env.REACT_APP_SERVER_URL;
 
 export default function Industry() {
 	const user = useSelector((state: any) => state.authReducer.user);

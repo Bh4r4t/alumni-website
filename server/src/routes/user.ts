@@ -19,8 +19,8 @@ dotenv.config();
  */
 app.get('/me', verifyToken, async (req: Request, res: Response) => {
     try {
-        const user = User.findOne({ _id: res.locals.payload.id });
-        res.send({ user });
+        const user =await User.findOne({ primary_email: res.locals.payload.email });
+        res.json(user );
     } catch (err) {
         res.send({ error: true, message: err.message });
     }
