@@ -8,7 +8,9 @@ import img1 from '../../assets/landingpage/img1.jpg';
 import img2 from '../../assets/landingpage/img2.jpg';
 import { useSelector } from 'react-redux';
 import { getConfRecentEvents } from '../../services/api/event';
+import { getRecentPosts } from '../../services/api/newsroom';
 import './homePage.css';
+import { Link } from 'react-router-dom';
 
 const { useBreakpoint } = Grid;
 
@@ -169,11 +171,11 @@ function LatestStories(props: any) {
 	useEffect(() => {
 		const fetchRecentStories = async () => {
 			try {
-				const events = await getConfRecentEvents();
-				if (events?.data?.error) {
-					throw new Error(events?.data?.message);
+				const news = await getRecentPosts();
+				if (news?.data?.error) {
+					throw new Error(news?.data?.message);
 				} else {
-					setRecentStories(events?.data?.events.slice(0, 3));
+					setRecentStories(news?.data?.news.slice(0, 3));
 				}
 			} catch (err) {
 				console.log(err.message);
@@ -193,23 +195,24 @@ function LatestStories(props: any) {
 					</div>
 				</Row>
 				<Row className="latestStories-section-items-row">
-					{recentStories
-						? recentStories.map((story: any) => (
-								<Col
-									span={md ? 7 : 24}
-									className="latestStories-section-items-col"
-								>
-									<StoriesCard
-										thumbnail={story.thumbnail}
-										id={story._id}
-										title={story.title}
-									/>
-								</Col>
-						  ))
-						: null}
+					{recentStories &&
+						recentStories.map((story: any) => (
+							<Col
+								span={md ? 7 : 24}
+								className="latestStories-section-items-col"
+							>
+								<StoriesCard
+									thumbnail={story.thumbnail}
+									id={story._id}
+									title={story.title}
+								/>
+							</Col>
+						))}
 				</Row>
 				<Row className="events-section-more-row">
-					<a className="events-section-more">View More Stories</a>
+					<Link to="/newsroom" className="events-section-more">
+						View More Stories
+					</Link>
 				</Row>
 			</div>
 		</section>

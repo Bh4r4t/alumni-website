@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as dotenv from 'dotenv';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 dotenv.config();
 export let url = process.env.REACT_APP_SERVER_URL;
 
@@ -27,19 +28,19 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 	const [user, setuser] = useState<any>();
 	const global_state = useSelector((state: any) => state.authReducer.user);
 	useEffect(() => {
-		axios.get(`${url}/user/me`,
-			{
+		axios
+			.get(`${url}/user/me`, {
 				withCredentials: true,
 				headers: {
-					authorization: 'Bearer ' + global_state.token
+					authorization: 'Bearer ' + global_state.token,
 				},
 			})
-			.then(response => {
-				setuser(response.data)
-			})
-	}, [])
+			.then((response) => {
+				setuser(response.data);
+			});
+	}, []);
 	const home = (
-		<a href="/">
+		<Link to="/">
 			<HomeTwoToneIcon
 				style={{
 					fontSize: 30,
@@ -47,11 +48,11 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 				}}
 			/>
 			{md ? <span>Home</span> : null}
-		</a>
+		</Link>
 	);
 
 	const dashboard = (
-		<a href="/dashboard">
+		<Link to="/dashboard">
 			<DashboardTwoToneIcon
 				style={{
 					fontSize: 30,
@@ -59,11 +60,11 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 				}}
 			/>
 			{md ? <span>Dashboard</span> : null}
-		</a>
+		</Link>
 	);
 
 	const job_board = (
-		<a href="/job_portal">
+		<Link to="/job_portal">
 			<WorkTwoToneIcon
 				style={{
 					fontSize: 30,
@@ -71,11 +72,11 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 				}}
 			/>
 			{md ? <span>Job Board</span> : null}
-		</a>
+		</Link>
 	);
 
 	const members = (
-		<a href="/members">
+		<Link to="/members">
 			<GroupTwoToneIcon
 				style={{
 					fontSize: 30,
@@ -83,11 +84,11 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 				}}
 			/>
 			{md ? <span>Members</span> : null}
-		</a>
+		</Link>
 	);
 
 	const events = (
-		<a href="/events">
+		<Link to="/events">
 			<EventTwoToneIcon
 				style={{
 					fontSize: 30,
@@ -95,11 +96,11 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 				}}
 			/>
 			{md ? <span>Events</span> : null}
-		</a>
+		</Link>
 	);
 
 	const newsroom = (
-		<a href="/newsroom">
+		<Link to="/newsroom">
 			<AnnouncementTwoToneIcon
 				style={{
 					fontSize: 30,
@@ -107,20 +108,21 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 				}}
 			/>
 			{md ? <span>Newsroom</span> : null}
-		</a>
+		</Link>
 	);
 
 	const menu = (
 		<Menu>
 			<Menu.Item>
-				<a rel="noopener noreferrer" href="/admin_dashboard">
+				<Link rel="noopener noreferrer" to="/admin_dashboard">
 					Admin Panel
-				</a>
+				</Link>
 			</Menu.Item>
-		</Menu>)
+		</Menu>
+	);
 
 	const profile = (
-		<a href="/profile">
+		<Link to="/profile">
 			<AccountBoxTwoToneIcon
 				style={{
 					fontSize: 35,
@@ -128,22 +130,23 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 				}}
 			/>
 			{user_name}
-		</a>
+		</Link>
 	);
 	var userprofile: any;
 	if (user?.isAdmin) {
 		userprofile = (
 			<Dropdown overlay={menu}>
-				<a className="ant-dropdown-link" href="">
+				<Link className="ant-dropdown-link" to="">
 					{profile} <DownOutlined />
-				</a>
-			</Dropdown>)
-	}
-	else {
+				</Link>
+			</Dropdown>
+		);
+	} else {
 		userprofile = (
-			<a className="ant-dropdown-link" href="">
+			<Link className="ant-dropdown-link" to="">
 				{profile}
-			</a>)
+			</Link>
+		);
 	}
 	return !md ? (
 		// <Affix offsetTop={0} className="privatenav-block-affix">
@@ -173,20 +176,18 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 					<Col span={24} className="privatenav-block1">
 						<Col span={12} className="private-block1-item">
 							<Badge count={5}>
-								<a href="" style={{ color: 'black' }}>
+								<Link to="" style={{ color: 'black' }}>
 									<NotificationsNoneRoundedIcon />
-								</a>
+								</Link>
 							</Badge>
 							<Badge count={5}>
-								<a href="" style={{ color: 'black' }}>
+								<Link to="" style={{ color: 'black' }}>
 									<MailOutlineRoundedIcon />
-								</a>
+								</Link>
 							</Badge>
 						</Col>
 						<Col span={12} className="private-block1-item">
-
 							{userprofile}
-
 						</Col>
 					</Col>
 				</Col>
@@ -219,14 +220,14 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 						<Col span={6} className="privatenav-block-item">
 							<Col span={12}>
 								<Badge count={5}>
-									<a href="" style={{ color: 'black' }}>
+									<Link to="" style={{ color: 'black' }}>
 										<NotificationsNoneRoundedIcon />
-									</a>
+									</Link>
 								</Badge>
 								<Badge count={5}>
-									<a href="" style={{ color: 'black' }}>
+									<Link to="" style={{ color: 'black' }}>
 										<MailOutlineRoundedIcon />
-									</a>
+									</Link>
 								</Badge>
 							</Col>
 							<Col span={12} className="profile">

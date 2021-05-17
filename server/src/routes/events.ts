@@ -119,9 +119,19 @@ app.get('/conf_recent', async (_req: Request, res: Response) => {
 });
 
 // return all the confirmed events.
-app.get('/confirmed', async (_req: Request, res: Response) => {
+app.get('/confirmed', async (req: Request, res: Response) => {
     try {
-        const events = await Events.find({ pending: false });
+        const query: any = {
+            pending: false,
+            event_category: {
+                $regex:
+                    req.query.cat === 'all_events'
+                        ? '.*'
+                        : (req.query.cat as string)?.replace('_', ' '),
+                $options: 'i',
+            },
+        };
+        const events = await Events.find(query);
         const copy_events = [...events];
         copy_events.forEach((event) => {
             delete event.created_by_id;
@@ -134,7 +144,7 @@ app.get('/confirmed', async (_req: Request, res: Response) => {
 });
 
 // return all the pending events.
-app.get('/pending', verifyToken, async (_req: Request, res: Response) => {
+app.get('/pending', verifyToken, async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({
             primary_email: res.locals.payload.email,
@@ -143,7 +153,11 @@ app.get('/pending', verifyToken, async (_req: Request, res: Response) => {
         if (!user) {
             throw new Error('Not Accessible by Moderator');
         }
-        const events = await Events.find({ pending: true });
+        const query: any = {
+            pending: true,
+            event_category: { $regex: req.query.cat, $options: 'i' },
+        };
+        const events = await Events.find(query);
         const copy_events = [...events];
         res.send({ events: copy_events });
     } catch (err) {

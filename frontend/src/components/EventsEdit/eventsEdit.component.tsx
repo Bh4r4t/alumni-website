@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Input, Select, Button, DatePicker, Grid } from 'antd';
-import Container from '@material-ui/core/Container';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import MDEditor from '../../components/MDEditor/mdEditor.component';
-import './Event.css';
-import { createNewEvent } from '../../services/api/event';
-import { useHistory } from 'react-router-dom';
+import MDEditor from '../MDEditor/mdEditor.component';
+import { createNewEvent, updateEvent } from '../../services/api/event';
+import { useHistory, useLocation } from 'react-router-dom';
+import './eventsEdit.component.css';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -59,34 +59,62 @@ function Event() {
 	const [desc, setDesc] = useState('');
 	const classes = useStyles();
 	const history = useHistory();
+	const loc = useLocation();
+	const props: any = loc.state;
+	const [isLoading, setLoading] = useState(false);
 
 	const [form] = Form.useForm();
 
 	const onFinish = (payload: any) => {
+		setLoading(true);
 		const start = payload.event_start.unix() * 1000;
 		const end = payload.event_end.unix() * 1000;
-		createNewEvent(
-			{ ...payload, event_start: start, event_end: end },
-			global_state.token
-		)
-			.then((res: any) => {
-				if (res.data.error) {
-					throw new Error(res.data.message);
-				} else {
-					history.push('/events');
-					console.log(res);
-				}
-			})
-			.catch((err: any) => console.log(err.message));
+		if (!props) {
+			createNewEvent(
+				{ ...payload, event_start: start, event_end: end },
+				global_state.token
+			)
+				.then((res: any) => {
+					if (res.data.error) {
+						throw new Error(res.data.message);
+					} else {
+						setLoading(false);
+						history.push('/events');
+						console.log(res);
+					}
+				})
+				.catch((err: any) => {
+					setLoading(false);
+					console.log(err.message);
+				});
+		} else {
+			updateEvent(
+				{ ...props, ...payload, event_start: start, event_end: end },
+				global_state.token
+			)
+				.then((res: any) => {
+					if (res.data.error) {
+						throw new Error(res.data.message);
+					} else {
+						setLoading(false);
+						history.push('/events');
+						console.log(res);
+					}
+				})
+				.catch((err: any) => {
+					setLoading(false);
+					console.log(err.message);
+				});
+		}
 	};
 
 	const { md } = useBreakpoint();
 	return (
-		<Container fixed>
+		<div className="event-container">
 			<div className="register-body">
 				<div className={classes.root}>
 					<div className="register-head">
-						<h1>Event Details</h1>
+						<h1>Enter Event Details</h1>
 						<hr />
 					</div>
 
@@ -94,7 +122,7 @@ function Event() {
 						{...formItemLayout}
 						layout={md ? 'horizontal' : 'vertical'}
 						form={form}
-						name="register"
+						name="event-edit"
 						onFinish={onFinish}
 						labelAlign="left"
 						initialValues={{
@@ -103,18 +131,22 @@ function Event() {
 						scrollToFirstError
 					>
 						<Form.Item
+							initialValue={props?.event_category}
 							name="event_category"
 							label="Category"
 							rules={[{ required: true }]}
 						>
 							<Select placeholder="Select an option" allowClear>
-								<Option value="All Events">All Events</Option>
+								<Option value="General Meetup">
+									General Meetup
+								</Option>
 								<Option value="Reunions">Reunions</Option>
 								<Option value="Webinars">Webinars</Option>
 							</Select>
 						</Form.Item>
 
 						<Form.Item
+							initialValue={props?.event_name}
 							name="event_name"
 							label="Title"
 							rules={[
@@ -137,7 +169,14 @@ function Event() {
 								},
 							]}
 						>
-							<DatePicker showTime showToday />
+							<DatePicker
+								disabledDate={(current) =>
+									current &&
+									current < moment().subtract(0, 'day')
+								}
+								showTime
+								showToday
+							/>
 						</Form.Item>
 
 						<Form.Item
@@ -150,10 +189,18 @@ function Event() {
 								},
 							]}
 						>
-							<DatePicker showTime showToday />
+							<DatePicker
+								disabledDate={(current) =>
+									current &&
+									current < moment().subtract(0, 'day')
+								}
+								showTime
+								showToday
+							/>
 						</Form.Item>
 
 						<Form.Item
+							initialValue={props?.event_venue}
 							name="event_venue"
 							label="Venue"
 							rules={[
@@ -166,14 +213,16 @@ function Event() {
 						</Form.Item>
 
 						<Form.Item
+							initialValue={props?.address}
 							name="address"
-							label="Address"
+							label="Complete Address"
 							rules={[{ required: true }]}
 						>
 							<Input.TextArea rows={4} />
 						</Form.Item>
 
 						<Form.Item
+							initialValue={props?.event_description}
 							name="event_description"
 							label="Description"
 							rules={[{}]}
@@ -181,16 +230,22 @@ function Event() {
 							<MDEditor value={desc} onChange={setDesc} />
 						</Form.Item>
 
-						<Form.Item {...tailFormItemLayout}>
-							<Button type="primary" htmlType="submit">
-								{' '}
-								Submit
-							</Button>
-						</Form.Item>
+						{/* <Form.Item {...tailFormItemLayout}> */}
+						<div className="signupCreate-form-submit-button-div">
+							<Form.Item className="newsForm-submit">
+								<Button
+									type="primary"
+									htmlType="submit"
+									loading={isLoading}
+								>
+									Submit
+								</Button>
+							</Form.Item>
+						</div>
 					</Form>
 				</div>
 			</div>
-		</Container>
+		</div>
 	);
 }
 

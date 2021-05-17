@@ -14,13 +14,13 @@ export const updateEvent = async (payload: any, token: any) =>
 	await axios.post(`${apiURL}/events/update`, payload, reqOptions(token));
 
 export const createNewEvent = async (payload: any, token: any) =>
-	axios.post(`${apiURL}/events/create`, payload, reqOptions(token));
+	await axios.post(`${apiURL}/events/create`, payload, reqOptions(token));
 
 export const getAnEvent = async (id: any, token: any) =>
-	axios.get(`${apiURL}/events/e/${id}`, reqOptions(token));
+	await axios.get(`${apiURL}/events/e/${id}`, reqOptions(token));
 
 export const getMyEvents = async (token: any) =>
-	axios.get(`${apiURL}/events/myevents`, reqOptions(token));
+	await axios.get(`${apiURL}/events/myevents`, reqOptions(token));
 
 // admin apis
 

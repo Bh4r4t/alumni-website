@@ -78,61 +78,66 @@ export default function PendingEvents() {
 	];
 	var rows_regular: any = [];
 	useEffect(() => {
-		getPendingEvents(global_state.token).then((response) => {
-			console.log(response.data.events);
-			response.data.events.map((details: any) =>
-				rows_regular.push({
-					event_name: details.event_name,
-					event_date: details.event_date,
-					event_time: details.event_time,
-					event_venue: details.event_venue,
-					created_by: details.created_by,
-					Action: (
-						<Button
-							color="primary"
-							onClick={() => {
-								handleConfirm(details._id);
-							}}
-							style={{
-								backgroundColor: 'blue',
-								color: 'white',
-								fontWeight: 600,
-							}}
-						>
-							Confirm
-						</Button>
-					),
-					Cancel: (
-						<Button
-							color="secondary"
-							onClick={() => {
-								handleCancel(details._id);
-							}}
-							style={{
-								backgroundColor: 'red',
-								color: 'white',
-								fontWeight: 600,
-							}}
-						>
-							Cancel
-						</Button>
-					),
-					View: (
-						<Button
-							color="lightsecondary"
-							href={
-								'/admin_dashboard/pending_events/event_description/' +
-								details._id
-							}
-						>
-							{' '}
-							View{' '}
-						</Button>
-					),
-				})
-			);
-			setrowsregular(rows_regular);
-		});
+		getPendingEvents(global_state.token)
+			.then((res) => {
+				if (res?.data?.error) {
+					throw new Error(res.data.message);
+				} else {
+					res.data.events.map((details: any) =>
+						rows_regular.push({
+							event_name: details.event_name,
+							event_date: details.event_date,
+							event_time: details.event_time,
+							event_venue: details.event_venue,
+							created_by: details.created_by,
+							Action: (
+								<Button
+									color="primary"
+									onClick={() => {
+										handleConfirm(details._id);
+									}}
+									style={{
+										backgroundColor: 'blue',
+										color: 'white',
+										fontWeight: 600,
+									}}
+								>
+									Confirm
+								</Button>
+							),
+							Cancel: (
+								<Button
+									color="secondary"
+									onClick={() => {
+										handleCancel(details._id);
+									}}
+									style={{
+										backgroundColor: 'red',
+										color: 'white',
+										fontWeight: 600,
+									}}
+								>
+									Cancel
+								</Button>
+							),
+							View: (
+								<Button
+									color="lightsecondary"
+									href={
+										'/admin_dashboard/pending_events/event_description/' +
+										details._id
+									}
+								>
+									{' '}
+									View{' '}
+								</Button>
+							),
+						})
+					);
+					setrowsregular(rows_regular);
+				}
+			})
+			.catch((err) => console.log(err.message));
 	}, [refresh]);
 
 	return (

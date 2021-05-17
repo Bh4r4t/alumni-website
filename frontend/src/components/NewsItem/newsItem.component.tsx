@@ -5,11 +5,12 @@ import { useLocation, useHistory } from 'react-router-dom';
 import QueryBuilderIcon from '@material-ui/icons/QueryBuilder';
 import CreateIcon from '@material-ui/icons/Create';
 import PersonIcon from '@material-ui/icons/Person';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import readingTime from 'reading-time';
 import ReactMarkdown from 'react-markdown';
 import gfm from 'remark-gfm';
 import './newsItem.component.css';
-import { getAPost } from '../../services/api/newsroom';
+import { cancelNews, getAPost } from '../../services/api/newsroom';
 
 const { useBreakpoint } = Grid;
 
@@ -46,22 +47,33 @@ export function NewsItemIndiv() {
 	const loc = useLocation();
 	const history = useHistory();
 	const user = useSelector((state: any) => state.authReducer.user);
-	const news_id: string = loc.state as string;
+	const news_id: string =
+		(loc.state as string) ?? loc.pathname.split('/n/')[1];
 	const [readTime, setReadTime] = useState(0);
 	const [news, setNews] = useState<any>(null);
 
 	useEffect(() => {
-		getAPost(news_id, user.token).then((res: any) => {
-			if (res.data.error) {
-				throw new Error(res.data.message);
-			} else {
-				setNews(res.data.news);
-				console.log('news: ', news);
-				const stats = readingTime(res.data.news.body);
-				setReadTime(stats.minutes);
-			}
-		});
+		getAPost(news_id, user.token)
+			.then((res: any) => {
+				if (res.data.error) {
+					throw new Error(res.data.message);
+				} else {
+					setNews(res.data.news);
+					console.log('news: ', news);
+					const stats = readingTime(res.data.news.body);
+					setReadTime(stats.minutes);
+				}
+			})
+			.catch((err) => console.log(err.message));
 	}, []);
+
+	const handleRemove = (id: any) => {
+		cancelNews(user.token, id)
+			.then((_res: any) => {
+				history.push('/events');
+			})
+			.catch((err: any) => console.log(err.message));
+	};
 
 	const { md } = useBreakpoint();
 	return (
@@ -92,20 +104,45 @@ export function NewsItemIndiv() {
 							/>
 							Read time: {readTime} minutes
 						</div>
-						{news.created_by_id === user._id ? <div
-							className="edit"
-							onClick={() => {
-								history.push({
-									pathname: `/newsroom/${news._id}/edit`,
-									state: news,
-								});
-							}}
-						>
-							<CreateIcon
-								style={{ fontSize: 25, marginRight: '10px' }}
-							/>
-							Edit
-						</div> : null}
+						{news.created_by_id === user._id ? (
+							<div className="change-funcs">
+								<div
+									className="edit"
+									onClick={() => {
+										history.push({
+											pathname: `/newsroom/${news._id}/edit`,
+											state: news,
+										});
+									}}
+								>
+									<CreateIcon
+										style={{
+											fontSize: 25,
+											marginRight: '10px',
+										}}
+									/>
+									Edit
+								</div>
+								<div
+									className="edit"
+									style={{
+										backgroundColor: 'red',
+										color: 'white',
+									}}
+									onClick={() => {
+										handleRemove(news._id);
+									}}
+								>
+									<DeleteForeverIcon
+										style={{
+											fontSize: 25,
+											marginRight: '10px',
+										}}
+									/>
+									Remove
+								</div>
+							</div>
+						) : null}
 					</div>
 					<Row className="newsroom-content-container">
 						<Col
