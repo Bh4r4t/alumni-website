@@ -36,7 +36,7 @@ export default function Members() {
 					1 as unknown as string,
 					user.token
 				);
-				setmembers(memb?.data.user);
+				setmembers(memb?.data.users);
 			} catch (err) {
 				console.log(err.message);
 			}
@@ -113,13 +113,16 @@ export default function Members() {
 					year,
 				{
 					withCredentials: true,
+					headers: {
+						authorization: `Bearer ${user.token}`,
+					},
 				}
 			)
 			.then((response) => {
 				console.log(response.data);
 				setmembers(response.data.user);
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => console.log(err.message));
 	};
 
 	const handleLocationSubmit = (e: any) => {

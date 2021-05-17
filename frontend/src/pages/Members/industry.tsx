@@ -13,6 +13,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import axios from 'axios';
 import * as dotenv from 'dotenv';
 import { useSelector } from 'react-redux';
+import { apiURL } from '../../services/api/common';
 dotenv.config();
 export let url = process.env.REACT_APP_SERVER_URL;
 
@@ -21,7 +22,7 @@ export default function Industry() {
 	const [industries, setindustries] = useState([]);
 	useEffect(() => {
 		axios
-			.get('http://localhost:3000/members/all_inds', {
+			.get(`${apiURL}/all_inds`, {
 				withCredentials: true,
 				headers: {
 					authorization: `Bearer ${user.token}`,
@@ -49,7 +50,7 @@ export default function Industry() {
 				<Row style={{ marginLeft: '3vh' }}>
 					<Col span={1} style={{ marginTop: '1vh' }}>
 						<Button
-							href="http://localhost:3000/members"
+							href="/members"
 							icon={<ArrowBackIcon />}
 							size="large"
 						></Button>
@@ -59,7 +60,7 @@ export default function Industry() {
 							Members{' '}
 						</h1>
 					</Col>
-					<Col span={5} style={{ marginTop: 22, marginLeft: '1vh' }}>
+					<Col span={5} style={{ marginTop: 22, marginLeft: '2vw' }}>
 						<h1
 							style={{
 								fontSize: 25,

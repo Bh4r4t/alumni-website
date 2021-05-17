@@ -68,7 +68,7 @@ export default function Location() {
 							Members{' '}
 						</h1>
 					</Col>
-					<Col span={5} style={{ marginTop: 22, marginLeft: '1vh' }}>
+					<Col span={5} style={{ marginTop: 22, marginLeft: '2vw' }}>
 						<h1
 							style={{
 								fontSize: 25,

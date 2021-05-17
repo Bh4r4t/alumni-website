@@ -40,7 +40,7 @@ export default function Company() {
 				<Row style={{ marginLeft: '3vh' }}>
 					<Col span={1} style={{ marginTop: '1vh' }}>
 						<Button
-							href="http://localhost:3000/members"
+							href="/members"
 							icon={<ArrowBackIcon />}
 							size="large"
 						></Button>
@@ -50,7 +50,7 @@ export default function Company() {
 							Members{' '}
 						</h1>
 					</Col>
-					<Col span={5} style={{ marginTop: 22, marginLeft: '1vh' }}>
+					<Col span={5} style={{ marginTop: 22, marginLeft: '2vw' }}>
 						<h1
 							style={{
 								fontSize: 25,

@@ -17,6 +17,7 @@ export default function EventDescription(props: any) {
 	useEffect(() => {
 		getAnEvent(params.id, global_state.token).then((res) => {
 			setevent(res.data);
+			console.log(res.data)
 		});
 	}, []);
 	return (

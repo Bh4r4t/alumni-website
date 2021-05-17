@@ -80,11 +80,22 @@ export default function PendingEvents() {
 	useEffect(() => {
 		getPendingEvents(global_state.token).then((response) => {
 			console.log(response.data.events);
-			response.data.events.map((details: any) =>
-				rows_regular.push({
+			response.data.events.map((details: any) => {
+				const event_date = new Date(details.event_start)
+				const eventdate = event_date.getDate() + '-' + (event_date.getMonth() + 1) + '-' + event_date.getFullYear();
+
+				var hours = event_date.getHours();
+				var minutes = event_date.getMinutes() as number;
+				var ampm = hours >= 12 ? 'pm' : 'am';
+				hours = hours % 12;
+				hours = hours ? hours : 12; // the hour '0' should be '12'
+				var min2 = (minutes < 10 ? '0' + minutes : minutes) as string;
+				var eventtime = hours + ':' + min2 + ' ' + ampm;
+
+				return rows_regular.push({
 					event_name: details.event_name,
-					event_date: details.event_date,
-					event_time: details.event_time,
+					event_date: eventdate,
+					event_time: eventtime,
 					event_venue: details.event_venue,
 					created_by: details.created_by,
 					Action: (
@@ -130,7 +141,8 @@ export default function PendingEvents() {
 						</Button>
 					),
 				})
-			);
+			})
+
 			setrowsregular(rows_regular);
 		});
 	}, [refresh]);

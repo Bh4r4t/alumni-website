@@ -13,6 +13,7 @@ import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { apiURL } from '../../services/api/common';
 
 export default function Institute() {
 	const user = useSelector((state: any) => state.authReducer.user);
@@ -20,7 +21,7 @@ export default function Institute() {
 	const [institutes, setinstitutes] = useState([]);
 	useEffect(() => {
 		axios
-			.get('http://localhost:8080/members/all_inst', {
+			.get(`${apiURL}/members/all_inst`, {
 				withCredentials: true,
 				headers: {
 					authorization: `Bearer ${user.token}`,
@@ -48,7 +49,7 @@ export default function Institute() {
 				<Row style={{ marginLeft: '3vh' }}>
 					<Col span={1} style={{ marginTop: '1vh' }}>
 						<Button
-							href="http://localhost:3000/members"
+							href="/members"
 							icon={<ArrowBackIcon />}
 							size="large"
 						></Button>
@@ -58,7 +59,7 @@ export default function Institute() {
 							Members{' '}
 						</h1>
 					</Col>
-					<Col span={5} style={{ marginTop: 22, marginLeft: '1vh' }}>
+					<Col span={5} style={{ marginTop: 22, marginLeft: '2vw'}}>
 						<h1
 							style={{
 								fontSize: 25,
