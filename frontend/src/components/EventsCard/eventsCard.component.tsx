@@ -25,7 +25,7 @@ function EventsCard(props: any) {
 	const event_status = props.event_date < Date.now() ? 'PAST' : 'UPCOMING';
 
 	const handleClick = () => {
-		history.push({ pathname: `/events/${props.event_id}`, state: props.event_id });
+		history.push({ pathname: `/events/e/${props.event_id}`, state: props.event_id });
 	};
 
 	return (

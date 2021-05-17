@@ -26,9 +26,7 @@ import Company from '../pages/Members/company';
 import Roles from '../pages/Members/roles';
 import Industry from '../pages/Members/industry';
 import EventsSection from '../pages/Events/events';
-import Event from '../pages/Events/Event';
-// import Event2 from '../pages/Events/Event2';
-// import Event3 from '../pages/Events/Event3';
+import EventEdit from '../components/EventsEdit/eventsEdit.component';
 import EventDesc from '../components/EventsDesc/eventsDesc.component';
 import NewsRoom from '../pages/Newsroom/newsroom';
 import { NewsItemIndiv } from '../components/NewsItem/newsItem.component';
@@ -166,25 +164,26 @@ export const Routes: React.FC<RoutesProp> = () => {
 						<EventsSection />
 					</PrivateRoute>
 					<PrivateRoute path="/events/create" exact>
-						<Event />
+						<EventEdit />
 					</PrivateRoute>
-					{/* <PrivateRoute path="/events/create_event_2" exact>
-						<Event2 />
-					</PrivateRoute>
-					<PrivateRoute path="/events/create_event_3" exact>
-						<Event3 />
-					</PrivateRoute> */}
-
-					{/* <PrivateRoute path="/events/:id">
+					<PrivateRoute path="/events/e/:id">
 						<EventDesc />
-					</PrivateRoute> */}
+					</PrivateRoute>
+					<PrivateRoute path="/events/:id/edit" exact>
+						<EventEdit />
+					</PrivateRoute>
+
+					{/* admin dashboard */}
 					<Route path="/admin_dashboard" exact>
 						<Admindashboard />
 					</Route>
 					<Route path="/admin_dashboard/pending_events" exact>
 						<PendingEvents />
 					</Route>
-					<Route path="/admin_dashboard/pending_events/event_description/:id" exact>
+					<Route
+						path="/admin_dashboard/pending_events/event_description/:id"
+						exact
+					>
 						<EventDescription />
 					</Route>
 					<Route path="/job_portal" exact>

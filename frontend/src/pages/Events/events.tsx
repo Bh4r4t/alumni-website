@@ -12,7 +12,7 @@ const { useBreakpoint } = Grid;
 function EventsSection() {
 	const { md } = useBreakpoint();
 	const user = useSelector((state: any) => state.authReducer.user);
-	const [menu, setMenu] = useState('1');
+	const [menu, setMenu] = useState('all_events');
 	const [events, setEvents] = useState<any>(null);
 	useEffect(() => {
 		setEvents(null);

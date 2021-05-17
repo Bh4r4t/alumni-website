@@ -86,7 +86,26 @@ app.get('/n/:id', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
-app.get('/conf_recent', verifyToken, async (req: Request, res: Response) => {
+// remove news(with given id) details
+app.delete('/remove/:id', verifyToken, async (req: Request, res: Response) => {
+    try {
+        await News.findByIdAndDelete(
+            req.params.id,
+            [],
+            (err: any, _doc: any) => {
+                if (err) {
+                    throw new Error('Error in getting event details');
+                } else {
+                    res.send('success');
+                }
+            }
+        );
+    } catch (err) {
+        res.send({ error: true, message: err.message });
+    }
+});
+
+app.get('/conf_recent', async (_req: Request, res: Response) => {
     try {
         const news = await News.find({ pending: false }, [], {
             limit: 3,
