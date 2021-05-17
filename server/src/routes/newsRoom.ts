@@ -265,4 +265,18 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+app.post('/confirm_news', verifyToken, async (req, res) => {
+    console.log(req.body.id);
+    News.findById(req.body.id, (err: any, news: any) => {
+        if (err) res.send('Error in getting event details');
+        else {
+            news.pending = false;
+            news
+                .save()
+                .then((_response: any) => res.send('success'))
+                .then((_err: any) => res.send('error'));
+        }
+    });
+});
+
 export default app;

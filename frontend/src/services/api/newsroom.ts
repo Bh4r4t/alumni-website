@@ -22,5 +22,12 @@ export const submitAPost = async (payload: any, token: any) =>
 export const updateAPost = async (payload: any, token: any) =>
 	await axios.post(`${apiURL}/newsroom/update`, payload, reqOptions(token));
 
+//Admin 
+
 export const cancelNews = async (id: any, token: any) =>
 	await axios.delete(`${apiURL}/newsroom/remove/${id}`, reqOptions(token));
+
+
+
+export const confirmNews = async (newsid: any, token: any) =>
+	await axios.post(`${apiURL}/newsroom/confirm_news`,{id:newsid} ,reqOptions(token));

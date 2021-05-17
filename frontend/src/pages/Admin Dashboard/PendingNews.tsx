@@ -5,62 +5,62 @@ import { Button } from 'antd';
 import { Table, Tag, Space } from 'antd';
 import EventDescription from './EventDescription';
 import {
-	cancelEvent,
-	confirmEvent,
-	getPendingEvents,
-} from '../../services/api/event';
+	confirmNews,
+	cancelNews,
+} from '../../services/api/newsroom';
 import { useDispatch, useSelector } from 'react-redux';
+import { getPendPosts } from '../../services/api/newsroom';
 import { useHistory } from 'react-router';
 
-export default function PendingEvents() {
+export default function PendingNews() {
 	const global_state = useSelector((state: any) => state.authReducer.user);
 	const [rowsregular, setrowsregular] = useState<any>(null);
-	const [refresh, setrefresh] = useState(false);
-	const history = useHistory();
-	const handleConfirm = (eventid: any) => {
-		console.log(eventid);
-		confirmEvent(global_state.token, eventid).then((response) => {
+    const [refresh, setrefresh] = useState(false);
+    const history=useHistory()
+	const handleConfirm = (newsid: any) => {
+		console.log(newsid);
+		confirmNews( newsid,global_state.token,).then((response) => {
 			if (response.data === 'success') {
-				alert('Event confirmed');
+				alert('News confirmed');
 				setrefresh(!refresh);
-			} else alert('Error in confirming event');
+			} else alert('Error in confirming news');
 		});
 	};
 
 	const handleCancel = (eventid: any) => {
-		cancelEvent(global_state.token, eventid).then((response) => {
+		cancelNews( eventid,global_state.token).then((response) => {
 			if (response.data === 'success') {
-				alert('Event cancelled');
+				alert('News cancelled');
 				setrefresh(!refresh);
-			} else alert('Error in cancelling event');
+			} else alert('Error in cancelling news');
 		});
 	};
 
 	const columns = [
 		{
-			title: 'Event Name',
-			key: 'event_name',
-			dataIndex: 'event_name',
+            title: 'Title',
+			key: 'title',
+			dataIndex: 'title',
 		},
 		{
-			title: 'Event Date',
-			key: 'event_date',
-			dataIndex: 'event_date',
-		},
+			title: 'Date Created',
+			key: 'date_created',
+			dataIndex: 'date_created',
+        },
+        {
+			title: 'Time',
+			key: 'news_time',
+			dataIndex: 'news_time',
+        },
 		{
-			title: 'Event Venue',
-			key: 'event_venue',
-			dataIndex: 'event_venue',
+			title: 'Overview',
+			key: 'overview',
+			dataIndex: 'overview',
 		},
 		{
 			title: 'Created By',
 			key: 'created_by',
 			dataIndex: 'created_by',
-		},
-		{
-			title: 'Event Time',
-			key: 'event_time',
-			dataIndex: 'event_time',
 		},
 		{
 			title: 'Action',
@@ -73,32 +73,32 @@ export default function PendingEvents() {
 			dataIndex: 'Cancel',
 		},
 		{
-			title: 'View Event Description',
+			title: 'View News Details',
 			key: 'View',
 			dataIndex: 'View',
 		},
 	];
 	var rows_regular: any = [];
 	useEffect(() => {
-		getPendingEvents(global_state.token).then((response) => {
-			console.log(response.data);
-			response?.data?.events?.map((details: any) => {
-				const event_date = new Date(details.event_start)
-				const eventdate = event_date.getDate() + '-' + (event_date.getMonth() + 1) + '-' + event_date.getFullYear();
+		getPendPosts(global_state.token).then((response) => {
+			console.log(response.data.news);
+			response.data.news.map((details: any) => {
+				const news_date = new Date(details.date_created)
+				const newsdate = news_date.getDate() + '-' + (news_date.getMonth() + 1) + '-' + news_date.getFullYear();
 
-				var hours = event_date.getHours();
-				var minutes = event_date.getMinutes() as number;
+				var hours = news_date.getHours();
+				var minutes = news_date.getMinutes() as number;
 				var ampm = hours >= 12 ? 'pm' : 'am';
 				hours = hours % 12;
 				hours = hours ? hours : 12; // the hour '0' should be '12'
 				var min2 = (minutes < 10 ? '0' + minutes : minutes) as string;
-				var eventtime = hours + ':' + min2 + ' ' + ampm;
+				var newstime = hours + ':' + min2 + ' ' + ampm;
 
 				return rows_regular.push({
-					event_name: details.event_name,
-					event_date: eventdate,
-					event_time: eventtime,
-					event_venue: details.event_venue,
+					title: details.title,
+					date_created: newsdate,
+					news_time: newstime,
+					overview: details.overview,
 					created_by: details.created_by,
 					Action: (
 						<Button
@@ -133,7 +133,7 @@ export default function PendingEvents() {
 					View: (
 						<Button
 							color="lightsecondary"
-							onClick={()=> (history.push({ pathname: `/events/e/${details.event_id}`, state: details._id }))}
+							onClick={()=> (history.push({ pathname: `/newsroom/n/${details._id}`, state: details._id }))}
 						>
 							{' '}
 							View{' '}
@@ -152,7 +152,7 @@ export default function PendingEvents() {
 				<Row>
 					<Col span={6}>
 						<h1 style={{ fontSize: 30, fontWeight: 400 }}>
-							Pending Events
+							Pending News
 						</h1>
 					</Col>
 				</Row>

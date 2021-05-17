@@ -1,11 +1,11 @@
 import { Row, Col, Grid, Button, Card } from 'antd';
 
-import JobCard from '../../../components/JobCard/jobCard.component';
+import JobCard from '../../components/JobCard/jobCard.component';
 import { Input, Select, } from 'antd';
 import { useState, useEffect } from 'react';
 import './jobs.css';
 import { useSelector } from 'react-redux';
-import { getJob } from '../../../services/api/job';
+import { getJob } from '../../services/api/job';
 
 const { Option } = Select;
 

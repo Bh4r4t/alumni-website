@@ -39,11 +39,11 @@ export default function Admindashboard() {
                         <h1 style={{ fontSize: 25, fontWeight: 200 }}>Quick Actions: </h1>
                     </Col>
                     <Col span={12} style={{ marginTop: 4 }}>
-                        <Button type="primary" shape="round" size="middle" style={{ marginRight: 6 }}>
+                        <Button type="primary" shape="round" size="middle" style={{ marginRight: 6 }} href='/newsroom/create/'>
                             Post News
                             </Button>
 
-                        <Button type="primary" shape="round" size="middle" style={{ backgroundColor: "green", marginRight: 6 }} href="/events/create_event_1">
+                        <Button type="primary" shape="round" size="middle" style={{ backgroundColor: "green", marginRight: 6 }} href="/events/create">
                             Create Event
                             </Button>
                         <Button type="primary" shape="round" size="middle" style={{ backgroundColor: "orange", marginRight: 6 }} href="/post_job">
@@ -52,15 +52,20 @@ export default function Admindashboard() {
                     </Col>
                 </Row>
                 <Row style={{ marginTop: 10, backgroundColor: "white", paddingTop: 10, paddingLeft: 10, marginLeft: "10vh" }}>
-                    <Col span={4}>
+                    <Col span={5}>
                         <h1 style={{ fontSize: 25, fontWeight: 200 }}>Pending Actions: </h1>
                     </Col>
                     <Col span={1} style={{ marginTop: 0 }}>
-                        <Button type="dashed" href="/admin_dashboard/pending_events" size="large" style={{ marginLeft: -60, fontSize: "20px", color: "black", fontWeight:400}}>Pending Events Approval</Button>
+                        <Button type="dashed" href="/admin_dashboard/pending_events" size="large" style={{ marginLeft: -60, fontSize: "20px", color: "black", fontWeight: 400 }}>Pending Events Approval</Button>
+                    </Col>
+                    <Col span={4}></Col>
+                    <Col span={1} style={{ marginTop: 0 }}>
+                        <Button type="dashed" href="/admin_dashboard/pending_news" size="large" style={{ marginLeft: -60, fontSize: "20px", color: "black", fontWeight: 400 }}>Pending News Approval</Button>
                     </Col>
                 </Row>
+               
             </div>
-        </div>
+        </div >
 
     )
 }

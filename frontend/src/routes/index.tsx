@@ -35,7 +35,8 @@ import Admindashboard from '../pages/Admin Dashboard/Admindashboard';
 import PendingEvents from '../pages/Admin Dashboard/PendingEvents';
 import EventDescription from '../pages/Admin Dashboard/EventDescription';
 import PostInternship from '../pages/Support/PostJob/PostInternship';
-import JobSection from '../pages/Support/JobPortal/jobs';
+import JobSection from '../pages/JobPortal/jobs';
+import PendingNews from '../pages/Admin Dashboard/PendingNews';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
@@ -108,9 +109,15 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<PrivateRoute path="/newsroom/:id/edit">
 						<NewsItemEdit />
 					</PrivateRoute>
+					<PrivateRoute path="/admin_dashboard/pending_news">
+						<PendingNews />
+					</PrivateRoute>
 
 					<PrivateRoute path="/job_portal">
 						<JobPortal />
+					</PrivateRoute>
+					<PrivateRoute path="/all_jobs" exact>
+						<JobSection />
 					</PrivateRoute>
 
 					{/* public routes */}
@@ -186,15 +193,11 @@ export const Routes: React.FC<RoutesProp> = () => {
 					>
 						<EventDescription />
 					</Route>
-					<Route path="/job_portal" exact>
-						<JobPortal />
-					</Route>
+					
 					<Route path="/post_job" exact>
 						<PostInternship />
 					</Route>
-					<Route path="/all_jobs" exact>
-						<JobSection />
-					</Route>
+					
 					{/* <Route path="*">
 						<Redirect to="/" />
 					</Route> */}

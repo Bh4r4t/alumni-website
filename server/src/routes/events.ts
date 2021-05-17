@@ -153,11 +153,11 @@ app.get('/pending', verifyToken, async (req: Request, res: Response) => {
         if (!user) {
             throw new Error('Not Accessible by Moderator');
         }
-        const query: any = {
+       /* const query: any = {
             pending: true,
             event_category: { $regex: req.query.cat, $options: 'i' },
-        };
-        const events = await Events.find(query);
+        };*/
+        const events = await Events.find({pending:true});
         const copy_events = [...events];
         res.send({ events: copy_events });
     } catch (err) {

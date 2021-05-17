@@ -106,11 +106,11 @@ export default function Members() {
 		axios
 			.get(
 				`${apiURL}/members/search?course=` +
-					course +
-					'&stream=' +
-					stream +
-					'&year=' +
-					year,
+				course +
+				'&stream=' +
+				stream +
+				'&year=' +
+				year,
 				{
 					withCredentials: true,
 					headers: {
@@ -129,11 +129,11 @@ export default function Members() {
 		axios
 			.get(
 				`${apiURL}/members/search?city=` +
-					location.city +
-					'&state=' +
-					location.state +
-					'&country=' +
-					location.country,
+				location.city +
+				'&state=' +
+				location.state +
+				'&country=' +
+				location.country,
 				{
 					withCredentials: true,
 				}
@@ -711,45 +711,48 @@ export default function Members() {
 							<Col span={5} style={{ marginBottom: '2vh' }}>
 								<Card
 									className="members-card"
-									style={{ width: 300, height: 360 }}
+									style={{ width: 300,height:'35vh' , alignItems: "center" }}
 									cover={
 										<Avatar
 											style={{
-												marginLeft: '5vh',
 												marginTop: '2vh',
+												left: '25%',
 											}}
 											size={150}
 											icon={<img src={img1} />}
 										/>
 									}
 								>
-									<h1
-										style={{
-											width: '20vh',
-											fontSize: 20,
-											marginBottom: '0',
-											marginLeft: '6vh',
-										}}
-									>
-										{member.basic_info.first_name +
-											' ' +
-											member.basic_info.last_name}
-									</h1>
-									<h3
-										style={{
-											fontSize: 16,
-											fontWeight: 300,
-											marginLeft: '6vh',
-										}}
-									>
-										{member.educational_info[0]
-											?.degree_name +
-											' ' +
-											formatDate(
-												member.educational_info[0]
-													?.end_date
-											)}
-									</h3>
+									<div className="member-details">
+										<h1
+											style={{
+												width: '20vh',
+												fontSize: 20,
+												marginBottom: '0',
+												marginLeft: '6vh',
+												left: '50%'
+											}}
+										>
+											{member.basic_info.first_name +
+												' ' +
+												member.basic_info.last_name}
+										</h1>
+										<h3
+											style={{
+												fontSize: 16,
+												fontWeight: 300,
+												marginLeft: '6vh',
+											}}
+										>
+											{member.educational_info[0]
+												?.degree_name +
+												' ' +
+												formatDate(
+													member.educational_info[0]
+														?.end_date
+												)}
+										</h3>
+									</div>
 								</Card>
 							</Col>
 						))}

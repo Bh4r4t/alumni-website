@@ -202,7 +202,7 @@ export default function Dash() {
 			<div className="dashboard-body">
 				<div className={classes.root}>
 					<Grid container spacing={2}>
-						<Grid item xs={6}>
+						<Grid item xs={7}>
 							<Grid container direction="row" spacing={1}>
 								{' '}
 								<Grid item>
@@ -231,7 +231,7 @@ export default function Dash() {
 							</Card>
 						</Grid>
 
-						<Grid item xs={5} style={{ marginLeft: 70 }}>
+						<Grid item xs={4} style={{ marginLeft: 70 }}>
 							<h1>News</h1>
 							<div className="news_line"></div>
 							<br></br>
@@ -304,7 +304,7 @@ export default function Dash() {
 								<Button type="link">See More</Button>
 							</Grid>
 						</Grid>
-						<Grid item xs={6}>
+						<Grid item xs={7}>
 							<List
 								itemLayout="vertical"
 								style={{ marginTop: -90 }}
@@ -372,7 +372,7 @@ export default function Dash() {
 								)}
 							/>
 						</Grid>
-						<Grid item xs={5} style={{ marginLeft: 70 }}>
+						<Grid item xs={4} style={{ marginLeft: 70 }}>
 							<Grid container direction="column">
 								<h1>Invite</h1>
 								<div className="news_line"></div>
