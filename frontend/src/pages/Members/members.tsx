@@ -18,6 +18,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { getMembers, memberSearch } from '../../services/api/members';
 import { DriveEtaTwoTone } from '@material-ui/icons';
+import { apiURL } from '../../services/api/common';
 
 const { Meta } = Card;
 
@@ -89,7 +90,7 @@ export default function Members() {
 
 	const handleNameSubmit = (e: any) => {
 		axios
-			.get(`${url}/members/search?name=` + name_s, {
+			.get(`${apiURL}/members/search?name=` + name_s, {
 				withCredentials: true,
 				headers: {
 					authorization: `Bearer ${user.token}`,
@@ -104,7 +105,7 @@ export default function Members() {
 	const handleCourseSubmit = (e: any) => {
 		axios
 			.get(
-				`${url}/members/search?course=` +
+				`${apiURL}/members/search?course=` +
 					course +
 					'&stream=' +
 					stream +
@@ -124,7 +125,7 @@ export default function Members() {
 	const handleLocationSubmit = (e: any) => {
 		axios
 			.get(
-				`${url}/members/search?city=` +
+				`${apiURL}/members/search?city=` +
 					location.city +
 					'&state=' +
 					location.state +

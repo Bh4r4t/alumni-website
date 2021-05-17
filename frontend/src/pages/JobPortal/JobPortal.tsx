@@ -1,17 +1,27 @@
-import { Layout, Row, Col, Divider } from 'antd';
-import { Card, Avatar } from 'antd';
+import {
+	Layout,
+	Row,
+	Col,
+	Divider,
+	Input,
+	Select,
+	Button,
+	Card,
+	Avatar,
+} from 'antd';
 import './JobPortal.css';
-import { Input, Select, Button } from 'antd';
 import { useState, useEffect } from 'react';
 import { getJob } from '../../services/api/job';
+import { useSelector } from 'react-redux';
 
 const { Content } = Layout;
 const { Option } = Select;
 
 export default function JobPortal() {
 	const [job, setJobs] = useState<any>(null);
+	const user = useSelector((state: any) => state.authReducer.user);
 	useEffect(() => {
-		getJob()
+		getJob(user.token)
 			.then((res: any) => {
 				if (res?.data?.error) {
 					throw new Error(res.data.message);
@@ -40,7 +50,7 @@ export default function JobPortal() {
 	// 					gutter={20}
 	// 				>
 	// 					{while (idx < job.length) {
-							
+
 	// 					}}
 	// 				</Row>;
 	// 			}

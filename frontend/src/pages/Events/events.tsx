@@ -1,18 +1,35 @@
-import { Row, Col, Grid, Button, Card } from 'antd';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { Row, Col, Grid } from 'antd';
 import EventsCard from '../../components/EventsCard/eventsCard.component';
 import { Menu } from 'antd';
-import { Link } from 'react-router-dom';
 import './events.css';
 
-
 import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { getAllConfEvents } from '../../services/api/event';
 
 const { useBreakpoint } = Grid;
 
-
 function EventsSection() {
 	const { md } = useBreakpoint();
+	const user = useSelector((state: any) => state.authReducer.user);
+	const [menu, setMenu] = useState('1');
+	const [events, setEvents] = useState<any>(null);
+	useEffect(() => {
+		setEvents(null);
+		getAllConfEvents(user.token, menu)
+			.then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res.data.message);
+				} else {
+					setEvents(res.data.events);
+				}
+			})
+			.catch((err: any) => console.log(err.message));
+	}, [menu]);
+
+	const changeMenu = (key: string) => () => {
+		setMenu(key);
+	};
 	return (
 		<section className="events-section">
 			<div className="events-section-container">
@@ -21,85 +38,48 @@ function EventsSection() {
 						<h1>Events</h1>
 						<hr />
 					</div>
-
 				</Row>
-
 				<Row justify="end">
-					<Button type="primary" htmlType="submit" href="/events/create_event_1">
-						Create an Event
-                </Button>
+					<a href="/events/create">
+						<div className="add-news">Create an Event</div>
+					</a>
 				</Row>
-
 				<div className="prof-menu-container">
-					<Menu theme="light" mode="horizontal" defaultSelectedKeys={["events"]}>
-						<Menu.Item key="All events" >
-							<Link to="/about/director"><h1>All Events</h1></Link>
+					<Menu
+						theme="light"
+						mode="horizontal"
+						defaultSelectedKeys={['events']}
+					>
+						<Menu.Item key="1" onClick={changeMenu('all_events')}>
+							<h1>All Events</h1>
 						</Menu.Item>
-						<Menu.Item key="webinars" >
-							<Link to="/about/director"><h1>Webinars</h1></Link>
+						<Menu.Item key="2" onClick={changeMenu('webinars')}>
+							<h1>Webinars</h1>
 						</Menu.Item>
-						<Menu.Item key="reunions" >
-							<Link to="/about/director"><h1>Reunions</h1></Link>
+						<Menu.Item key="3" onClick={changeMenu('reunions')}>
+							<h1>Reunions</h1>
 						</Menu.Item>
 					</Menu>
 				</div>
-				<br></br> <br></br>
-
-
-
-
-
 				<Row className="events-section-items-row">
-					<Col
-						span={md ? 12 : 24}
-						className="events-section-items-col"
-					>
-						<EventsCard />
-					</Col>
-					<Col
-						span={md ? 12 : 24}
-						className="events-section-items-col"
-					>
-						<EventsCard />
-					</Col>
+					{events &&
+						events.map((item: any) => (
+							<Col
+								span={md ? 12 : 24}
+								className="events-section-items-col"
+							>
+								<EventsCard
+									event_date={item.event_start}
+									event_id={item._id}
+									event_name={item.event_name}
+									event_venue={item.event_venue}
+								/>
+							</Col>
+						))}
 				</Row>
-
-				<Row className="events-section-items-row">
-					<Col
-						span={md ? 12 : 24}
-						className="events-section-items-col"
-					>
-						<EventsCard />
-					</Col>
-					<Col
-						span={md ? 12 : 24}
-						className="events-section-items-col"
-					>
-						<EventsCard />
-					</Col>
-				</Row>
-
-				<Row className="events-section-items-row">
-					<Col
-						span={md ? 12 : 24}
-						className="events-section-items-col"
-					>
-						<EventsCard />
-					</Col>
-					<Col
-						span={md ? 12 : 24}
-						className="events-section-items-col"
-					>
-						<EventsCard />
-					</Col>
-				</Row>
-
-
-
 			</div>
 		</section>
 	);
 }
-
 
 export default EventsSection;

@@ -146,7 +146,7 @@ function EventsSection(props: any) {
 									<EventsCard
 										event_name={event.event_name}
 										event_venue={event.event_venue}
-										event_date={event.event_date}
+										event_date={event.event_start}
 										event_id={event._id}
 									/>
 								</Col>

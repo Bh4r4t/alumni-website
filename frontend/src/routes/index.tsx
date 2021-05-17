@@ -27,22 +27,17 @@ import Roles from '../pages/Members/roles';
 import Industry from '../pages/Members/industry';
 import EventsSection from '../pages/Events/events';
 import Event from '../pages/Events/Event';
-import Event2 from '../pages/Events/Event2';
-import Event3 from '../pages/Events/Event3';
-<<<<<<< HEAD
+// import Event2 from '../pages/Events/Event2';
+// import Event3 from '../pages/Events/Event3';
 import EventDesc from '../components/EventsDesc/eventsDesc.component';
 import NewsRoom from '../pages/Newsroom/newsroom';
 import { NewsItemIndiv } from '../components/NewsItem/newsItem.component';
 import NewsItemEdit from '../components/newsItemEdit/newsItemEdit.component';
-// import Admindashboard from '../components/AdminVerify/Admindashboard';
-// import PendingEvents from '../components/AdminVerify/PendingEvents';
-=======
 import Admindashboard from '../pages/Admin Dashboard/Admindashboard';
 import PendingEvents from '../pages/Admin Dashboard/PendingEvents';
 import EventDescription from '../pages/Admin Dashboard/EventDescription';
 import PostInternship from '../pages/Support/PostJob/PostInternship';
 import JobSection from '../pages/Support/JobPortal/jobs';
->>>>>>> 6c711b8263b3f182b640c420f0046916bd53b6e7
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
@@ -170,22 +165,19 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<PrivateRoute path="/events" exact>
 						<EventsSection />
 					</PrivateRoute>
-					<PrivateRoute path="/events/create_event_1" exact>
+					<PrivateRoute path="/events/create" exact>
 						<Event />
 					</PrivateRoute>
-					<PrivateRoute path="/events/create_event_2" exact>
+					{/* <PrivateRoute path="/events/create_event_2" exact>
 						<Event2 />
 					</PrivateRoute>
 					<PrivateRoute path="/events/create_event_3" exact>
 						<Event3 />
-<<<<<<< HEAD
-					</PrivateRoute>
+					</PrivateRoute> */}
 
-					<PrivateRoute path="/events/:id">
+					{/* <PrivateRoute path="/events/:id">
 						<EventDesc />
-					</PrivateRoute>
-=======
-					</Route>
+					</PrivateRoute> */}
 					<Route path="/admin_dashboard" exact>
 						<Admindashboard />
 					</Route>
@@ -204,7 +196,6 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<Route path="/all_jobs" exact>
 						<JobSection />
 					</Route>
->>>>>>> 6c711b8263b3f182b640c420f0046916bd53b6e7
 					{/* <Route path="*">
 						<Redirect to="/" />
 					</Route> */}
