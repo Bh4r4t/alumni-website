@@ -1,0 +1,10 @@
+runtime: nodejs10
+service: backend
+
+env_variables:
+  DBURL: "mongodb+srv://naveen123:tG1MYx3KgquigGEv@cluster0.muuox.mongodb.net/sample?retryWrites=true&w=majority"
+  SERVER_PORT: 3000
+  REACT_APP_SERVER_PORT: 3001
+  REFRESH_TOKEN_SECRET: "kgf"
+  ACCESS_TOKEN_SECRET: "kj"
+  

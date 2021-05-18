@@ -110,6 +110,15 @@ app.get('/search_by_inds', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+app.get('/all_skills', verifyToken, async (_req: Request, res: Response) => {
+    try {
+        const skills = await User.distinct('professional_info.skills');
+        res.send({ skills });
+    } catch (err) {
+        res.send({ error: true, message: err.messagee });
+    }
+});
+
 // generale filter in searching at homepage of members
 app.get('/search', verifyToken, async (req: Request, res: Response) => {
     console.log('req.query: ', req.query);

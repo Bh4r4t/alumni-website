@@ -15,6 +15,9 @@ import axios from 'axios';
 import { couldStartTrivia } from 'typescript';
 import { Redirect, useHistory, useLocation } from 'react-router-dom';
 import * as dotenv from 'dotenv';
+import { getConfRecentEvents } from '../../services/api/event';
+import MDEditor from '../../components/MDEditor/mdEditor.component';
+import { getRecentPosts } from '../../services/api/newsroom';
 dotenv.config();
 export let url = process.env.REACT_APP_SERVER_URL;
 
@@ -88,6 +91,9 @@ export default function Dash() {
 	const [post_des, setpost_des] = useState('');
 	const [likechange, setlikechange] = useState(false);
 	const [refresh, setrefresh] = useState(false);
+	const [events, setevents] = useState<any>([]);
+	const [news, setnews] = useState<any>([])
+	const history = useHistory();
 
 	const handlePostChange = (e: any) => {
 		setpost_des(e.target.value);
@@ -133,6 +139,7 @@ export default function Dash() {
 			)
 			.then((response) => {
 				setrefresh(!refresh);
+				setpost_des('');
 
 				console.log(response.data);
 			});
@@ -150,13 +157,9 @@ export default function Dash() {
 	const contentListNoTitle: { [id: string]: any } = {
 		Make_Post: (
 			<Grid container direction="column">
-				<Grid item xs>
-					<TextArea
-						rows={7}
-						maxLength={100}
-						showCount
-						onChange={handlePostChange}
-					/>
+				<Grid item xs style={{ marginBottom: "1vh" }}>
+
+					<MDEditor value={post_des} onChange={setpost_des} />
 				</Grid>
 				<Grid item xs>
 					<Button type="primary" onClick={handlePostSubmit}>
@@ -174,6 +177,22 @@ export default function Dash() {
 	const [values, setvalues] = useState(initialValues);
 	const [posts, setposts] = useState<any[]>([]);
 
+	const eventdate = (event_date: any) => {
+		const event_Date = new Date(event_date)
+		return event_Date.getDate() + '-' + (event_Date.getMonth() + 1) + '-' + event_Date.getFullYear()
+	}
+
+	const newstime = (newsdate: any) => {
+		const news_date = new Date(newsdate)
+		var hours = news_date.getHours();
+		var minutes = news_date.getMinutes() as number;
+		var ampm = hours >= 12 ? 'pm' : 'am';
+		hours = hours % 12;
+		hours = hours ? hours : 12; // the hour '0' should be '12'
+		var min2 = (minutes < 10 ? '0' + minutes : minutes) as string;
+		return hours + ':' + min2 + ' ' + ampm;
+	}
+
 	useEffect(() => {
 		axios
 			.get(`${url}/posts/all_posts`, {
@@ -188,6 +207,17 @@ export default function Dash() {
 				setposts(response.data);
 			});
 	}, [likechange, refresh]);
+
+	useEffect(() => {
+		getConfRecentEvents()
+			.then(res => {
+				setevents(res.data.events)
+				getRecentPosts()
+					.then(resp => {
+						setnews(resp?.data?.news)
+					})
+			})
+	}, [refresh, likechange])
 
 	const onTabChange = (key: any, type: any) => {
 		console.log(key, type);
@@ -221,7 +251,6 @@ export default function Dash() {
 								style={{ width: 'auto', marginTop: 30 }}
 								tabList={tabListNoTitle}
 								activeTabKey={values.noTitleKey}
-								tabBarExtraContent={<a href="#">More</a>}
 								onTabChange={(key) => {
 									onTabChange(key, 'noTitleKey');
 								}}
@@ -237,11 +266,17 @@ export default function Dash() {
 							<br></br>
 							<Card
 								style={{ width: 'xs' }}
-								actions={[<ReadOutlined />]}
+								actions={[<ReadOutlined onClick={() => { history.push({ pathname: `/newsroom/n/${news[0]._id}`, state: news[0]._id }) }} />]}
 							>
 								<Meta
 									avatar={
-										<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+										<Avatar
+											src={
+												news[0]?.thumbnail ??
+												'https://source.unsplash.com/random/800x600'
+											}
+											alt="thumbnail"
+										/>
 									}
 									title={
 										<Grid
@@ -255,24 +290,30 @@ export default function Dash() {
 													marginBottom: 0,
 												}}
 											>
-												News 1
+												{news[0]?.title}
 											</h2>
-											<h5>1 April 2021, 9:00PM</h5>
+											<h5>{eventdate(news[0]?.date_created) + "  " + newstime(news[0]?.date_created)}</h5>
 										</Grid>
 									}
 									description={
-										<h3>This is the description</h3>
+										<h3>{news[0]?.overview}</h3>
 									}
 								/>
 							</Card>
 							<br></br>
 							<Card
 								style={{ width: 'xs' }}
-								actions={[<ReadOutlined />]}
+								actions={[<ReadOutlined onClick={() => { history.push({ pathname: `/newsroom/n/${news[1]._id}`, state: news[1]._id }) }} />]}
 							>
 								<Meta
 									avatar={
-										<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+										<Avatar
+											src={
+												news[1]?.thumbnail ??
+												'https://source.unsplash.com/random/800x600'
+											}
+											alt="thumbnail"
+										/>
 									}
 									title={
 										<Grid
@@ -286,13 +327,13 @@ export default function Dash() {
 													marginBottom: 0,
 												}}
 											>
-												News 2
+												{news[1]?.title}
 											</h2>
-											<h5>1 April 2021, 9:00PM</h5>
+											<h5>{eventdate(news[1]?.date_created) + "  " + newstime(news[1]?.date_created)}</h5>
 										</Grid>
 									}
 									description={
-										<h3>This is the description</h3>
+										<h3>{news[1]?.overview}</h3>
 									}
 								/>
 							</Card>
@@ -301,10 +342,10 @@ export default function Dash() {
 								direction="column"
 								alignItems="flex-end"
 							>
-								<Button type="link">See More</Button>
+								<Button type="link" href='/newsroom'>See More</Button>
 							</Grid>
 						</Grid>
-						<Grid item xs={7}>
+						<Grid item xs={7} style={{ marginTop: "5%" }}>
 							<List
 								itemLayout="vertical"
 								style={{ marginTop: -90 }}
@@ -343,13 +384,13 @@ export default function Dash() {
 													}}
 												></Button>,
 											]}
-											extra={
+											/*extra={
 												<img
 													width={272}
 													alt="logo"
 													src="https://englishtribuneimages.blob.core.windows.net/gallary-content/2020/9/2020_9$largeimg_1283253066.jpg"
 												/>
-											}
+											}*/
 										>
 											<List.Item.Meta
 												avatar={
@@ -409,7 +450,8 @@ export default function Dash() {
 								<h1>Events</h1>
 								<div className="news_line"></div>
 								<br></br>
-								<Card style={{ width: 'xs' }} actions={[]}>
+								<Card hoverable style={{ width: 'xs' }} actions={[]} onClick={() => (history.push({ pathname: `/events/e/${events[0]?.event_id}`, state: events[0]?._id }))}
+								>
 									<Meta
 										avatar={
 											<CalendarTwoTone
@@ -421,7 +463,7 @@ export default function Dash() {
 										}
 										title={
 											<h2 style={{ color: 'orange' }}>
-												Alumni Meet 1<br></br>
+												{events[0]?.event_name}<br></br>
 											</h2>
 										}
 									/>
@@ -433,18 +475,18 @@ export default function Dash() {
 													container
 													direction="column"
 												>
-													<h3>Date : 1 April 2021</h3>
+													<h3>Date : {eventdate(events[0]?.event_start)}</h3>
 													<h3>
-														Event Name : Event 1
+														Category : {events[0]?.event_category}
 													</h3>
-													<h3>Venue : IIT Ropar</h3>
+													<h3>Venue : {events[0]?.event_venue}</h3>
 												</Grid>
 											}
 										/>
 									</Card>
 								</Card>
 								<br></br>
-								<Card style={{ width: 'xs' }} actions={[]}>
+								<Card hoverable style={{ width: 'xs' }} actions={[]} onClick={() => (history.push({ pathname: `/events/e/${events[1]?.event_id}`, state: events[1]?._id }))}>
 									<Meta
 										avatar={
 											<CalendarTwoTone
@@ -456,7 +498,7 @@ export default function Dash() {
 										}
 										title={
 											<h2 style={{ color: 'orange' }}>
-												Alumni Meet 2<br></br>
+												{events[1]?.event_name}<br></br>
 											</h2>
 										}
 									/>
@@ -468,11 +510,11 @@ export default function Dash() {
 													container
 													direction="column"
 												>
-													<h3>Date : 1 April 2021</h3>
+													<h3>Date : {eventdate(events[1]?.event_start)}</h3>
 													<h3>
-														Event Name : Event 2
+														Category : {events[1]?.event_category}
 													</h3>
-													<h3>Venue : IIT Ropar</h3>
+													<h3>Venue : {events[1]?.event_venue}</h3>
 												</Grid>
 											}
 										/>
@@ -483,7 +525,7 @@ export default function Dash() {
 									direction="column"
 									alignItems="flex-end"
 								>
-									<Button type="link">See More</Button>
+									<Button type="link" href='/events'>See More</Button>
 								</Grid>
 							</Grid>
 						</Grid>

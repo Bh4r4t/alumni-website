@@ -1,0 +1,10 @@
+runtime: nodejs10
+handlers:
+  - url: /
+    static_files: build/index.html
+    upload: build/index.html
+  - url: /
+    static_dir: build
+
+env_variables:
+  REACT_APP_SERVER_URL: "http://localhost:3000"

@@ -110,7 +110,7 @@ app.get('/conf_recent', async (_req: Request, res: Response) => {
         const news = await News.find({ pending: false }, [], {
             limit: 3,
             sort: {
-                event_date: 1, // asc on event date
+                date_created: -1, // asc on event date
             },
         });
         res.send({ news: news });

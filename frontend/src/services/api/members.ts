@@ -9,3 +9,6 @@ export const getMembers = async (q: string, token: any) =>
 
 export const getAllComps = async (token: any) =>
 	await axios.get(`${apiURL}/members/all_comps`, reqOptions(token));
+
+export const getAllSkills = async (token: any) =>
+	await axios.get(`${apiURL}/members/all_skills`, reqOptions(token));
