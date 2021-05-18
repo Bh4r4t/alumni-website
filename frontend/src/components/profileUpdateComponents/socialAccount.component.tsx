@@ -30,7 +30,7 @@ function SocialAccountMenu(props: any) {
 					/>{' '}
 					<span>Facebook</span>{' '}
 				</div>
-				<Button>Connect</Button>
+				<Button disabled>Connect</Button>
 			</div>
 			<Divider />
 			<div className="socialAccount-connect">
@@ -44,7 +44,7 @@ function SocialAccountMenu(props: any) {
 					/>{' '}
 					<span>linkedIn</span>{' '}
 				</div>
-				<Button>Connect</Button>
+				<Button disabled>Connect</Button>
 			</div>
 			<Divider />
 			<div className="socialAccount-connect">
@@ -58,7 +58,7 @@ function SocialAccountMenu(props: any) {
 					/>{' '}
 					<span>Google</span>{' '}
 				</div>
-				<Button>Connect</Button>
+				<Button disabled>Connect</Button>
 			</div>
 			<Divider />
 		</div>

@@ -1,7 +1,80 @@
-import { Form, Input, Button, Select, InputNumber } from 'antd';
+import { Form, Input, Button, InputNumber, message } from 'antd';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import {
+	addWorkExp,
+	updateOverallExp,
+	updateProfessHeadline,
+} from '../../services/api/user';
 
 function ProfessionalDetails(props: any) {
-	const handleSubmit = () => {};
+	const [isLoading, setLoading] = useState(false);
+	const user = useSelector((state: any) => state.authReducer.user);
+	const handleSubmitProfHeadForm = (payload: any) => {
+		setLoading(true);
+		updateProfessHeadline(payload, user.token)
+			.then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					setLoading(false);
+					message.success(
+						'Successfully updated your professional headline'
+					);
+				}
+			})
+			.catch((err: any) => {
+				message.error(err.message);
+				console.log(err.message);
+				setLoading(false);
+			});
+	};
+	const handleSubmitOverallExpForm = (payload: any) => {
+		setLoading(true);
+		const roles = payload?.roles
+			?.split(',')
+			.map((item: any) => item.trim());
+
+		const skills = payload?.skills
+			?.split(',')
+			.map((item: any) => item.trim());
+		updateOverallExp(
+			{ ...payload, skills: skills, roles: roles },
+			user.token
+		)
+			.then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					setLoading(false);
+					message.success(
+						'Successfully updated your overall experience details'
+					);
+				}
+			})
+			.catch((err: any) => {
+				message.error(err.message);
+				console.log(err.message);
+				setLoading(false);
+			});
+	};
+	const handleSubmitWorkExpForm = (payload: any) => {
+		setLoading(true);
+		addWorkExp(payload, user.token)
+			.then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					message.success('Successfully updated work experience.');
+					setLoading(false);
+				}
+			})
+			.catch((err: any) => {
+				message.error(err.message);
+				console.log(err.message);
+				setLoading(false);
+			});
+	};
 	const formItemLayout = {
 		labelCol: {
 			xs: { span: 24 },
@@ -30,25 +103,27 @@ function ProfessionalDetails(props: any) {
 				form={profHeadForm}
 				name="profesionalHeadForm"
 				{...formItemLayout}
-				onFinish={handleSubmit}
+				onFinish={handleSubmitProfHeadForm}
 				labelAlign="left"
 				initialValues={{ prefix: '91' }}
 				scrollToFirstError
 			>
-				<Form.Item name="prof_head" label="Professional headline">
+				<Form.Item
+					initialValue={props?.professional_info?.prof_head}
+					name="prof_head"
+					label="Professional headline"
+					help="This appears on your profile card and immediately below
+					your name on profile. A good headline tells others about
+					you and helps to reach for right connections."
+				>
 					<Input placeholder="Ex.: SDE II at Amazon" />
-					<span style={{ color: 'rgb(160, 160, 160)' }}>
-						This appears on your profile card and immediately below
-						your name on profile. A good headline tells others about
-						you and helps to reach for right connections.
-					</span>
 				</Form.Item>
 				<div className="signupCreate-form-submit-button-div">
 					<Form.Item className="profileupdate-form-submit">
 						<Button
 							type="primary"
 							htmlType="submit"
-							loading={props.isLoading}
+							loading={isLoading}
 						>
 							Update
 						</Button>
@@ -67,21 +142,32 @@ function ProfessionalDetails(props: any) {
 				form={overallExpForm}
 				name="overallExpForm"
 				{...formItemLayout}
-				onFinish={handleSubmit}
+				onFinish={handleSubmitOverallExpForm}
 				labelAlign="left"
 				initialValues={{ prefix: '91' }}
 				scrollToFirstError
 			>
-				<Form.Item name="total_exp" label="Total Experience">
+				<Form.Item
+					initialValue={props?.professional_info?.total_exp}
+					name="total_exp"
+					label="Total Experience"
+				>
 					<InputNumber placeholder="years" />
 				</Form.Item>
-				<Form.Item name="roles" label="Roles played">
+				<Form.Item
+					initialValue={props?.professional_info?.roles?.join(', ')}
+					name="roles"
+					label="Roles played"
+					help="Enter multiple comma seperated fields"
+				>
 					<Input placeholder="Ex: SDE, SDM" />
-					<span style={{ color: 'rgb(160, 160, 160)' }}>
-						Enter multiple comma seperated fields
-					</span>
 				</Form.Item>
-				<Form.Item name="skills" label="Skills">
+				<Form.Item
+					initialValue={props?.professional_info?.skills?.join('. ')}
+					name="skills"
+					label="Skills"
+					help="Enter multiple comma seperated fields"
+				>
 					<Input placeholder="skill_1, skill_2" />
 				</Form.Item>
 				<div className="signupCreate-form-submit-button-div">
@@ -89,7 +175,7 @@ function ProfessionalDetails(props: any) {
 						<Button
 							type="primary"
 							htmlType="submit"
-							loading={props.isLoading}
+							loading={isLoading}
 						>
 							Update
 						</Button>
@@ -107,7 +193,7 @@ function ProfessionalDetails(props: any) {
 				form={workExpForm}
 				name="workExpForm"
 				{...formItemLayout}
-				onFinish={handleSubmit}
+				onFinish={handleSubmitWorkExpForm}
 				labelAlign="left"
 				initialValues={{ prefix: '91' }}
 				scrollToFirstError
@@ -129,7 +215,7 @@ function ProfessionalDetails(props: any) {
 						<Button
 							type="primary"
 							htmlType="submit"
-							loading={props.isLoading}
+							loading={isLoading}
 						>
 							Submit
 						</Button>

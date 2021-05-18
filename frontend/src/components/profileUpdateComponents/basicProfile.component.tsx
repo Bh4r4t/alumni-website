@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	Form,
 	Input,
@@ -7,29 +7,44 @@ import {
 	DatePicker,
 	Select,
 	AutoComplete,
+	message,
 } from 'antd';
 import codes from '../../assets/country_codes';
+import { getMyInfo, updateBasic } from '../../services/api/user';
+import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 function BasicProfileMenu(props: any) {
+	const user = useSelector((state: any) => state.authReducer.user);
 	const [form] = Form.useForm();
 	const [, setSalut] = useState();
 	const [ccode, setCCode] = useState('');
-	const salutation_dict: { [id: string]: string } = {
-		1: 'Mr',
-		2: 'Ms',
-		3: 'Dr',
-		4: 'Prof',
-		5: 'Other',
-	};
 	const [, setGender] = useState();
-	const gender_dict: { [id: string]: string } = {
-		1: 'Male',
-		2: 'Female',
-		3: 'Prefer not to say',
-	};
+
 	const { Option } = Select;
 
-	const handleSubmit = () => {};
+	const handleSubmit = (payload: any) => {
+		const dob = payload.date_of_birth.unix() * 1000;
+		updateBasic(
+			{
+				...payload,
+				date_of_birth: dob,
+			},
+			user.token
+		)
+			.then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					message.success('Successfully Updated Basic info.');
+				}
+			})
+			.catch((err: any) => {
+				message.error(err.message);
+				console.log(err.message);
+			});
+	};
+
 	const formItemLayout = {
 		labelCol: {
 			xs: { span: 24 },
@@ -59,20 +74,25 @@ function BasicProfileMenu(props: any) {
 					initialValues={{ prefix: '91' }}
 					scrollToFirstError
 				>
-					<Form.Item name="salutation" label="Salutation">
+					<Form.Item
+						initialValue={props?.basic_info?.salutation}
+						name="salutation"
+						label="Salutation"
+					>
 						<Radio.Group
 							onChange={(e) => {
 								setSalut(e.target.value);
 							}}
 						>
-							<Radio value={1}>Mr</Radio>
-							<Radio value={2}>Ms</Radio>
-							<Radio value={3}>Dr</Radio>
-							<Radio value={4}>Prof</Radio>
-							<Radio value={5}>Other</Radio>
+							<Radio value={'Mr'}>Mr</Radio>
+							<Radio value={'Ms'}>Ms</Radio>
+							<Radio value={'Dr'}>Dr</Radio>
+							<Radio value={'Prof'}>Prof</Radio>
+							<Radio value={'Other'}>Other</Radio>
 						</Radio.Group>
 					</Form.Item>
 					<Form.Item
+						initialValue={props?.basic_info?.first_name}
 						name="first_name"
 						label="First Name"
 						rules={[
@@ -86,6 +106,7 @@ function BasicProfileMenu(props: any) {
 					</Form.Item>
 
 					<Form.Item
+						initialValue={props?.basic_info.last_name}
 						name="last_name"
 						label="Last Name"
 						rules={[
@@ -98,17 +119,33 @@ function BasicProfileMenu(props: any) {
 						<Input placeholder="Last Name" />
 					</Form.Item>
 
-					<Form.Item name="gender" label="Gender">
+					<Form.Item
+						initialValue={props?.basic_info?.gender}
+						name="gender"
+						label="Gender"
+					>
 						<Radio.Group
 							onChange={(e) => setGender(e.target.value)}
 						>
-							<Radio value={1}>Male</Radio>
-							<Radio value={2}>Female</Radio>
-							<Radio value={3}>Prefer not to say</Radio>
+							<Radio value={'Male'}>Male</Radio>
+							<Radio value={'Female'}>Female</Radio>
+							<Radio value={'Prefer not to say'}>
+								Prefer not to say
+							</Radio>
 						</Radio.Group>
 					</Form.Item>
 
-					<Form.Item name="date_of_birth" label="Date of Birth">
+					<Form.Item
+						initialValue={
+							props?.basic_info?.date_of_birth
+								? moment.unix(
+										props?.basic_info?.date_of_birth / 1000
+								  )
+								: null
+						}
+						name="date_of_birth"
+						label="Date of Birth"
+					>
 						<DatePicker />
 					</Form.Item>
 					<Form.Item
@@ -151,6 +188,7 @@ function BasicProfileMenu(props: any) {
 						</div>
 					</Form.Item>
 					<Form.Item
+						initialValue={props?.location_contact_info.current_city}
 						name="current_city"
 						label="Current City"
 						rules={[

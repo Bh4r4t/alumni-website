@@ -21,8 +21,6 @@ import { getRecentPosts } from '../../services/api/newsroom';
 dotenv.config();
 export let url = process.env.REACT_APP_SERVER_URL;
 
-
-
 const { TextArea } = Input;
 const { Meta } = Card;
 
@@ -60,7 +58,6 @@ const props = {
 	},
 	onChange(info: any) {
 		if (info.file.status !== 'uploading') {
-			console.log(info.file, info.fileList);
 		}
 		if (info.file.status === 'done') {
 			message.success(`${info.file.name} file uploaded successfully`);
@@ -87,7 +84,6 @@ const initialValues = {
 
 export default function Dash() {
 	const global_state = useSelector((state: any) => state.authReducer.user);
-	console.log(global_state.token);
 	const [post_des, setpost_des] = useState('');
 	const [likechange, setlikechange] = useState(false);
 	const [refresh, setrefresh] = useState(false);
@@ -100,7 +96,6 @@ export default function Dash() {
 	};
 
 	const handleLikeClick = (post_id: any) => {
-		console.log(post_id);
 		axios
 			.post(
 				`${url}/posts/add_likes`,
@@ -117,7 +112,6 @@ export default function Dash() {
 			)
 			.then((response) => {
 				setlikechange(!likechange);
-				console.log(response.data);
 			})
 			.catch((error) => console.log(error));
 	};
@@ -203,7 +197,6 @@ export default function Dash() {
 				},
 			})
 			.then((response) => {
-				console.log(response.data);
 				setposts(response.data);
 			});
 	}, [likechange, refresh]);
@@ -220,7 +213,6 @@ export default function Dash() {
 	}, [refresh, likechange])
 
 	const onTabChange = (key: any, type: any) => {
-		console.log(key, type);
 		setvalues({
 			...values,
 			[type]: key,
@@ -351,9 +343,7 @@ export default function Dash() {
 								style={{ marginTop: -90 }}
 								size="large"
 								pagination={{
-									onChange: (page) => {
-										console.log(page);
-									},
+									onChange: (page) => {},
 									pageSize: 7,
 								}}
 								dataSource={posts}

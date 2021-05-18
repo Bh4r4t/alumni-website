@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Menu, Card, Row, Col, Grid } from 'antd';
+import { Menu, Card, Row, Col, Grid, Spin } from 'antd';
 import NewsItem from '../../components/NewsItem/newsItem.component';
 import { getConfPosts } from '../../services/api/newsroom';
 import './newsroom.css';
@@ -67,7 +67,7 @@ function GetAllCards() {
 	}, []);
 	return (
 		<div className="newsItems">
-			{newsItems &&
+			{newsItems ? (
 				newsItems.map((item: any) => (
 					<NewsItem
 						id={item._id}
@@ -75,7 +75,10 @@ function GetAllCards() {
 						title={item.title}
 						overview={item.overview}
 					/>
-				))}
+				))
+			) : (
+				<Spin />
+			)}
 		</div>
 	);
 }

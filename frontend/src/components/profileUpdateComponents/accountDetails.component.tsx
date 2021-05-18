@@ -1,8 +1,11 @@
-import { Form, Input, Button, Divider, Modal } from 'antd';
+import { Form, Input, Button, Divider, Modal, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useState } from 'react';
+import { changePass, changePE, removeMe } from '../../services/api/user';
+import { useSelector } from 'react-redux';
 
 function AccountDetails(props: any) {
+	const user = useSelector((state: any) => state.authReducer.user);
 	const [error, setError] = useState('');
 	const [updateEmail, setUpdateEmail] = useState(false);
 	const handleSubmit = () => {};
@@ -18,17 +21,37 @@ function AccountDetails(props: any) {
 	};
 
 	const updateLoginIdFormSubmit = (payload: any) => {
-		try {
-		} catch (err) {
-			setError(err.message);
-		}
+		changePE(payload, user.token)
+			.then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					message.success(
+						'Successfully Raised a request to change primary Email Id'
+					);
+					window.location.reload();
+				}
+			})
+			.catch((err: any) => {
+				message.error(err.message);
+				console.log(err.message);
+			});
 	};
 
 	const updatePassFormSubmit = (payload: any) => {
-		try {
-		} catch (err) {
-			setError(err.message);
-		}
+		changePass(payload, user.token)
+			.then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					message.success('Successfully Changed your password');
+					window.location.reload();
+				}
+			})
+			.catch((err: any) => {
+				message.error(err.message);
+				console.log(err.message);
+			});
 	};
 
 	const [updateLoginIdForm] = Form.useForm();
@@ -50,11 +73,26 @@ function AccountDetails(props: any) {
 				scrollToFirstError
 			>
 				<Form.Item
-					initialValue={'test@email.com'}
+					initialValue={props?.primary_email}
 					className="signupCreate-form-email"
 					name="email"
 					tooltip="This email will be used as login email Id"
 					label="Primary Email Id"
+					help={
+						!updateEmail ? (
+							<span style={{ color: 'rgb(160, 160, 160)' }}>
+								<a onClick={() => setUpdateEmail(true)}>
+									Click here
+								</a>{' '}
+								to update login Email Id
+							</span>
+						) : (
+							<span style={{ color: 'rgb(160, 160, 160)' }}>
+								This action will request the admin to review and
+								verify your updated email Id.
+							</span>
+						)
+					}
 					rules={[
 						{
 							type: 'email',
@@ -64,20 +102,8 @@ function AccountDetails(props: any) {
 					]}
 				>
 					<Input disabled={!updateEmail} />
-					{!updateEmail ? (
-						<span style={{ color: 'rgb(160, 160, 160)' }}>
-							<a onClick={() => setUpdateEmail(true)}>
-								Click here
-							</a>{' '}
-							to update login Email Id
-						</span>
-					) : (
-						<span style={{ color: 'rgb(160, 160, 160)' }}>
-							This action will request the admin to review and
-							verify your updated email Id.
-						</span>
-					)}
 				</Form.Item>
+
 				{updateEmail ? (
 					<div className="signupCreate-form-submit-button-div">
 						<Form.Item className="profileupdate-form-submit">
@@ -115,7 +141,7 @@ function AccountDetails(props: any) {
 				form={updatePassForm}
 				name="updatePassForm"
 				{...formItemLayout}
-				onFinish={handleSubmit}
+				onFinish={updatePassFormSubmit}
 				labelAlign="left"
 				initialValues={{ prefix: '91' }}
 				scrollToFirstError
@@ -206,16 +232,36 @@ function AccountDetails(props: any) {
 	);
 }
 
-export function ModalConfirm() {
-	// const handleOk = () => {
-	// 	alert('hello');
-	// };
+export function ModalConfirm(token: any) {
+	const handleOk = () => {
+		removeMe({}, token)
+			.then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					message.success(
+						'Successfully Rasised a request to remove your account'
+					);
+				}
+			})
+			.catch((err: any) => {
+				message.error(err.message);
+				console.log(err.message);
+			});
+	};
 	return Modal.confirm({
 		title: 'Delete Account',
 		icon: <ExclamationCircleOutlined />,
-		content: 'Press confirm to delete your account',
+		content: (
+			<div>
+				<p>Press confirm to delete your account</p>
+				<p> It is an irreverrsible step</p>
+			</div>
+		),
 		okText: 'Confirm',
-		// onOk: handleOk,
+		onOk() {
+			handleOk();
+		},
 		cancelText: 'Cancel',
 		okButtonProps: { danger: true },
 	});

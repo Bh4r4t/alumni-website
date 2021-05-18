@@ -22,7 +22,6 @@ function EventDesc(_props: any) {
 	const location = useLocation();
 	const history = useHistory();
 	const [event, setEvent] = useState<any>(null);
-	console.log(location);
 
 	const eventId: string = location.state as string;
 	const { md } = useBreakpoint();

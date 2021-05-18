@@ -29,6 +29,7 @@
 .ant-card.ant-card-bordered.events-items-card {
 	margin: 10px;
 	background-color: #eff0f1;
+	height: 100%;
 }
 
 .ant-card.ant-card-bordered.events-items-card .ant-card-body {

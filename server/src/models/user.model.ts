@@ -11,7 +11,7 @@ export interface IUser extends Document {
     educational_info: Array<IUserEducationalInfo>;
     membership_type: String;
     attachments: Array<IUserAttachments>;
-    registered_user: boolean;
+    registered_user: Boolean;
     primary_email: String;
     password: String;
     status: String;
@@ -19,6 +19,7 @@ export interface IUser extends Document {
     posts?: Array<String> | Array<Ipost>;
     events?: Array<String> | Array<IEvent>;
     news?: Array<String> | Array<INews>;
+    profileImg?: IProfileImg;
 }
 
 export enum e_salutation {
@@ -146,6 +147,13 @@ export interface IUserAttachments {
     show_on_profile?: boolean;
 }
 
+export interface IProfileImg {
+    name?: String;
+    file_type?: String;
+    data: String;
+    size?: String;
+}
+
 const userSchema: Schema = new Schema({
     isAdmin: { type: Boolean, default: false, required: true },
     basic_info: {
@@ -253,7 +261,7 @@ const userSchema: Schema = new Schema({
             show_on_profile: { type: Boolean, default: true },
         },
     ],
-    registered_user: { type: String, default: false },
+    registered_user: { type: Boolean, default: false },
     status: { type: String, default: 'pending' },
     primary_email: { type: String, unique: true }, // unique id
     password: String,
@@ -262,6 +270,12 @@ const userSchema: Schema = new Schema({
     events: [{ type: Schema.Types.ObjectId, ref: 'events' }],
     posts: [{ type: Schema.Types.ObjectId, ref: 'posts' }],
     news: [{ type: Schema.Types.ObjectId, ref: 'news' }],
+    profileImg: {
+        name: String,
+        file_type: String,
+        data: { type: String, required: true },
+        size: String,
+    },
 });
 
 export default mongoose.model<IUser>('Users', userSchema, 'users');
