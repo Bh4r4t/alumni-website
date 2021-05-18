@@ -12,3 +12,6 @@ export const getAllComps = async (token: any) =>
 
 export const getAllSkills = async (token: any) =>
 	await axios.get(`${apiURL}/members/all_skills`, reqOptions(token));
+
+export const getAllRoles = async (token: any) =>
+	await axios.get(`${apiURL}/members/all_roles`, reqOptions(token));

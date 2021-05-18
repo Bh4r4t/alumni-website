@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import './Admindashboard.css';
 import { Button } from 'antd';
 import { Table, Tag, Space } from 'antd';
-import EventDescription from './EventDescription';
 import {
 	confirmNews,
 	cancelNews,
@@ -147,7 +146,7 @@ export default function PendingNews() {
 	}, [refresh]);
 
 	return (
-		<div className="admain-contain">
+		<div className="admin-contain">
 			<div className="addash-contain">
 				<Row>
 					<Col span={6}>

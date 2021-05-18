@@ -118,13 +118,15 @@ function getCurrentMenu(menu: number, props: any) {
 		case 5:
 			return <ProfessionalMenu {...props} />;
 		case 6:
+			return null;
 		case 7:
 			return <AttachmentsMenu />;
 		case 8:
-			return <AccountDetailMenu />;
+			return <AccountDetailMenu {...props} />;
 		case 9:
 			return <SocialAccountMenu />;
 		case 10:
+			return null;
 		default:
 			return null;
 	}

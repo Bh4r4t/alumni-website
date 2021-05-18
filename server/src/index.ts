@@ -12,12 +12,13 @@ import members from './routes/members';
 import connectDB from './db/index';
 import job from './routes/job';
 import posts from './routes/posts';
+import path from 'path';
 
 dotenv.config();
 const app = express();
 app.use(cookieParser());
 
-app.use('../uploads', express.static('uploads'));
+app.use(express.static(path.join(__dirname, 'build')));
 
 // middleware
 app.use(
@@ -40,26 +41,31 @@ app.use(
 connectDB(process.env.DBURL as string);
 
 // auth routes
-app.use('/auth', auth);
+app.use('/api/auth', auth);
 // refresh_token route
-app.use('/refresh_token', refreshToken);
+app.use('/api/refresh_token', refreshToken);
 // user routes
-app.use('/user', user);
+app.use('/api/user', user);
 // exec committee view routes
-app.use('/execCommittee', execCommittee);
+app.use('/api/execCommittee', execCommittee);
 // events view routes
-app.use('/events', events);
+app.use('/api/events', events);
 // newsroom view routes
-app.use('/newsroom', newsRoom);
+app.use('/api/newsroom', newsRoom);
 // jobs view routes
-app.use('/jobs', job);
+app.use('/api/jobs', job);
 // members view routes
-app.use('/members', members);
+app.use('/api/members', members);
 
-app.use('/posts', posts);
+app.use('/api/posts', posts);
 
-app.get('/', (_req: Request, res: Response) => {
-    res.send({ error: false });
+// 404-page not found
+app.get('/api/*', (_req: Request, res: Response) => {
+    res.status(404).send("Can't find that for webapp");
+});
+
+app.get('*', (_req: Request, res: Response) => {
+    res.sendFile(path.join(__dirname, 'build/index.html'));
 });
 
 app.listen(process.env.PORT ?? 3000, () => {

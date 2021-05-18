@@ -88,7 +88,7 @@ export default function Dash() {
 	const [likechange, setlikechange] = useState(false);
 	const [refresh, setrefresh] = useState(false);
 	const [events, setevents] = useState<any>([]);
-	const [news, setnews] = useState<any>([])
+	const [news, setnews] = useState<any>([]);
 	const history = useHistory();
 
 	const handlePostChange = (e: any) => {
@@ -151,8 +151,7 @@ export default function Dash() {
 	const contentListNoTitle: { [id: string]: any } = {
 		Make_Post: (
 			<Grid container direction="column">
-				<Grid item xs style={{ marginBottom: "1vh" }}>
-
+				<Grid item xs style={{ marginBottom: '1vh' }}>
 					<MDEditor value={post_des} onChange={setpost_des} />
 				</Grid>
 				<Grid item xs>
@@ -172,12 +171,18 @@ export default function Dash() {
 	const [posts, setposts] = useState<any[]>([]);
 
 	const eventdate = (event_date: any) => {
-		const event_Date = new Date(event_date)
-		return event_Date.getDate() + '-' + (event_Date.getMonth() + 1) + '-' + event_Date.getFullYear()
-	}
+		const event_Date = new Date(event_date);
+		return (
+			event_Date.getDate() +
+			'-' +
+			(event_Date.getMonth() + 1) +
+			'-' +
+			event_Date.getFullYear()
+		);
+	};
 
 	const newstime = (newsdate: any) => {
-		const news_date = new Date(newsdate)
+		const news_date = new Date(newsdate);
 		var hours = news_date.getHours();
 		var minutes = news_date.getMinutes() as number;
 		var ampm = hours >= 12 ? 'pm' : 'am';
@@ -185,7 +190,7 @@ export default function Dash() {
 		hours = hours ? hours : 12; // the hour '0' should be '12'
 		var min2 = (minutes < 10 ? '0' + minutes : minutes) as string;
 		return hours + ':' + min2 + ' ' + ampm;
-	}
+	};
 
 	useEffect(() => {
 		axios
@@ -202,15 +207,13 @@ export default function Dash() {
 	}, [likechange, refresh]);
 
 	useEffect(() => {
-		getConfRecentEvents()
-			.then(res => {
-				setevents(res.data.events)
-				getRecentPosts()
-					.then(resp => {
-						setnews(resp?.data?.news)
-					})
-			})
-	}, [refresh, likechange])
+		getConfRecentEvents().then((res) => {
+			setevents(res.data.events);
+			getRecentPosts().then((resp) => {
+				setnews(resp?.data?.news);
+			});
+		});
+	}, [refresh, likechange]);
 
 	const onTabChange = (key: any, type: any) => {
 		setvalues({
@@ -258,7 +261,16 @@ export default function Dash() {
 							<br></br>
 							<Card
 								style={{ width: 'xs' }}
-								actions={[<ReadOutlined onClick={() => { history.push({ pathname: `/newsroom/n/${news[0]._id}`, state: news[0]._id }) }} />]}
+								actions={[
+									<ReadOutlined
+										onClick={() => {
+											history.push({
+												pathname: `/newsroom/n/${news[0]._id}`,
+												state: news[0]._id,
+											});
+										}}
+									/>,
+								]}
 							>
 								<Meta
 									avatar={
@@ -284,18 +296,33 @@ export default function Dash() {
 											>
 												{news[0]?.title}
 											</h2>
-											<h5>{eventdate(news[0]?.date_created) + "  " + newstime(news[0]?.date_created)}</h5>
+											<h5>
+												{eventdate(
+													news[0]?.date_created
+												) +
+													'  ' +
+													newstime(
+														news[0]?.date_created
+													)}
+											</h5>
 										</Grid>
 									}
-									description={
-										<h3>{news[0]?.overview}</h3>
-									}
+									description={<h3>{news[0]?.overview}</h3>}
 								/>
 							</Card>
 							<br></br>
 							<Card
 								style={{ width: 'xs' }}
-								actions={[<ReadOutlined onClick={() => { history.push({ pathname: `/newsroom/n/${news[1]._id}`, state: news[1]._id }) }} />]}
+								actions={[
+									<ReadOutlined
+										onClick={() => {
+											history.push({
+												pathname: `/newsroom/n/${news[1]._id}`,
+												state: news[1]._id,
+											});
+										}}
+									/>,
+								]}
 							>
 								<Meta
 									avatar={
@@ -321,12 +348,18 @@ export default function Dash() {
 											>
 												{news[1]?.title}
 											</h2>
-											<h5>{eventdate(news[1]?.date_created) + "  " + newstime(news[1]?.date_created)}</h5>
+											<h5>
+												{eventdate(
+													news[1]?.date_created
+												) +
+													'  ' +
+													newstime(
+														news[1]?.date_created
+													)}
+											</h5>
 										</Grid>
 									}
-									description={
-										<h3>{news[1]?.overview}</h3>
-									}
+									description={<h3>{news[1]?.overview}</h3>}
 								/>
 							</Card>
 							<Grid
@@ -334,10 +367,12 @@ export default function Dash() {
 								direction="column"
 								alignItems="flex-end"
 							>
-								<Button type="link" href='/newsroom'>See More</Button>
+								<Button type="link" href="/newsroom">
+									See More
+								</Button>
 							</Grid>
 						</Grid>
-						<Grid item xs={7} style={{ marginTop: "5%" }}>
+						<Grid item xs={7} style={{ marginTop: '5%' }}>
 							<List
 								itemLayout="vertical"
 								style={{ marginTop: -90 }}
@@ -440,7 +475,16 @@ export default function Dash() {
 								<h1>Events</h1>
 								<div className="news_line"></div>
 								<br></br>
-								<Card hoverable style={{ width: 'xs' }} actions={[]} onClick={() => (history.push({ pathname: `/events/e/${events[0]?.event_id}`, state: events[0]?._id }))}
+								<Card
+									hoverable
+									style={{ width: 'xs' }}
+									actions={[]}
+									onClick={() =>
+										history.push({
+											pathname: `/events/e/${events[0]?.event_id}`,
+											state: events[0]?._id,
+										})
+									}
 								>
 									<Meta
 										avatar={
@@ -453,7 +497,8 @@ export default function Dash() {
 										}
 										title={
 											<h2 style={{ color: 'orange' }}>
-												{events[0]?.event_name}<br></br>
+												{events[0]?.event_name}
+												<br></br>
 											</h2>
 										}
 									/>
@@ -465,18 +510,41 @@ export default function Dash() {
 													container
 													direction="column"
 												>
-													<h3>Date : {eventdate(events[0]?.event_start)}</h3>
 													<h3>
-														Category : {events[0]?.event_category}
+														Date :{' '}
+														{eventdate(
+															events[0]
+																?.event_start
+														)}
 													</h3>
-													<h3>Venue : {events[0]?.event_venue}</h3>
+													<h3>
+														Category :{' '}
+														{
+															events[0]
+																?.event_category
+														}
+													</h3>
+													<h3>
+														Venue :{' '}
+														{events[0]?.event_venue}
+													</h3>
 												</Grid>
 											}
 										/>
 									</Card>
 								</Card>
 								<br></br>
-								<Card hoverable style={{ width: 'xs' }} actions={[]} onClick={() => (history.push({ pathname: `/events/e/${events[1]?.event_id}`, state: events[1]?._id }))}>
+								<Card
+									hoverable
+									style={{ width: 'xs' }}
+									actions={[]}
+									onClick={() =>
+										history.push({
+											pathname: `/events/e/${events[1]?.event_id}`,
+											state: events[1]?._id,
+										})
+									}
+								>
 									<Meta
 										avatar={
 											<CalendarTwoTone
@@ -488,7 +556,8 @@ export default function Dash() {
 										}
 										title={
 											<h2 style={{ color: 'orange' }}>
-												{events[1]?.event_name}<br></br>
+												{events[1]?.event_name}
+												<br></br>
 											</h2>
 										}
 									/>
@@ -500,11 +569,24 @@ export default function Dash() {
 													container
 													direction="column"
 												>
-													<h3>Date : {eventdate(events[1]?.event_start)}</h3>
 													<h3>
-														Category : {events[1]?.event_category}
+														Date :{' '}
+														{eventdate(
+															events[1]
+																?.event_start
+														)}
 													</h3>
-													<h3>Venue : {events[1]?.event_venue}</h3>
+													<h3>
+														Category :{' '}
+														{
+															events[1]
+																?.event_category
+														}
+													</h3>
+													<h3>
+														Venue :{' '}
+														{events[1]?.event_venue}
+													</h3>
 												</Grid>
 											}
 										/>
@@ -515,7 +597,9 @@ export default function Dash() {
 									direction="column"
 									alignItems="flex-end"
 								>
-									<Button type="link" href='/events'>See More</Button>
+									<Button type="link" href="/events">
+										See More
+									</Button>
 								</Grid>
 							</Grid>
 						</Grid>

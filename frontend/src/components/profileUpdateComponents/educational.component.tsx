@@ -83,7 +83,7 @@ function EducationalMenu(props: any) {
 			<div className="eduinfo-card">
 				{eds ? (
 					eds.map((ed: any, idx: any) => (
-						<EduCard {...ed} token={user.token} />
+						<EduCard key={idx} {...ed} token={user.token} />
 					))
 				) : (
 					<Spin />

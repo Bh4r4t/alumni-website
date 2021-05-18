@@ -1,27 +1,71 @@
-import { Row, Col, Grid, Button, Card } from 'antd';
+import { Row, Col, Grid, Button } from 'antd';
 
 import JobCard from '../../components/JobCard/jobCard.component';
-import { Input, Select, } from 'antd';
+import { Input } from 'antd';
 import { useState, useEffect } from 'react';
 import './jobs.css';
 import { useSelector } from 'react-redux';
-import { getJob } from '../../services/api/job';
-
-const { Option } = Select;
+import { getJob, searchJob } from '../../services/api/job';
+import { useLocation } from 'react-router';
 
 const { useBreakpoint } = Grid;
 
-
 function JobSection() {
 	const global_state = useSelector((state: any) => state.authReducer.user);
+	const location: any = useLocation();
+	console.log(location.state);
 	const [jobs, setjobs] = useState([]);
+	const [jobsearch, setjobsearch] = useState({
+		keywords: '',
+		job_location: '',
+		company: '',
+	});
+
 	useEffect(() => {
-		getJob(global_state.token)
-			.then(response => {
-				console.log(response.data)
-				setjobs(response.data.jobs)
+		if (
+			location.state.keywords !== '' ||
+			location.state.company !== '' ||
+			location.state.job_location !== ''
+		) {
+			searchJob(
+				global_state.token,
+				location?.state?.keywords,
+				location?.state?.job_location,
+				location?.state?.company
+			)
+				.then((res: any) => {
+					setjobs(res.data.job);
+				})
+				.catch((err: any) => {
+					console.log(err.message);
+				});
+		} else {
+			getJob(global_state.token).then((response) => {
+				console.log(response.data);
+				setjobs(response.data.jobs);
+			});
+		}
+	}, []);
+
+	const handleInputChange = (e: any) => {
+		setjobsearch({ ...jobsearch, [e.target.id]: e.target.value });
+	};
+
+	const handleSearch = () => {
+		searchJob(
+			global_state.token,
+			jobsearch.keywords,
+			jobsearch.job_location,
+			jobsearch.company
+		)
+			.then((res: any) => {
+				setjobs(res.data.job);
 			})
-	}, [])
+			.catch((err: any) => {
+				console.log(err.message);
+			});
+	};
+
 	const { md } = useBreakpoint();
 	return (
 		<section className="events-section">
@@ -31,45 +75,49 @@ function JobSection() {
 						<h1>Job Board</h1>
 						<hr />
 					</div>
-
 				</Row>
 
-				<Row justify="end" style={{marginBottom:20}}>
-					<Button type="primary" htmlType="submit" href="/postjob">
-						+ Post Job/Internship
-                </Button>
-
-				</Row>
 				<Row>
 					<Col xs={24} style={{ marginLeft: 10, marginBottom: 50 }}>
 						<span>
 							<Input
 								type="text"
 								placeholder="Search Keywords"
+								id="keywords"
+								onChange={handleInputChange}
 								style={{ width: 200, margin: '0' }}
 							/>
 							<Input
 								size="large"
 								style={{ width: 200, margin: '0 8px' }}
+								onChange={handleInputChange}
+								id="job_location"
 								placeholder="Location"
-							>
-
-							</Input>
-							
+							></Input>
 
 							<Input
 								size="large"
 								style={{ width: 200, margin: '0 8px' }}
+								onChange={handleInputChange}
+								id="company"
 								placeholder="Company"
+							></Input>
+
+							<Button
+								style={{
+									width: 200,
+									margin: '0px 5px',
+									backgroundColor: 'green',
+									color: 'white',
+									fontSize: '2vh',
+									fontWeight: 500,
+								}}
+								size="large"
+								onClick={handleSearch}
 							>
-
-							</Input>
-
-							<Button style={{ width: 200, margin: '0px 5px', backgroundColor: "green", color: "white", fontSize: "2vh", fontWeight: 500 }} size="large">
-								SEARCH</Button>
-
+								SEARCH
+							</Button>
 						</span>
-
 					</Col>
 				</Row>
 				<Row className="events-section-items-row">
@@ -81,14 +129,10 @@ function JobSection() {
 							<JobCard job={job_element} />
 						</Col>
 					))}
-
 				</Row>
-
-
 			</div>
 		</section>
 	);
 }
-
 
 export default JobSection;

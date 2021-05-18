@@ -25,7 +25,7 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 	const user_name =
 		username.length > 8 ? username.slice(0, 8) + '...' : username;
 	const { md } = useBreakpoint();
-	const [user, setuser] = useState<any>();
+	const [user, setUser] = useState<any>();
 	const global_state = useSelector((state: any) => state.authReducer.user);
 	useEffect(() => {
 		axios
@@ -35,9 +35,14 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 					authorization: 'Bearer ' + global_state.token,
 				},
 			})
-			.then((response) => {
-				setuser(response.data);
-			});
+			.then((res) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					setUser(res?.data?.user);
+				}
+			})
+			.catch((err: any) => console.log(err.message));
 	}, []);
 	const home = (
 		<Link to="/">
@@ -113,16 +118,19 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 
 	const menu = (
 		<Menu>
+			{user?.isAdmin && (
+				<Menu.Item>
+					<Link to="/admin_dashboard">Admin Panel</Link>
+				</Menu.Item>
+			)}
 			<Menu.Item>
-				<Link rel="noopener noreferrer" to="/admin_dashboard">
-					Admin Panel
-				</Link>
+				<Link to="/profile">Profile Page</Link>
 			</Menu.Item>
 		</Menu>
 	);
 
 	const profile = (
-		<Link to="/profile">
+		<>
 			<AccountBoxTwoToneIcon
 				style={{
 					fontSize: 35,
@@ -130,24 +138,19 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 				}}
 			/>
 			{user_name}
-		</Link>
+		</>
 	);
-	var userprofile: any;
-	if (user?.isAdmin) {
-		userprofile = (
-			<Dropdown overlay={menu}>
-				<Link className="ant-dropdown-link" to="">
+
+	const profiledd = (
+		<Dropdown overlay={menu} trigger={['click']}>
+			<div className="ant-dropdown-link" style={{ cursor: 'pointer' }}>
+				<>
 					{profile} <DownOutlined />
-				</Link>
-			</Dropdown>
-		);
-	} else {
-		userprofile = (
-			<Link className="ant-dropdown-link" to="">
-				{profile}
-			</Link>
-		);
-	}
+				</>
+			</div>
+		</Dropdown>
+	);
+
 	return !md ? (
 		// <Affix offsetTop={0} className="privatenav-block-affix">
 		<nav className="privatenav">
@@ -175,19 +178,19 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 					</Col>
 					<Col span={24} className="privatenav-block1">
 						<Col span={12} className="private-block1-item">
-							<Badge count={5}>
-								<Link to="" style={{ color: 'black' }}>
-									<NotificationsNoneRoundedIcon />
-								</Link>
+							<Badge>
+								{/* <Link to="" style={{ color: 'black' }}> */}
+								<NotificationsNoneRoundedIcon />
+								{/* </Link> */}
 							</Badge>
-							<Badge count={5}>
-								<Link to="" style={{ color: 'black' }}>
-									<MailOutlineRoundedIcon />
-								</Link>
+							<Badge count={0}>
+								{/* <Link to="" style={{ color: 'black' }}> */}
+								<MailOutlineRoundedIcon />
+								{/* </Link> */}
 							</Badge>
 						</Col>
 						<Col span={12} className="private-block1-item">
-							{userprofile}
+							{profiledd}
 						</Col>
 					</Col>
 				</Col>
@@ -219,19 +222,19 @@ const PrivateNav: React.FC<{ username: string }> = ({ username }) => {
 						</Col>
 						<Col span={6} className="privatenav-block-item">
 							<Col span={12}>
-								<Badge count={5}>
-									<Link to="" style={{ color: 'black' }}>
-										<NotificationsNoneRoundedIcon />
-									</Link>
+								<Badge count={0}>
+									{/* <Link to="" style={{ color: 'black' }}> */}
+									<NotificationsNoneRoundedIcon />
+									{/* </Link> */}
 								</Badge>
-								<Badge count={5}>
-									<Link to="" style={{ color: 'black' }}>
-										<MailOutlineRoundedIcon />
-									</Link>
+								<Badge count={0}>
+									{/* <Link to="" style={{ color: 'black' }}> */}
+									<MailOutlineRoundedIcon />
+									{/* </Link> */}
 								</Badge>
 							</Col>
 							<Col span={12} className="profile">
-								{userprofile}
+								{profiledd}
 							</Col>
 						</Col>
 					</Col>

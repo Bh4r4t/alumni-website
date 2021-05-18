@@ -273,7 +273,7 @@ const userSchema: Schema = new Schema({
     profileImg: {
         name: String,
         file_type: String,
-        data: { type: String, required: true },
+        data: { type: String },
         size: String,
     },
 });

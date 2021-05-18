@@ -12,3 +12,11 @@ export const postJob = async (jobData: any, token: any) => {
 export const getJob = async (token: any) => {
 	return await axios.get(`${apiURL}/jobs/`, reqOptions(token));
 };
+
+export const getRecJob = async (token: any) => {
+	return await axios.get(`${apiURL}/jobs/recent_jobs`, reqOptions(token));
+};
+
+export const searchJob = async (token: any,keywords: any,location:any,company:any) => {
+	return await axios.get(`${apiURL}/jobs/search?keywords=`+keywords+`&location=`+location+`&company=`+company, reqOptions(token));
+};

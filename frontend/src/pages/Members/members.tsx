@@ -12,12 +12,10 @@ import { Tabs, Input, Button, Tooltip, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Card, Avatar } from 'antd';
 import { Link } from 'react-router-dom';
-import RollbackOutlined from '@ant-design/icons';
 import img1 from '../../assets/profile.png';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { getMembers, memberSearch } from '../../services/api/members';
-import { DriveEtaTwoTone } from '@material-ui/icons';
 import { apiURL } from '../../services/api/common';
 
 const { Meta } = Card;
@@ -106,11 +104,11 @@ export default function Members() {
 		axios
 			.get(
 				`${apiURL}/members/search?course=` +
-				course +
-				'&stream=' +
-				stream +
-				'&year=' +
-				year,
+					course +
+					'&stream=' +
+					stream +
+					'&year=' +
+					year,
 				{
 					withCredentials: true,
 					headers: {
@@ -127,17 +125,12 @@ export default function Members() {
 
 	const handleLocationSubmit = (e: any) => {
 		axios
-			.get(
-				`${apiURL}/members/search?city=` +
-				location.city +
-				'&state=' +
-				location.state +
-				'&country=' +
-				location.country,
-				{
-					withCredentials: true,
-				}
-			)
+			.get(`${apiURL}/members/search?city=` + location.city, {
+				withCredentials: true,
+				headers: {
+					authorization: `Bearer ${user.token}`,
+				},
+			})
 			.then((response) => {
 				console.log(response.data);
 				setmembers(response.data.user);
@@ -525,29 +518,11 @@ export default function Members() {
 								</TabPane>
 								<TabPane tab="Location" key="3">
 									<Row style={{ marginTop: '2vh' }}>
-										<Col span={6}>
+										<Col span={20}>
 											<Input
 												size="large"
 												placeholder="City"
 												id="city"
-												onChange={handleLocationChange}
-											/>
-										</Col>
-										<Col span={1}></Col>
-										<Col span={6}>
-											<Input
-												size="large"
-												placeholder="State"
-												id="state"
-												onChange={handleLocationChange}
-											/>
-										</Col>
-										<Col span={1}> </Col>
-										<Col span={6}>
-											<Input
-												size="large"
-												placeholder="Country"
-												id="country"
 												onChange={handleLocationChange}
 											/>
 										</Col>
@@ -711,7 +686,11 @@ export default function Members() {
 							<Col span={5} style={{ marginBottom: '2vh' }}>
 								<Card
 									className="members-card"
-									style={{ width: 300,height:'35vh' , alignItems: "center" }}
+									style={{
+										width: 300,
+										height: '35vh',
+										alignItems: 'center',
+									}}
 									cover={
 										<Avatar
 											style={{
@@ -730,7 +709,7 @@ export default function Members() {
 												fontSize: 20,
 												marginBottom: '0',
 												marginLeft: '6vh',
-												left: '50%'
+												left: '50%',
 											}}
 										>
 											{member.basic_info.first_name +

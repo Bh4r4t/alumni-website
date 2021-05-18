@@ -76,11 +76,11 @@ function ProfilePage() {
 
 											<span>
 												{userInfo?.educational_info[0]
-													.degree_name +
+													?.degree_name +
 													' - ' +
 													userInfo
 														?.educational_info[0]
-														.stream_name +
+														?.stream_name +
 													' - ' +
 													batch}
 											</span>
@@ -121,18 +121,18 @@ function ProfilePage() {
 function SocialLink(props: any) {
 	return (
 		<>
-			<Link to={'mailto:' + props.facebook} target="_blank">
+			<a href={'mailto:' + props.facebook} target="_blank">
 				<MailOutlined style={{ fontSize: 25 }} />
-			</Link>
-			<Link to={props.facebook} target="_blank">
+			</a>
+			<a href={props.facebook} target="_blank">
 				<FacebookFilled style={{ fontSize: 25 }} />
-			</Link>
-			<Link to={props.linkedin} target="_blank">
+			</a>
+			<a href={props.linkedin} target="_blank">
 				<LinkedinFilled style={{ fontSize: 25 }} />
-			</Link>
-			<Link to={props.website} target="_blank">
+			</a>
+			<a href={props.website} target="_blank">
 				<GlobalOutlined style={{ fontSize: 25 }} />
-			</Link>
+			</a>
 		</>
 	);
 }

@@ -7,7 +7,7 @@ const app = Router();
 app.get('/', async (_req: Request, res: Response) => {
     try {
         const allJobs = await Job.find(
-           { application_deadline: { $gte: new Date(Date.now()) } },
+            { application_deadline: { $gte: new Date(Date.now()) } },
             [],
             {
                 sort: {
@@ -20,10 +20,7 @@ app.get('/', async (_req: Request, res: Response) => {
         }
         const copyJobs = [...allJobs];
         res.send({ jobs: copyJobs });
-
-
-    }
-    catch (err) {
+    } catch (err) {
         res.send({ error: true, message: err.message });
     }
 });
@@ -57,102 +54,147 @@ async function createjob(jobInfo: any) {
 
 app.get('/all_jobs', async (req, res) => {
     await Job.find((err, jobs) => {
-        if (err) return res.send('Error')
+        if (err) return res.send('Error');
         else {
             return res.send(jobs);
         }
-    })
-})
+    });
+});
+
+app.get('/recent_jobs', async (req, res) => {
+    try {
+        const jobs = await Job.find(
+            { application_deadline: { $gte: new Date(Date.now()) } },
+            [],
+            {
+                limit: 6,
+                sort: {
+                    date_created: 0, // asc on event date
+                },
+            }
+        );
+        const copy_jobs: any = [...jobs];
+        res.send({ jobs: copy_jobs });
+    } catch (err) {
+        res.send({ error: true, message: err.message });
+    }
+});
 
 app.get('/search', async (req: Request, res: Response) => {
     try {
-        console.log(req.query);
-        const job_keywords = req.query.keywords as string
+        const job_keywords = req.query.keywords as string;
         if (req.query.keywords || req.query.location || req.query.company) {
-            if (req.query.keywords !== '' && req.query.location !== '' && req.query.company !== '') {
-                await Job.find({
-                    title: req.query.keywords as string,
+            if (
+                req.query.keywords !== '' &&
+                req.query.location !== '' &&
+                req.query.company !== ''
+            ) {
+                const q: any = {
+                    application_deadline: { $gte: new Date(Date.now()) },
+                    title: {
+                        $regex: req.query.keywords as string,
+                        $options: 'i',
+                    },
                     job_location: req.query.location as string,
-                    company_name: req.query.company as string
-                }, (err: any, job: any) => {
+                    company_name: req.query.company as string,
+                };
+                await Job.find(q, (err: any, job: any) => {
                     res.send({ job });
                 });
-
-            }
-            else if (req.query.keywords === '' && req.query.location !== '' && req.query.company !== '') {
-                await Job.find({
-                    job_location: req.query.location as string,
-                    company_name: req.query.company as string
-                }, (err: any, job: any) => {
-                    res.send({ job });
-                });
-            }
-            else if (
+            } else if (
+                req.query.keywords === '' &&
+                req.query.location !== '' &&
+                req.query.company !== ''
+            ) {
+                await Job.find(
+                    {
+                        application_deadline: { $gte: new Date(Date.now()) },
+                        job_location: req.query.location as string,
+                        company_name: req.query.company as string,
+                    },
+                    (err: any, job: any) => {
+                        res.send({ job });
+                    }
+                );
+            } else if (
                 req.query.keywords !== '' &&
                 req.query.location === '' &&
                 req.query.company !== ''
             ) {
-                await Job.find({
-                    title: req.query.keywords as string,
-                    company_name: req.query.company as string
-                }, (err: any, job: any) => {
-                    res.send({ job });
-                });
-            }
-            else if (
+                await Job.find(
+                    {
+                        application_deadline: { $gte: new Date(Date.now()) },
+                        title: req.query.keywords as string,
+                        company_name: req.query.company as string,
+                    },
+                    (err: any, job: any) => {
+                        res.send({ job });
+                    }
+                );
+            } else if (
                 req.query.keywords !== '' &&
                 req.query.location !== '' &&
                 req.query.company === ''
             ) {
-                await Job.find({
-                    title: req.query.keywords as string,
-                    job_location: req.query.location as string,
-
-                }, (err: any, job: any) => {
-                    res.send({ job });
-                });
-            }
-            else if (
+                await Job.find(
+                    {
+                        application_deadline: { $gte: new Date(Date.now()) },
+                        title: req.query.keywords as string,
+                        job_location: req.query.location as string,
+                    },
+                    (err: any, job: any) => {
+                        res.send({ job });
+                    }
+                );
+            } else if (
                 req.query.keywords === '' &&
                 req.query.location === '' &&
                 req.query.company !== ''
             ) {
-                await Job.find({
-                    company_name: req.query.company as string
+                console.log('Entered');
 
-                }, (err: any, job: any) => {
-                    res.send({ job });
-                });
-            }
-            else if (
+                await Job.find(
+                    {
+                        application_deadline: { $gte: new Date(Date.now()) },
+                        company_name: req.query.company as string,
+                    },
+                    (err: any, job: any) => {
+                        res.send({ job });
+                    }
+                );
+            } else if (
                 req.query.keywords === '' &&
                 req.query.location !== '' &&
                 req.query.company === ''
             ) {
-                console.log("Entered")
-                await Job.find({
-                    job_location: req.query.location as string,
-                }, (err: any, job: any) => {
-                    res.send({ job });
-                });
-            }
-            else if (
+                await Job.find(
+                    {
+                        application_deadline: { $gte: new Date(Date.now()) },
+                        job_location: req.query.location as string,
+                    },
+                    (err: any, job: any) => {
+                        res.send({ job });
+                    }
+                );
+            } else if (
                 req.query.keywords !== '' &&
                 req.query.location === '' &&
                 req.query.company === ''
             ) {
-                await Job.find({
-                    title: req.query.keywords as string,
-                }, (err: any, job: any) => {
-                    res.send({ job });
-                });
+                await Job.find(
+                    {
+                        application_deadline: { $gte: new Date(Date.now()) },
+                        title: req.query.keywords as string,
+                    },
+                    (err: any, job: any) => {
+                        res.send({ job });
+                    }
+                );
             }
         }
+    } catch {
+        console.log('Error');
     }
-    catch {
-        console.log("Error")
-    }
-})
-
+});
 
 export default app;

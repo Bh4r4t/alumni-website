@@ -20,7 +20,7 @@
 .ant-col.ant-col-24.privatenav-wrapper-col {
 	display: flex;
 	flex-direction: row;
-    justify-content: center;
+	justify-content: center;
 }
 
 .ant-col.ant-col-2.privatenav-block-item a {

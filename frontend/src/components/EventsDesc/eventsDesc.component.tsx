@@ -7,6 +7,8 @@ import {
 	ExclamationCircleOutlined,
 	CheckCircleOutlined,
 } from '@ant-design/icons';
+import gfm from 'remark-gfm';
+import ReactMarkdown from 'react-markdown';
 import { useSelector } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 import { getAnEvent, cancelEvent } from '../../services/api/event';
@@ -199,7 +201,9 @@ function EventDesc(_props: any) {
 						Event Description:
 					</Col>
 					<Col span={md ? 12 : 24} className="eventdesc-col-value">
-						{event && event.event_description}
+						<ReactMarkdown remarkPlugins={[gfm]}>
+							{event && event.event_description}
+						</ReactMarkdown>
 					</Col>
 				</Row>
 			</Card>

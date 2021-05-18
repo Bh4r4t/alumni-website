@@ -140,12 +140,14 @@ function EventsSection(props: any) {
 				</Row>
 				<Row className="events-section-items-row">
 					{recentEvents
-						? recentEvents.map((event: any) => (
+						? recentEvents.map((event: any, idx: any) => (
 								<Col
+									key={idx}
 									span={md ? 8 : 24}
 									className="events-section-items-col"
 								>
 									<EventsCard
+										key={idx}
 										event_name={event.event_name}
 										event_venue={event.event_venue}
 										event_date={event.event_start}
@@ -196,12 +198,14 @@ function LatestStories(props: any) {
 				</Row>
 				<Row className="latestStories-section-items-row">
 					{recentStories &&
-						recentStories.map((story: any) => (
+						recentStories.map((story: any, idx: any) => (
 							<Col
+								key={idx}
 								span={md ? 7 : 24}
 								className="latestStories-section-items-col"
 							>
 								<StoriesCard
+									key={idx}
 									thumbnail={story.thumbnail}
 									id={story._id}
 									title={story.title}

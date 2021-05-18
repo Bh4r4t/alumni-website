@@ -106,7 +106,10 @@ function AccountDetails(props: any) {
 
 				{updateEmail ? (
 					<div className="signupCreate-form-submit-button-div">
-						<Form.Item className="profileupdate-form-submit">
+						<Form.Item
+							initialValue={props?.primary_email}
+							className="profileupdate-form-submit"
+						>
 							<Button
 								type="primary"
 								htmlType="submit"
@@ -119,7 +122,7 @@ function AccountDetails(props: any) {
 								onClick={() => {
 									setUpdateEmail(false);
 									updateLoginIdForm.setFieldsValue({
-										email: 'hello@gmail.com',
+										email: props?.primary_email,
 									});
 								}}
 							>

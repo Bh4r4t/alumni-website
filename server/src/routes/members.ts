@@ -119,6 +119,15 @@ app.get('/all_skills', verifyToken, async (_req: Request, res: Response) => {
     }
 });
 
+app.get('/all_roles', verifyToken, async (_req: Request, res: Response) => {
+    try {
+        const roles = await User.distinct('professional_info.roles');
+        res.send({ roles });
+    } catch (err) {
+        res.send({ error: true, message: err.messagee });
+    }
+});
+
 // generale filter in searching at homepage of members
 app.get('/search', verifyToken, async (req: Request, res: Response) => {
     console.log('req.query: ', req.query);
@@ -155,9 +164,18 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
             ) {
                 const user = await User.find({
                     'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.degree_name': req.query.course,
-                    'educational_info.end_date': req.query.year,
-                    'educational_info.stream_name': req.query.stream,
+                    'educational_info.degree_name': {
+                        $regex: req.query.course,
+                        $options: 'i',
+                    },
+                    'educational_info.end_date': {
+                        $regex: req.query.year,
+                        $options: 'i',
+                    },
+                    'educational_info.stream_name': {
+                        $regex: req.query.stream,
+                        $options: 'i',
+                    },
                 });
                 res.send({ user });
             } else if (
@@ -167,8 +185,14 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
             ) {
                 const user = await User.find({
                     'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.end_date': req.query.year,
-                    'educational_info.stream_name': req.query.stream,
+                    'educational_info.end_date': {
+                        $regex: req.query.year,
+                        $options: 'i',
+                    },
+                    'educational_info.stream_name': {
+                        $regex: req.query.stream,
+                        $options: 'i',
+                    },
                 });
                 res.send({ user });
             } else if (
@@ -178,9 +202,15 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
             ) {
                 const user = await User.find({
                     'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.degree_name': req.query.course,
+                    'educational_info.degree_name': {
+                        $regex: req.query.course,
+                        $options: 'i',
+                    },
 
-                    'educational_info.stream_name': req.query.stream,
+                    'educational_info.stream_name': {
+                        $regex: req.query.stream,
+                        $options: 'i',
+                    },
                 });
                 res.send({ user });
             } else if (
@@ -190,9 +220,15 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
             ) {
                 const user = await User.find({
                     'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.degree_name': req.query.course,
+                    'educational_info.degree_name': {
+                        $regex: req.query.course,
+                        $options: 'i',
+                    },
 
-                    'educational_info.end_date': req.query.year,
+                    'educational_info.end_date': {
+                        $regex: req.query.year,
+                        $options: 'i',
+                    },
                 });
                 res.send({ user });
             } else if (
@@ -202,7 +238,10 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
             ) {
                 const user = await User.find({
                     'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.stream_name': req.query.stream,
+                    'educational_info.stream_name': {
+                        $regex: req.query.stream,
+                        $options: 'i',
+                    },
                 });
                 res.send({ user });
             } else if (
@@ -212,7 +251,10 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
             ) {
                 const user = await User.find({
                     'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.end_date': req.query.year,
+                    'educational_info.end_date': {
+                        $regex: req.query.year,
+                        $options: 'i',
+                    },
                 });
                 res.send({ user });
             } else if (
@@ -222,7 +264,10 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
             ) {
                 const user = await User.find({
                     'educational_info.name_of_organization': 'IIT Ropar',
-                    'educational_info.degree_name': req.query.course,
+                    'educational_info.degree_name': {
+                        $regex: req.query.course,
+                        $options: 'i',
+                    },
                 });
                 res.send({ user });
             }
@@ -230,14 +275,20 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
         // location
         else if (req.query.city || req.query.state || req.query.country) {
             const user = await User.find({
-                'location_contact_info.current_city': req.query.city,
+                'location_contact_info.current_city': {
+                    $regex: req.query.city,
+                    $options: 'i',
+                },
             });
             res.send({ user });
         }
         // company
         else if (req.query.company) {
             const user = await User.find({
-                'professional_info.company': req.query.company,
+                'professional_info.company': {
+                    $regex: req.query.company,
+                    $options: 'i',
+                },
             });
             res.send({ user });
         }

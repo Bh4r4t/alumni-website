@@ -4,15 +4,14 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
 import './contribute.css';
 import Ayush from '../../../assets/contributor/ayush.jpg';
 import Rohit from '../../../assets/contributor/rohit.jpg';
 import Piyush from '../../../assets/contributor/piyush.jpg';
 import Sidhant from '../../../assets/contributor/sidhant.jpg';
+
 
 const useStyles = makeStyles((theme: Theme) =>
 	createStyles({
@@ -125,57 +124,72 @@ function Contribute() {
 									<hr />
 								</div>
 							</Grid>
-							<Grid item xs={5}>
-								<div className="hyy">
-									The role of the different Alumni
-									Associations in the world has been very
-									pivotal for the development of their
-									respective institutions. The core aim being
-									– building connections! As an input from
-									Alumni of different IITs, many people lose
-									contact details of their batch-mates,
-									juniors, and seniors, over a period of time
-									after graduating. <br /> <br />
-									The Alumni Association of IIT Ropar strives
-									to give a structured approach to avoid this
-									by maintaining your existing iitrpr ids,
-									maintaining information database of all
-									Alumni, organizing Alumni-Student meets and
-									promoting Mentorship programmes.
-									<br /> <br />
-									The Alumni fund majorly contributes towards
-									improving institute and hostel
-									infrastructure, giving scholarships/awards,
-									loan facility etc. The Association aims to
-									constantly invest in such permanent assets
-									of the institute, aiming for regular and
-									rigorous development. The Association has
-									already allocated some funds for Enactus and
-									for a scholarship program for students
-									visiting foreign countries for the
-									conference.
-								</div>
-							</Grid>
-							<Grid item xs={6}>
-								<Grid item xs={9}>
-									{' '}
-									<div
-										className="hyy"
-										style={{ fontWeight: 500 }}
-									>
-										Top Contributors
-										<hr />
+							<div className="contribute-body-items">
+								<Grid item xs={5}>
+									<div className="hyy">
+										The role of the different Alumni
+										Associations in the world has been very
+										pivotal for the development of their
+										respective institutions. The core aim
+										being – building connections! As an
+										input from Alumni of different IITs,
+										many people lose contact details of
+										their batch-mates, juniors, and seniors,
+										over a period of time after graduating.{' '}
+										<br /> <br />
+										The Alumni Association of IIT Ropar
+										strives to give a structured approach to
+										avoid this by maintaining your existing
+										iitrpr ids, maintaining information
+										database of all Alumni, organizing
+										Alumni-Student meets and promoting
+										Mentorship programmes.
+										<br /> <br />
+										The Alumni fund majorly contributes
+										towards improving institute and hostel
+										infrastructure, giving
+										scholarships/awards, loan facility etc.
+										The Association aims to constantly
+										invest in such permanent assets of the
+										institute, aiming for regular and
+										rigorous development. The Association
+										has already allocated some funds for
+										Enactus and for a scholarship program
+										for students visiting foreign countries
+										for the conference.
 									</div>
 								</Grid>
-								<Grid container spacing={1}>
-									<Grid container item xs={12} spacing={3}>
-										<FormRow />
+								<Grid item xs={6}>
+									<Grid item xs={9}>
+										{' '}
+										<div
+											className="hyy"
+											style={{ fontWeight: 500 }}
+										>
+											Top Contributors
+											<hr />
+										</div>
 									</Grid>
-									<Grid container item xs={12} spacing={3}>
-										<FormRow2 />
+									<Grid container spacing={1}>
+										<Grid
+											container
+											item
+											xs={12}
+											spacing={3}
+										>
+											<FormRow />
+										</Grid>
+										<Grid
+											container
+											item
+											xs={12}
+											spacing={3}
+										>
+											<FormRow2 />
+										</Grid>
 									</Grid>
 								</Grid>
-							</Grid>
+							</div>
 							<Grid item xs={10}>
 								<br />{' '}
 								<div

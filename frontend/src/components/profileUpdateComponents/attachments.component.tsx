@@ -243,7 +243,7 @@ function AttachCard(props: any) {
 			if (res?.data?.error) {
 				throw new Error(res?.data?.message);
 			} else {
-				history.push('/profile');
+				window.location.reload();
 			}
 		});
 	};

@@ -49,11 +49,12 @@ export default function Industry() {
 				<Row></Row>
 				<Row style={{ marginLeft: '3vh' }}>
 					<Col span={1} style={{ marginTop: '1vh' }}>
-						<Button
-							href="/members"
-							icon={<ArrowBackIcon />}
-							size="large"
-						></Button>
+						<Link to="/members">
+							<Button
+								icon={<ArrowBackIcon />}
+								size="large"
+							></Button>
+						</Link>
 					</Col>
 					<Col span={3}>
 						<h1 style={{ fontSize: 45, fontWeight: 400 }}>
@@ -229,15 +230,6 @@ export default function Industry() {
 					<Row>
 						<Col span={24} offset={1}>
 							<h1>Browse by Industry</h1>
-						</Col>
-					</Row>
-					<Row>
-						<Col span={20} offset={1}>
-							<Input
-								id="search-insti"
-								placeholder="Search"
-								size="large"
-							></Input>
 						</Col>
 					</Row>
 					<br></br>

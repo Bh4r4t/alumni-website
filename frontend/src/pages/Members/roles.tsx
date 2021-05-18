@@ -1,5 +1,5 @@
 import { Layout, Row, Col, Divider, Menu } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './members.css';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import BusinessIcon from '@material-ui/icons/Business';
@@ -11,8 +11,10 @@ import { Tabs, Input, Button, Tooltip, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { getAllRoles } from '../../services/api/members';
 
 import { Card, Avatar, Tag } from 'antd';
+import { useSelector } from 'react-redux';
 const { Meta } = Card;
 
 const { TabPane } = Tabs;
@@ -21,11 +23,21 @@ const { Option } = Select;
 const { Content } = Layout;
 
 export default function Roles() {
+	const user = useSelector((state: any) => state.authReducer.user);
+
 	const [values, setvalues] = useState('roles');
+	const [roles, setroles] = useState<any>([]);
 	const handleClick = ({ e }: { e: any }) => {
 		console.log('click ', e);
 		setvalues(e.key);
 	};
+	useEffect(() => {
+		getAllRoles(user.token)
+			.then((response: any) => {
+				setroles(response?.data?.roles);
+			})
+			.catch((err) => console.log(err));
+	}, []);
 
 	return (
 		<div className="main-contain">
@@ -215,126 +227,18 @@ export default function Roles() {
 							<h1>Browse by Roles</h1>
 						</Col>
 					</Row>
-					<Row>
-						<Col span={20} offset={1}>
-							<Input
-								id="search-insti"
-								placeholder="Search"
-								size="large"
-							></Input>
-						</Col>
-					</Row>
 					<br></br>
 					<Row style={{ marginBottom: '2vh' }}>
-						<Col span={5} offset={1}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-						<Col span={5}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-						<Col span={1}></Col>
-						<Col span={5}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-						<Col span={1}></Col>
-
-						<Col span={5}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-					</Row>
-					<Row style={{ marginBottom: '2vh' }}>
-						<Col span={5} offset={1}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-						<Col span={5}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-						<Col span={1}></Col>
-						<Col span={5}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-						<Col span={1}></Col>
-
-						<Col span={5}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-					</Row>
-					<Row style={{ marginBottom: '2vh' }}>
-						<Col span={5} offset={1}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-						<Col span={5}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-						<Col span={1}></Col>
-						<Col span={5}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
-						<Col span={1}></Col>
-
-						<Col span={5}>
-							<Link
-								to="https://github.com/ant-design/ant-design/issues/1862"
-								style={{ color: 'black' }}
-							>
-								Indian Institute Of Technology Ropar
-							</Link>
-						</Col>
+						{roles.map((role: String) => (
+							<Col span={5} offset={1}>
+								<Link
+									to="https://github.com/ant-design/ant-design/issues/1862"
+									style={{ color: 'black' }}
+								>
+									{role}{' '}
+								</Link>
+							</Col>
+						))}
 					</Row>
 				</div>
 			</div>

@@ -29,7 +29,7 @@ function TopNavBar() {
 							onClick={() => history.push('/')}
 						/>
 						{md ? (
-							<NavLinks user={user} md={md}/>
+							<NavLinks user={user} md={md} />
 						) : (
 							<button onClick={() => showDrawer(true)}>
 								<MenuRoundedIcon
@@ -63,7 +63,7 @@ function NavLinks(props: any) {
 	const aboutMenu = (
 		<Menu>
 			<Menu.Item>
-				<Link to="">Director's Message</Link>
+				<Link to="/about/director">Director's Message</Link>
 			</Menu.Item>
 			<Menu.Item>
 				<Link to="/about/executive-committee">Executive Team</Link>
@@ -105,7 +105,7 @@ function NavLinks(props: any) {
 			<Menu.Item>
 				<Link to="/about/contact">Send Query</Link>
 			</Menu.Item>
-			<Menu.Item>
+			{/* <Menu.Item>
 				<Link to="">Share Achievements</Link>
 			</Menu.Item>
 			<Menu.Item>
@@ -113,7 +113,7 @@ function NavLinks(props: any) {
 			</Menu.Item>
 			<Menu.Item>
 				<Link to="">Invite Friends</Link>
-			</Menu.Item>
+			</Menu.Item> */}
 		</Menu>
 	);
 
@@ -130,10 +130,14 @@ function NavLinks(props: any) {
 
 	return (
 		<>
-			<div className={props.md ? "topnavbar-links" : "topnavbar-links vertical"}>
-				<Dropdown overlay={initiativesMenu}>
+			<div
+				className={
+					props.md ? 'topnavbar-links' : 'topnavbar-links vertical'
+				}
+			>
+				{/* <Dropdown overlay={initiativesMenu}>
 					<a onClick={(e) => e.preventDefault()}>Initiatives</a>
-				</Dropdown>
+				</Dropdown> */}
 				<Dropdown overlay={getInvolvedMenu}>
 					<a onClick={(e) => e.preventDefault()}>Get Involved</a>
 				</Dropdown>

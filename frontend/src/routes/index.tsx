@@ -1,3 +1,4 @@
+import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import TopNavbar from '../components/Navbar/TopNavbar/topNavbar.component';
@@ -33,7 +34,6 @@ import { NewsItemIndiv } from '../components/NewsItem/newsItem.component';
 import NewsItemEdit from '../components/newsItemEdit/newsItemEdit.component';
 import Admindashboard from '../pages/Admin Dashboard/Admindashboard';
 import PendingEvents from '../pages/Admin Dashboard/PendingEvents';
-import EventDescription from '../pages/Admin Dashboard/EventDescription';
 import PostInternship from '../pages/Support/PostJob/PostInternship';
 import JobSection from '../pages/JobPortal/jobs';
 import PendingNews from '../pages/Admin Dashboard/PendingNews';
@@ -43,44 +43,49 @@ export const Routes: React.FC<RoutesProp> = () => {
 	const user = useSelector((state: any) => state.authReducer.user);
 	return (
 		<Switch>
-			{/* Auth routes */}
-			<PrivateRoute exact path="/auth/signin" auth={true}>
-				<SignIn />
-			</PrivateRoute>
-			<PrivateRoute exact path="/auth/signup" auth={true}>
-				<SignUp />
-			</PrivateRoute>
-			<PrivateRoute exact path="/auth/signup/create" auth={true}>
-				<SignUpCreate />
-			</PrivateRoute>
-			<PrivateRoute exact path="/auth/signup/create/batch" auth={true}>
-				<SignUpDetails />
-			</PrivateRoute>
-			<div className="page-container">
-				<TopNavbar />
-				{/* <PrivateNavBar username=""/> */}
-				{user ? (
-					<PrivateNavBar
-						username={user?.first_name + ' ' + user?.last_name}
-					/>
-				) : null}
-				<div className="content-wrap">
-					{/* Private Routes*/}
-					<PrivateRoute path="/dashboard" exact>
-						<Dashboard />
-					</PrivateRoute>
-					<PrivateRoute path="/profile" exact>
-						<ProfilePage />
-					</PrivateRoute>
-					<PrivateRoute path="/support/become-mentor" exact>
-						<BeAMentor />
-					</PrivateRoute>
-					<PrivateRoute path="/support/become-volunteer" exact>
-						<BeAVolunteer />
-					</PrivateRoute>
+			<React.Fragment>
+				{/* Auth routes */}
+				<PrivateRoute exact path="/auth/signin" auth={true}>
+					<SignIn />
+				</PrivateRoute>
+				<PrivateRoute exact path="/auth/signup" auth={true}>
+					<SignUp />
+				</PrivateRoute>
+				<PrivateRoute exact path="/auth/signup/create" auth={true}>
+					<SignUpCreate />
+				</PrivateRoute>
+				<PrivateRoute
+					exact
+					path="/auth/signup/create/batch"
+					auth={true}
+				>
+					<SignUpDetails />
+				</PrivateRoute>
+				<div className="page-container">
+					<TopNavbar />
+					{/* <PrivateNavBar username=""/> */}
+					{user ? (
+						<PrivateNavBar
+							username={user?.first_name + ' ' + user?.last_name}
+						/>
+					) : null}
+					<div className="content-wrap">
+						{/* Private Routes*/}
+						<PrivateRoute path="/dashboard" exact>
+							<Dashboard />
+						</PrivateRoute>
+						<PrivateRoute path="/profile" exact>
+							<ProfilePage />
+						</PrivateRoute>
+						<PrivateRoute path="/support/become-mentor" exact>
+							<BeAMentor />
+						</PrivateRoute>
+						<PrivateRoute path="/support/become-volunteer" exact>
+							<BeAVolunteer />
+						</PrivateRoute>
 
-					{/* profile routes */}
-					{/* <PrivateRoute path="/profile/basic" exact>
+						{/* profile routes */}
+						{/* <PrivateRoute path="/profile/basic" exact>
 						<ProfilePage />
 					</PrivateRoute>
 					<PrivateRoute path="/profile/contact" exact>
@@ -89,122 +94,117 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<PrivateRoute path="/profile/contact" exact>
 						<ProfilePage />
 					</PrivateRoute> */}
-					{/* <Route path="/admin_dashboard" exact>
+						{/* <Route path="/admin_dashboard" exact>
 						<Admindashboard />
 					</Route> */}
-					{/* <Route path="/admin_dashboard/pending_events" exact>
+						{/* <Route path="/admin_dashboard/pending_events" exact>
 						<PendingEvents />
 					</Route> */}
 
-					{/* newsroom */}
-					<PrivateRoute path="/newsroom" exact>
-						<NewsRoom />
-					</PrivateRoute>
-					<PrivateRoute path="/newsroom/create/" exact>
-						<NewsItemEdit />
-					</PrivateRoute>
-					<PrivateRoute path="/newsroom/n/:id" exact>
-						<NewsItemIndiv />
-					</PrivateRoute>
-					<PrivateRoute path="/newsroom/:id/edit">
-						<NewsItemEdit />
-					</PrivateRoute>
-					<PrivateRoute path="/admin_dashboard/pending_news">
-						<PendingNews />
-					</PrivateRoute>
+						{/* newsroom */}
+						<PrivateRoute path="/newsroom" exact>
+							<NewsRoom />
+						</PrivateRoute>
+						<PrivateRoute path="/newsroom/create/" exact>
+							<NewsItemEdit />
+						</PrivateRoute>
+						<PrivateRoute path="/newsroom/n/:id" exact>
+							<NewsItemIndiv />
+						</PrivateRoute>
+						<PrivateRoute path="/newsroom/:id/edit">
+							<NewsItemEdit />
+						</PrivateRoute>
+						<PrivateRoute path="/admin_dashboard/pending_news">
+							<PendingNews />
+						</PrivateRoute>
 
-					<PrivateRoute path="/job_portal">
-						<JobPortal />
-					</PrivateRoute>
-					<PrivateRoute path="/all_jobs" exact>
-						<JobSection />
-					</PrivateRoute>
+						<PrivateRoute path="/job_portal">
+							<JobPortal />
+						</PrivateRoute>
+						<PrivateRoute path="/all_jobs" exact>
+							<JobSection />
+						</PrivateRoute>
 
-					{/* public routes */}
-					<Route path="/about/contact">
-						<ContactUs />
-					</Route>
-					<Route path="/about/executive-committee">
-						<ExecTeam />
-					</Route>
-					<Route path="/support/contribute">
-						<Contribute />
-					</Route>
-					<Route path="/about/director">
-						<Director />
-					</Route>
+						{/* public routes */}
+						<Route path="/about/contact">
+							<ContactUs />
+						</Route>
+						<Route path="/about/executive-committee">
+							<ExecTeam />
+						</Route>
+						<Route path="/support/contribute">
+							<Contribute />
+						</Route>
+						<Route path="/about/director">
+							<Director />
+						</Route>
 
-					<PrivateRoute path="/user/me">
-						<ProfilePage />
-					</PrivateRoute>
+						<PrivateRoute path="/user/me">
+							<ProfilePage />
+						</PrivateRoute>
 
-					{/* landing Page */}
-					<Route path="/" exact>
-						<HomePage />
-					</Route>
+						{/* landing Page */}
+						<Route path="/" exact>
+							<HomePage />
+						</Route>
 
-					{/* Members' routes */}
-					<PrivateRoute path="/members" exact>
-						<Members />
-					</PrivateRoute>
-					<PrivateRoute path="/members/institute" exact>
-						<Institute />
-					</PrivateRoute>
-					<PrivateRoute path="/members/location" exact>
-						<Location />
-					</PrivateRoute>
-					<PrivateRoute path="/members/prof_skills" exact>
-						<ProfessionalSkills />
-					</PrivateRoute>
-					<PrivateRoute path="/members/company" exact>
-						<Company />
-					</PrivateRoute>
-					<PrivateRoute path="/members/roles" exact>
-						<Roles />
-					</PrivateRoute>
-					<PrivateRoute path="/members/industry" exact>
-						<Industry />
-					</PrivateRoute>
+						{/* Members' routes */}
+						<PrivateRoute path="/members" exact>
+							<Members />
+						</PrivateRoute>
+						<PrivateRoute path="/members/institute" exact>
+							<Institute />
+						</PrivateRoute>
+						<PrivateRoute path="/members/location" exact>
+							<Location />
+						</PrivateRoute>
+						<PrivateRoute path="/members/prof_skills" exact>
+							<ProfessionalSkills />
+						</PrivateRoute>
+						<PrivateRoute path="/members/company" exact>
+							<Company />
+						</PrivateRoute>
+						<PrivateRoute path="/members/roles" exact>
+							<Roles />
+						</PrivateRoute>
+						<PrivateRoute path="/members/industry" exact>
+							<Industry />
+						</PrivateRoute>
 
-					{/* events' routes */}
-					<PrivateRoute path="/events" exact>
-						<EventsSection />
-					</PrivateRoute>
-					<PrivateRoute path="/events/create" exact>
-						<EventEdit />
-					</PrivateRoute>
-					<PrivateRoute path="/events/e/:id">
-						<EventDesc />
-					</PrivateRoute>
-					<PrivateRoute path="/events/:id/edit" exact>
-						<EventEdit />
-					</PrivateRoute>
+						{/* events' routes */}
+						<PrivateRoute path="/events" exact>
+							<EventsSection />
+						</PrivateRoute>
+						<PrivateRoute path="/events/create" exact>
+							<EventEdit />
+						</PrivateRoute>
+						<PrivateRoute path="/events/e/:id">
+							<EventDesc />
+						</PrivateRoute>
+						<PrivateRoute path="/events/:id/edit" exact>
+							<EventEdit />
+						</PrivateRoute>
 
-					{/* admin dashboard */}
-					<Route path="/admin_dashboard" exact>
-						<Admindashboard />
-					</Route>
-					<Route path="/admin_dashboard/pending_events" exact>
-						<PendingEvents />
-					</Route>
-					<Route
-						path="/admin_dashboard/pending_events/event_description/:id"
-						exact
-					>
-						<EventDescription />
-					</Route>
-					
-					<Route path="/post_job" exact>
-						<PostInternship />
-					</Route>
-					
-					{/* <Route path="*">
+						{/* admin dashboard */}
+						<Route path="/admin_dashboard" exact>
+							<Admindashboard />
+						</Route>
+						<Route path="/admin_dashboard/pending_events" exact>
+							<PendingEvents />
+						</Route>
+
+						<Route path="/post_job" exact>
+							<PostInternship />
+						</Route>
+
+						{/* <Route path="*">
 						<Redirect to="/" />
 					</Route> */}
-				</div>
+					</div>
 
-				<Footer />
-			</div>
+					<Footer />
+				</div>
+			</React.Fragment>
 		</Switch>
 	);
 };

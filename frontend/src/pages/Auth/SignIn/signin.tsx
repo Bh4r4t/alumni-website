@@ -31,7 +31,6 @@ function SignIn() {
 			if (res?.data?.error === true) {
 				throw new Error(res.data.message);
 			}
-			console.log(res.data);
 			dispatch({
 				type: LOGIN_SUCCESS,
 				payload: res.data,
@@ -180,7 +179,7 @@ function SignIn() {
 											}
 											linkTo=""
 											txt="SignIn with Google"
-											icon={<GoogleOutlined/>}
+											icon={<GoogleOutlined />}
 										/>
 										<OtherSignInOption
 											csname={
@@ -218,7 +217,12 @@ export function OtherSignInOption({ csname, linkTo, txt, icon }: any) {
 				type="primary"
 				htmlType="submit"
 				onClick={() => <Link to={linkTo} />}
-				style={{ minHeight: "40px", minWidth: '220px', margin: '15px 0 15px 0', fontSize:"1.15em" }}
+				style={{
+					minHeight: '40px',
+					minWidth: '220px',
+					margin: '15px 0 15px 0',
+					fontSize: '1.15em',
+				}}
 			>
 				{icon}
 				{txt}

@@ -57,11 +57,13 @@ export default function Location() {
 				<Row></Row>
 				<Row style={{ marginLeft: '3vh' }}>
 					<Col span={1} style={{ marginTop: '1vh' }}>
-						<Button
-							href="/members"
-							icon={<ArrowBackIcon />}
-							size="large"
-						></Button>
+						<Link to="/members">
+							<Button
+								href="/members"
+								icon={<ArrowBackIcon />}
+								size="large"
+							></Button>
+						</Link>
 					</Col>
 					<Col span={3}>
 						<h1 style={{ fontSize: 45, fontWeight: 400 }}>
@@ -239,24 +241,19 @@ export default function Location() {
 							<h1>Browse by Location</h1>
 						</Col>
 					</Row>
-					<Row>
-						<Col span={20} offset={1}>
-							<Input
-								id="search-insti"
-								placeholder="Search"
-								size="large"
-							></Input>
-						</Col>
-					</Row>
 					<br></br>
 					<Row style={{ marginBottom: '2vh' }}>
-						{cities && cities.map((city: String) => (
-							<Col span={5} offset={1}>
-								<Link to="/members" style={{ color: 'black' }}>
-									{city}{' '}
-								</Link>
-							</Col>
-						))}
+						{cities &&
+							cities.map((city: String) => (
+								<Col span={5} offset={1}>
+									<Link
+										to="/members"
+										style={{ color: 'black' }}
+									>
+										{city}{' '}
+									</Link>
+								</Col>
+							))}
 					</Row>
 				</div>
 			</div>
