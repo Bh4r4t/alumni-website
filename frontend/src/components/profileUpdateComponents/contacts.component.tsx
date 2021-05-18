@@ -1,12 +1,33 @@
 import { useState } from 'react';
-import { Form, Input, Button, DatePicker, Select, AutoComplete } from 'antd';
+import { Form, Input, Button, Select, AutoComplete, message } from 'antd';
 import codes from '../../assets/country_codes';
+import { updateContacts } from '../../services/api/user';
+import { useSelector } from 'react-redux';
 
 function ContactsMenu(props: any) {
+	const user = useSelector((state: any) => state.authReducer.user);
+	const [isLoading, setLoading] = useState(false);
 	const [ccode, setCCode] = useState('');
 	const { Option } = Select;
 
-	const handleSubmit = () => {};
+	const handleSubmit = (payload: any) => {
+		setLoading(true);
+		try {
+			updateContacts(payload, user.token).then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					message.success('Successfully updated ');
+					setLoading(false);
+					window.location.reload();
+				}
+			});
+		} catch (err) {
+			setLoading(false);
+			message.error(err.message);
+			console.log(err.message);
+		}
+	};
 	const formItemLayout = {
 		labelCol: {
 			xs: { span: 24 },
@@ -39,6 +60,7 @@ function ContactsMenu(props: any) {
 				scrollToFirstError
 			>
 				<Form.Item
+					initialValue={props?.location_contact_info?.current_city}
 					name="current_city"
 					label="Current City"
 					rules={[
@@ -51,20 +73,42 @@ function ContactsMenu(props: any) {
 					<Input placeholder="Current city" />
 				</Form.Item>
 
-				<Form.Item name="home_town" label="Home Town">
+				<Form.Item
+					initialValue={props?.location_contact_info?.home_town}
+					name="home_town"
+					label="Home Town"
+				>
 					<Input placeholder="Home town" />
 				</Form.Item>
 				<div className="profileupdate-submenu-head">
 					<h2>Address for correspondence</h2>
 				</div>
 				<hr />
-				<Form.Item name="corrs_address" label="Address">
+				<Form.Item
+					initialValue={
+						props?.location_contact_info?.correspondance_address
+					}
+					name="corrs_address"
+					label="Address"
+				>
 					<Input placeholder="Correspondence Address" />
 				</Form.Item>
-				<Form.Item name="corrs_location" label="Location">
+				<Form.Item
+					initialValue={
+						props?.location_contact_info?.correspondance_location
+					}
+					name="corrs_location"
+					label="Location"
+				>
 					<Input placeholder="Correspondence Location" />
 				</Form.Item>
-				<Form.Item name="corrs_postal_code" label="Postal Code">
+				<Form.Item
+					initialValue={
+						props?.location_contact_info?.correspondance_postal_code
+					}
+					name="corrs_postal_code"
+					label="Postal Code"
+				>
 					<Input placeholder="postal code" />
 				</Form.Item>
 				<div className="profileupdate-submenu-head">
@@ -169,6 +213,9 @@ function ContactsMenu(props: any) {
 					</div>
 				</Form.Item>
 				<Form.Item
+					initialValue={
+						props?.location_contact_info?.alternative_email_id[0]
+					}
 					name="alternate_email"
 					label="Alternate Email Id"
 					rules={[
@@ -184,22 +231,58 @@ function ContactsMenu(props: any) {
 					<h2>Social Profiles</h2>
 				</div>
 				<hr />
-				<Form.Item name="website" label="Website/Portfolio/Blog">
+				<Form.Item
+					initialValue={
+						props?.location_contact_info?.social_profiles?.website
+					}
+					name="website"
+					label="Website/Portfolio/Blog"
+				>
 					<Input />
 				</Form.Item>
-				<Form.Item name="facebook" label="Facebook Profile">
+				<Form.Item
+					initialValue={
+						props?.location_contact_info?.social_profiles?.facebook
+					}
+					name="facebook"
+					label="Facebook Profile"
+				>
 					<Input />
 				</Form.Item>
-				<Form.Item name="linkedIn" label="LinkedIn Profile">
+				<Form.Item
+					initialValue={
+						props?.location_contact_info?.social_profiles?.linkedin
+					}
+					name="linkedin"
+					label="LinkedIn Profile"
+				>
 					<Input />
 				</Form.Item>
-				<Form.Item name="twitter" label="Twitter Profile">
+				<Form.Item
+					initialValue={
+						props?.location_contact_info?.social_profiles?.twitter
+					}
+					name="twitter"
+					label="Twitter Profile"
+				>
 					<Input />
 				</Form.Item>
-				<Form.Item name="youtube" label="Youtube Profile">
+				<Form.Item
+					initialValue={
+						props?.location_contact_info?.social_profiles?.youtube
+					}
+					name="youtube"
+					label="Youtube Profile"
+				>
 					<Input />
 				</Form.Item>
-				<Form.Item name="instagram" label="Instagram Profile">
+				<Form.Item
+					initialValue={
+						props?.location_contact_info?.social_profiles?.instagram
+					}
+					name="instagram"
+					label="Instagram Profile"
+				>
 					<Input />
 				</Form.Item>
 				<div className="signupCreate-form-submit-button-div">
@@ -207,9 +290,9 @@ function ContactsMenu(props: any) {
 						<Button
 							type="primary"
 							htmlType="submit"
-							loading={props.isLoading}
+							loading={isLoading}
 						>
-							Submit
+							Update
 						</Button>
 					</Form.Item>
 				</div>

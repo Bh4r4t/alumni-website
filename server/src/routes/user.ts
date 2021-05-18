@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import verifyToken from '../auth/verifyToken';
 import User, {
+    e_profile_role,
     IUserAttachments,
     IUserEducationalInfo,
 } from '../models/user.model';
@@ -19,8 +20,58 @@ dotenv.config();
  */
 app.get('/me', verifyToken, async (req: Request, res: Response) => {
     try {
-        const user =await User.findOne({ primary_email: res.locals.payload.email });
-        res.json(user );
+        const user = await User.findOne({
+            primary_email: res.locals.payload.email,
+        });
+        res.json({ user: user });
+    } catch (err) {
+        res.send({ error: true, message: err.message });
+    }
+});
+
+/**
+ * @route           GET user/me
+ * @description     returns basic info of current user
+ * @access          Private
+ */
+app.get('/myBasic', verifyToken, async (req: Request, res: Response) => {
+    try {
+        const user = await User.findOne({
+            primary_email: res.locals.payload.email,
+        });
+        const basic: any = {
+            name:
+                user?.basic_info.first_name + ' ' + user?.basic_info.last_name,
+            stream: user?.educational_info[0],
+        };
+        res.json({ user: user });
+    } catch (err) {
+        res.send({ error: true, message: err.message });
+    }
+});
+
+/**
+ * @route           PUT user/my_pimage
+ * @description     update profile image
+ * @access          Private
+ */
+app.put('/my_pimage', verifyToken, async (req: Request, res: Response) => {
+    try {
+        let user = await User.findOne({
+            primary_email: res.locals.payload.email,
+        });
+        if (!user) {
+            throw new Error('User does not exist');
+        } else {
+            user.profileImg = {
+                name: req.body.name,
+                file_type: req.body.file_type,
+                data: req.body.data,
+                size: req.body.size,
+            };
+            await user.save();
+            res.status(200).send();
+        }
     } catch (err) {
         res.send({ error: true, message: err.message });
     }
@@ -33,28 +84,29 @@ app.get('/me', verifyToken, async (req: Request, res: Response) => {
  */
 app.post('/init_me_std', verifyToken, async (req: Request, res: Response) => {
     try {
-        const user = await User.findOne({
+        let user = await User.findOne({
             primary_email: res.locals.payload.email,
         });
         if (!user) {
             throw new Error('No User exist with given credentials!');
+        } else {
+            user.basic_info.profile_role = req.body.profile_role;
+            const edInfo: IUserEducationalInfo = {
+                id: new ObjectId() as unknown as String,
+                editable: false,
+                name_of_organization: 'IIT Ropar',
+                start_date: req.body.start_date,
+                end_date: req.body.end_date,
+                degree_name: req.body.course,
+                stream_name: req.body.stream,
+            };
+            user.educational_info.push(edInfo);
+            await user.save();
+            res.send({
+                error: false,
+                message: 'Successfully Added details into DB!',
+            });
         }
-        user.basic_info.profile_role = req.body.profile_role;
-        const edInfo: IUserEducationalInfo = {
-            id: (new ObjectId() as unknown) as String,
-            editable: false,
-            name_of_organization: 'IIT Ropar',
-            start_date: req.body.start_date,
-            end_date: req.body.end_date,
-            degree_name: req.body.course,
-            stream_name: req.body.stream,
-        };
-        user.educational_info.push(edInfo);
-        await user.save();
-        res.send({
-            error: false,
-            message: 'Successfully Added details into DB!',
-        });
     } catch (err) {
         res.send({ error: true, message: err.message });
     }
@@ -189,7 +241,7 @@ app.get('/edu_info', verifyToken, async (_req: Request, res: Response) => {
  * @description     add educational information of the user
  * @access          Private
  */
-app.post('/edu_info', verifyToken, async (req: Request, res: Response) => {
+app.put('/edu_info', verifyToken, async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({
             primary_email: res.locals.payload.email,
@@ -198,8 +250,8 @@ app.post('/edu_info', verifyToken, async (req: Request, res: Response) => {
             res.status(403).send({ message: 'User does not exist' });
         } else {
             const newEdu: IUserEducationalInfo = {
-                id: (new ObjectId() as unknown) as String,
-                editable: false,
+                id: new ObjectId() as unknown as String,
+                editable: true,
                 name_of_organization: req.body.name_of_organization,
                 start_date: req.body.start_date,
                 end_date: req.body.end_date,
@@ -231,7 +283,7 @@ app.put('/update_edu', verifyToken, async (req: Request, res: Response) => {
             const idx = user.educational_info.findIndex(
                 (element) => element.id === req.body.id
             );
-            if (!user.educational_info[idx].editable) {
+            if (idx !== -1 && user.educational_info[idx].editable) {
                 user.educational_info[idx].name_of_organization =
                     req.body.name_of_organization;
                 user.educational_info[idx].start_date = req.body.start_date;
@@ -363,6 +415,7 @@ app.post('/work_exp', verifyToken, async (req: Request, res: Response) => {
                 industry: req.body.industry,
             };
             user.professional_info.orgs?.push(work_exp);
+            await user.save();
             res.status(201).send();
         }
     } catch (err) {
@@ -404,7 +457,7 @@ app.post('/attach', verifyToken, async (req: Request, res: Response) => {
             res.status(403).send({ message: 'User email does not exist' });
         } else {
             const attach: IUserAttachments = {
-                id: (new ObjectId() as unknown) as String,
+                id: new ObjectId() as unknown as String,
                 title: req.body.title,
                 attachment_type: req.body.attach_type,
                 attachement: req.body.attachment,
@@ -449,7 +502,7 @@ app.post('/change_pe', verifyToken, async (req: Request, res: Response) => {
                 { 'location_contact_info.alternate_email': req.body.email },
             ],
         });
-        if (existUser) {
+        if (!existUser) {
             res.status(400).send({ message: 'Not a unique email Id' });
         } else {
             await createPendingRequest(

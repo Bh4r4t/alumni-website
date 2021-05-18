@@ -1,4 +1,4 @@
-import { Row, Col, Grid } from 'antd';
+import { Row, Col, Grid, Spin } from 'antd';
 import EventsCard from '../../components/EventsCard/eventsCard.component';
 import { Menu } from 'antd';
 import './events.css';
@@ -62,20 +62,25 @@ function EventsSection() {
 					</Menu>
 				</div>
 				<Row className="events-section-items-row">
-					{events &&
-						events.map((item: any) => (
+					{events ? (
+						events.map((item: any, idx: any) => (
 							<Col
+								key={idx}
 								span={md ? 12 : 24}
 								className="events-section-items-col"
 							>
 								<EventsCard
+									key={idx}
 									event_date={item.event_start}
 									event_id={item._id}
 									event_name={item.event_name}
 									event_venue={item.event_venue}
 								/>
 							</Col>
-						))}
+						))
+					) : (
+						<Spin />
+					)}
 				</Row>
 			</div>
 		</section>

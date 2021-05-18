@@ -16,7 +16,6 @@ import AssignmentIndSharpIcon from '@material-ui/icons/AssignmentIndSharp';
 import './signupCreate.css';
 import AuthFooter from '../../../../components/Footer/authFooter/authFooter.component';
 import AuthNavBar from '../../../../components/Navbar/authNavBar/authNavBar.component';
-import moment from 'moment';
 import ReactCountryFlag from 'react-country-flag';
 import { registerUser } from '../../../../services/api/auth';
 import codes from '../../../../assets/country_codes';

@@ -34,7 +34,7 @@ function NewsItemEdit() {
 			let tfile = null;
 			if (thumbFile) {
 				tfile = await fileToBase(thumbFile);
-			};
+			}
 			if (!props) {
 				const res = await submitAPost(
 					{ ...payload, thumbnail: tfile },

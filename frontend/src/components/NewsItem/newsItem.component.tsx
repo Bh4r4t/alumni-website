@@ -1,4 +1,4 @@
-import { Row, Col, Grid, Divider, Tag } from 'antd';
+import { Row, Col, Grid, Divider, Tag, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -158,7 +158,9 @@ export function NewsItemIndiv() {
 						</Col>
 					</Row>
 				</>
-			) : null}
+			) : (
+				<Spin />
+			)}
 		</div>
 	);
 }
