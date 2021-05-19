@@ -59,7 +59,6 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
                 if (err) {
                     throw new Error(err.message);
                 } else {
-                    console.log('news');
                     user.news?.push(news._id);
                     await user.save();
                 }
@@ -166,47 +165,51 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
             });
             if (!news_c) {
                 throw new Error(`No news with id: ${req.body._id}`);
-            }
-            if (user.isAdmin) {
-                await News.findOneAndUpdate(
-                    { pending: false, _id: req.body._id },
-                    {
-                        title: req.body.title ?? news_c.title,
-                        overview: req.body.overview ?? news_c.overview,
+            } else {
+                if (user.isAdmin) {
+                    await News.findOneAndUpdate(
+                        { pending: false, _id: req.body._id },
+                        {
+                            title: req.body.title ?? news_c.title,
+                            overview: req.body.overview ?? news_c.overview,
+                            created_by:
+                                `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
+                            created_by_id: user._id,
+                            thumbnail: req.body.thumbnail ?? news_c.thumbnail,
+                            body: req.body.body ?? news_c.body,
+                            tags: req.body.tags ?? news_c.tags,
+                            pending: false,
+                        }
+                    );
+                    res.send({
+                        error: false,
+                        message: 'successfully updated event!',
+                    });
+                } else {
+                    const pendingReq = await createPendingRequest(
+                        user._id,
+                        e_request_admin.createEvent
+                    );
+                    await News.findByIdAndDelete(req.body._id);
+                    const news = new News({
+                        _id: req.body._id,
+                        title: req.body.title,
+                        overview: req.body.overview,
                         created_by:
                             `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                         created_by_id: user._id,
-                        thumbnail: req.body.thumbnail ?? news_c.thumbnail,
-                        body: req.body.body ?? news_c.body,
-                        tags: req.body.tags ?? news_c.tags,
-                        pending: false,
-                    }
-                );
-                res.send({
-                    error: false,
-                    message: 'successfully updated event!',
-                });
-            } else {
-                const pendingReq = await createPendingRequest(
-                    user._id,
-                    e_request_admin.createEvent
-                );
-                const news = new News({
-                    title: req.body.title,
-                    overview: req.body.overview,
-                    created_by:
-                        `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
-                    created_by_id: user._id,
-                    thumbnail: req.body.thumbnail,
-                    body: req.body.body,
-                    tags: req.body.tags,
-                    pending: false,
-                } as unknown as INews);
-                await news.save();
-                res.send({
-                    error: false,
-                    message: 'successfully updated event!',
-                });
+                        thumbnail: req.body.thumbnail,
+                        body: req.body.body,
+                        tags: req.body.tags,
+                        pending_req_id: pendingReq?._id,
+                        pending: true,
+                    } as unknown as INews);
+                    await news.save();
+                    res.send({
+                        error: false,
+                        message: 'successfully updated event!',
+                    });
+                }
             }
         } else {
             if (user.isAdmin) {
@@ -249,7 +252,7 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
                             : req.body.thumbnail,
                         body: req.body.body ? news_p.body : req.body.body,
                         tags: req.body.tags ? news_p.tags : req.body.tags,
-                        pending: false,
+                        pending: true,
                         created_by_id: user._id,
                         pending_req_id: pendingReq._id,
                     }
@@ -271,10 +274,9 @@ app.post('/confirm_news', verifyToken, async (req, res) => {
         if (err) res.send('Error in getting event details');
         else {
             news.pending = false;
-            news
-                .save()
+            news.save()
                 .then((_response: any) => res.send('success'))
-                .then((_err: any) => res.send('error'));
+                .catch((_err: any) => res.send('error'));
         }
     });
 });

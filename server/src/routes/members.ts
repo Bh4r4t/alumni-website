@@ -25,7 +25,6 @@ app.get('/all/:page', verifyToken, async (req: Request, res: Response) => {
 app.get('/all_loc', verifyToken, async (_req: Request, res: Response) => {
     try {
         const locs = await User.distinct('location_contact_info.current_city');
-        console.log(locs);
         res.send({ locs });
     } catch (err) {
         res.send({ error: true, message: err.messagee });
@@ -70,7 +69,6 @@ app.get('/search_by_inst', verifyToken, async (req: Request, res: Response) => {
 app.get('/all_comps', verifyToken, async (_req: Request, res: Response) => {
     try {
         const comps = await User.distinct('professional_info.company');
-        console.log(comps);
         res.send({ comps });
     } catch (err) {
         res.send({ error: true, message: err.messagee });
@@ -92,7 +90,6 @@ app.get('/search_by_comp', verifyToken, async (req: Request, res: Response) => {
 app.get('/all_inds', verifyToken, async (_req: Request, res: Response) => {
     try {
         const inds = await User.distinct('professional_info.industry');
-        console.log(inds);
         res.send({ inds });
     } catch (err) {
         res.send({ error: true, message: err.messagee });
@@ -130,7 +127,6 @@ app.get('/all_roles', verifyToken, async (_req: Request, res: Response) => {
 
 // generale filter in searching at homepage of members
 app.get('/search', verifyToken, async (req: Request, res: Response) => {
-    console.log('req.query: ', req.query);
     try {
         if (req.query.name) {
             const q_name = (req.query.name as string).trim();
@@ -272,6 +268,123 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
                 res.send({ user });
             }
         }
+        // roles
+        else if (req.query.roles || req.query.industries || req.query.skills) {
+            if (
+                req.query.roles !== '' &&
+                req.query.industries !== '' &&
+                req.query.skills !== ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'professional_info.skills': {
+                        $regex: req.query.skills,
+                        $options: 'i',
+                    },
+                    'professional_info.roles': {
+                        $regex: req.query.roles,
+                        $options: 'i',
+                    },
+                    'professional_info.industries': {
+                        $regex: req.query.industries,
+                        $options: 'i',
+                    },
+                });
+                res.send({ user });
+            } else if (
+                req.query.roles === '' &&
+                req.query.industries !== '' &&
+                req.query.skills !== ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'professional_info.industries': {
+                        $regex: req.query.industries,
+                        $options: 'i',
+                    },
+                    'professional_info.skills': {
+                        $regex: req.query.skills,
+                        $options: 'i',
+                    },
+                });
+                res.send({ user });
+            } else if (
+                req.query.roles !== '' &&
+                req.query.industries === '' &&
+                req.query.skills !== ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'professional_info.roles': {
+                        $regex: req.query.roles,
+                        $options: 'i',
+                    },
+
+                    'professional_info.skills': {
+                        $regex: req.query.skills,
+                        $options: 'i',
+                    },
+                });
+                res.send({ user });
+            } else if (
+                req.query.roles !== '' &&
+                req.query.industries !== '' &&
+                req.query.skills === ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'professional_info.roles': {
+                        $regex: req.query.roles,
+                        $options: 'i',
+                    },
+
+                    'professional_info.industries': {
+                        $regex: req.query.industries,
+                        $options: 'i',
+                    },
+                });
+                res.send({ user });
+            } else if (
+                req.query.roles !== '' &&
+                req.query.industries === '' &&
+                req.query.skills === ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'professional_info.roles': {
+                        $regex: req.query.roles,
+                        $options: 'i',
+                    },
+                });
+                res.send({ user });
+            } else if (
+                req.query.roles === '' &&
+                req.query.industries !== '' &&
+                req.query.skills === ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'professional_info.industries': {
+                        $regex: req.query.industries,
+                        $options: 'i',
+                    },
+                });
+                res.send({ user });
+            } else if (
+                req.query.roles === '' &&
+                req.query.industries === '' &&
+                req.query.skills !== ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'professional_info.skills': {
+                        $regex: req.query.skills,
+                        $options: 'i',
+                    },
+                });
+                res.send({ user });
+            }
+        }
         // location
         else if (req.query.city || req.query.state || req.query.country) {
             const user = await User.find({
@@ -285,8 +398,32 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
         // company
         else if (req.query.company) {
             const user = await User.find({
-                'professional_info.company': {
+                'professional_info.orgs.company': {
                     $regex: req.query.company,
+                    $options: 'i',
+                },
+            });
+            res.send({ user });
+        } else if (req.query.role) {
+            const user = await User.find({
+                'professional_info.roles': {
+                    $regex: req.query.role,
+                    $options: 'i',
+                },
+            });
+            res.send({ user });
+        } else if (req.query.skill) {
+            const user = await User.find({
+                'professional_info.skills': {
+                    $regex: req.query.skill,
+                    $options: 'i',
+                },
+            });
+            res.send({ user });
+        } else if (req.query.institute) {
+            const user = await User.find({
+                'educational_info.name_of_organization': {
+                    $regex: req.query.institute,
                     $options: 'i',
                 },
             });

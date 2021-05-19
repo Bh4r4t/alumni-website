@@ -1,4 +1,4 @@
-import { Layout, Row, Col, Divider, Menu } from 'antd';
+import { Layout, Row, Col, Divider, Menu, Spin } from 'antd';
 import { useEffect, useState } from 'react';
 import './members.css';
 import querystring from 'querystring';
@@ -11,12 +11,15 @@ import ApartmentIcon from '@material-ui/icons/Apartment';
 import { Tabs, Input, Button, Tooltip, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Card, Avatar } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import RollbackOutlined from '@ant-design/icons';
 import img1 from '../../assets/profile.png';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { getMembers, memberSearch } from '../../services/api/members';
+import { DriveEtaTwoTone } from '@material-ui/icons';
 import { apiURL } from '../../services/api/common';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 const { Meta } = Card;
 
@@ -27,19 +30,140 @@ const { Content } = Layout;
 
 export default function Members() {
 	const [members, setmembers] = useState([]);
+	const location_web: any = useLocation();
+	const history = useHistory();
 	useEffect(() => {
-		const fetchMembers = async () => {
-			try {
-				const memb = await getMembers(
-					1 as unknown as string,
-					user.token
-				);
-				setmembers(memb?.data.users);
-			} catch (err) {
-				console.log(err.message);
+		if (location_web?.state === undefined) {
+			const fetchMembers = async () => {
+				try {
+					const memb = await getMembers(
+						1 as unknown as string,
+						user.token
+					);
+					setmembers(memb?.data.users);
+				} catch (err) {
+					console.log(err.message);
+				}
+			};
+			fetchMembers();
+		} else {
+			if (location_web?.state?.company !== undefined) {
+				axios
+					.get(
+						`${apiURL}/members/search?company=` +
+							location_web?.state?.company,
+						{
+							withCredentials: true,
+							headers: {
+								authorization: `Bearer ${user.token}`,
+							},
+						}
+					)
+					.then((response) => {
+						console.log(response.data);
+						setmembers(response.data.user);
+					})
+					.catch((err) => {
+						console.log(err.message);
+					});
+			} else if (location_web?.state?.city !== undefined) {
+				axios
+					.get(
+						`${apiURL}/members/search?city=` +
+							location_web?.state?.city,
+						{
+							withCredentials: true,
+							headers: {
+								authorization: `Bearer ${user.token}`,
+							},
+						}
+					)
+					.then((response) => {
+						console.log(response.data);
+						setmembers(response.data.user);
+					})
+					.catch((err) => {
+						console.log(err.message);
+					});
+			} else if (location_web?.state?.institute !== undefined) {
+				axios
+					.get(
+						`${apiURL}/members/search?institute=` +
+							location_web?.state?.institute,
+						{
+							withCredentials: true,
+							headers: {
+								authorization: `Bearer ${user.token}`,
+							},
+						}
+					)
+					.then((response) => {
+						console.log(response.data);
+						setmembers(response.data.user);
+					})
+					.catch((err) => {
+						console.log(err.message);
+					});
+			} else if (location_web?.state?.role !== undefined) {
+				axios
+					.get(
+						`${apiURL}/members/search?role=` +
+							location_web?.state?.role,
+						{
+							withCredentials: true,
+							headers: {
+								authorization: `Bearer ${user.token}`,
+							},
+						}
+					)
+					.then((response) => {
+						console.log(response.data);
+						setmembers(response.data.user);
+					})
+					.catch((err) => {
+						console.log(err.message);
+					});
+			} else if (location_web?.state?.skill !== undefined) {
+				axios
+					.get(
+						`${apiURL}/members/search?skill=` +
+							location_web?.state?.skill,
+						{
+							withCredentials: true,
+							headers: {
+								authorization: `Bearer ${user.token}`,
+							},
+						}
+					)
+					.then((response) => {
+						console.log(response.data);
+						setmembers(response.data.user);
+					})
+					.catch((err) => {
+						console.log(err.message);
+					});
+			} else if (location_web?.state?.industry !== 'undefined') {
+				axios
+					.get(
+						`${apiURL}/members/search?industry=` +
+							location_web?.state?.industry,
+						{
+							withCredentials: true,
+							headers: {
+								authorization: `Bearer ${user.token}`,
+							},
+						}
+					)
+					.then((response) => {
+						console.log(response.data);
+						setmembers(response.data.user);
+					})
+					.catch((err) => {
+						console.log(err.message);
+					});
 			}
-		};
-		fetchMembers();
+			history.push('/members', undefined);
+		}
 	}, []);
 
 	const [values, setvalues] = useState('location');
@@ -48,11 +172,19 @@ export default function Members() {
 	const [course, setcourse] = useState('');
 	const [stream, setstream] = useState('');
 	const [city, setcity] = useState('');
+	const { md } = useBreakpoint();
 	const [location, setlocation] = useState({
 		city: '',
 		state: '',
 		country: '',
 	});
+
+	const [professional, setprofessional] = useState({
+		role: '',
+		industry: '',
+		skills: '',
+	});
+	const [company, setcompany] = useState('');
 	const [year, setyear] = useState('');
 
 	const handleInputChange = (e: any) => {
@@ -71,9 +203,18 @@ export default function Members() {
 		setvalues(e.key);
 	};
 
+	const handleCompanyChange = (e: any) => {
+		setcompany(e.target.value);
+		console.log(company);
+	};
+
 	const handleCourseSelect = (option: any) => {
 		console.log(option);
 		setcourse(option);
+	};
+
+	const handleProfessionalChange = (e: any) => {
+		setprofessional({ ...professional, [e.target.id]: e.target.value });
 	};
 
 	const handleStreamSelect = (option: any) => {
@@ -125,12 +266,58 @@ export default function Members() {
 
 	const handleLocationSubmit = (e: any) => {
 		axios
-			.get(`${apiURL}/members/search?city=` + location.city, {
+			.get(
+				`${apiURL}/members/search?city=` +
+					location.city +
+					'&state=' +
+					location.state +
+					'&country=' +
+					location.country,
+				{
+					withCredentials: true,
+					headers: {
+						authorization: `Bearer ${user.token}`,
+					},
+				}
+			)
+			.then((response) => {
+				console.log(response.data);
+				setmembers(response.data.user);
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const handleCompanySubmit = () => {
+		axios
+			.get(`${apiURL}/members/search?company=` + company, {
 				withCredentials: true,
 				headers: {
 					authorization: `Bearer ${user.token}`,
 				},
 			})
+			.then((response) => {
+				console.log(response.data);
+				setmembers(response.data.user);
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const handleProfessionalSubmit = () => {
+		axios
+			.get(
+				`${apiURL}/members/search?roles=` +
+					professional.role +
+					`&industries=` +
+					professional.industry +
+					`&skills=` +
+					professional.skills,
+				{
+					withCredentials: true,
+					headers: {
+						authorization: `Bearer ${user.token}`,
+					},
+				}
+			)
 			.then((response) => {
 				console.log(response.data);
 				setmembers(response.data.user);
@@ -156,156 +343,182 @@ export default function Members() {
 					</span>
 				</div>
 				<Row style={{ marginLeft: '10vh', marginTop: -15 }}>
-					<Menu mode="horizontal" style={{ width: '140vh' }}>
-						<Menu.Item
-							key="location"
-							style={{
-								color: 'grey',
-								fontSize: '2vh',
-								fontWeight: 'bold',
-							}}
-							icon={
-								<LocationOnIcon
-									style={{ fontSize: '2vh', color: 'blue' }}
-								/>
-							}
-						>
-							<Link
-								to="/members/location"
+					<Col span={21}>
+						<Menu mode="horizontal">
+							<Menu.Item
+								key="location"
 								style={{
 									color: 'grey',
 									fontSize: '2vh',
 									fontWeight: 'bold',
 								}}
+								icon={
+									<LocationOnIcon
+										style={{
+											fontSize: '2vh',
+											color: 'blue',
+										}}
+									/>
+								}
 							>
-								Location
-							</Link>
-						</Menu.Item>
-						<Menu.Item
-							key="company"
-							style={{
-								color: 'grey',
-								fontSize: '2vh',
-								fontWeight: 'bold',
-							}}
-							icon={
-								<BusinessIcon
-									style={{ fontSize: '2vh', color: 'blue' }}
-								/>
-							}
-						>
-							<Link
-								to="/members/company"
+								<Link
+									to="/members/location"
+									style={{
+										color: 'grey',
+										fontSize: '2vh',
+										fontWeight: 'bold',
+									}}
+								>
+									Location
+								</Link>
+							</Menu.Item>
+							<Menu.Item
+								key="company"
 								style={{
 									color: 'grey',
 									fontSize: '2vh',
 									fontWeight: 'bold',
 								}}
+								icon={
+									<BusinessIcon
+										style={{
+											fontSize: '2vh',
+											color: 'blue',
+										}}
+									/>
+								}
 							>
-								Company
-							</Link>
-						</Menu.Item>
+								<Link
+									to="/members/company"
+									style={{
+										color: 'grey',
+										fontSize: '2vh',
+										fontWeight: 'bold',
+									}}
+								>
+									Company
+								</Link>
+							</Menu.Item>
 
-						<Menu.Item
-							key="institute"
-							style={{
-								color: 'grey',
-								fontSize: '2vh',
-								fontWeight: 'bold',
-							}}
-							icon={
-								<SchoolIcon
-									style={{ fontSize: '2vh', color: 'blue' }}
-								/>
-							}
-						>
-							<Link
-								to="/members/institute"
+							<Menu.Item
+								key="institute"
 								style={{
 									color: 'grey',
 									fontSize: '2vh',
 									fontWeight: 'bold',
 								}}
+								icon={
+									<SchoolIcon
+										style={{
+											fontSize: '2vh',
+											color: 'blue',
+										}}
+									/>
+								}
 							>
-								Institute
-							</Link>
-						</Menu.Item>
-						<Menu.Item
-							key="roles"
-							style={{
-								color: 'grey',
-								fontSize: '2vh',
-								fontWeight: 'bold',
-							}}
-							icon={
-								<BusinessCenterIcon
-									style={{ fontSize: '2vh', color: 'blue' }}
-								/>
-							}
-						>
-							<Link
-								to="/members/roles"
+								<Link
+									to="/members/institute"
+									style={{
+										color: 'grey',
+										fontSize: '2vh',
+										fontWeight: 'bold',
+									}}
+								>
+									Institute
+								</Link>
+							</Menu.Item>
+							<Menu.Item
+								key="roles"
 								style={{
 									color: 'grey',
 									fontSize: '2vh',
 									fontWeight: 'bold',
 								}}
+								icon={
+									<BusinessCenterIcon
+										style={{
+											fontSize: '2vh',
+											color: 'blue',
+										}}
+									/>
+								}
 							>
-								Roles
-							</Link>
-						</Menu.Item>
-						<Menu.Item
-							key="professional"
-							style={{
-								color: 'grey',
-								fontSize: '2vh',
-								fontWeight: 'bold',
-							}}
-							icon={
-								<ReceiptIcon
-									style={{ fontSize: '2vh', color: 'blue' }}
-								/>
-							}
-						>
-							<Link
-								to="/members/prof_skills"
+								<Link
+									to="/members/roles"
+									style={{
+										color: 'grey',
+										fontSize: '2vh',
+										fontWeight: 'bold',
+									}}
+								>
+									Roles
+								</Link>
+							</Menu.Item>
+							<Menu.Item
+								key="professional"
 								style={{
 									color: 'grey',
 									fontSize: '2vh',
 									fontWeight: 'bold',
 								}}
+								icon={
+									<ReceiptIcon
+										style={{
+											fontSize: '2vh',
+											color: 'blue',
+										}}
+									/>
+								}
 							>
-								Professional Skills
-							</Link>
-						</Menu.Item>
-						<Menu.Item
-							key="industry"
-							style={{
-								color: 'grey',
-								fontSize: '2vh',
-								fontWeight: 'bold',
-							}}
-							icon={
-								<ApartmentIcon
-									style={{ fontSize: '2vh', color: 'blue' }}
-								/>
-							}
-						>
-							<Link
-								to="/members/industry"
+								<Link
+									to="/members/prof_skills"
+									style={{
+										color: 'grey',
+										fontSize: '2vh',
+										fontWeight: 'bold',
+									}}
+								>
+									Professional Skills
+								</Link>
+							</Menu.Item>
+							<Menu.Item
+								key="industry"
 								style={{
 									color: 'grey',
 									fontSize: '2vh',
 									fontWeight: 'bold',
 								}}
+								icon={
+									<ApartmentIcon
+										style={{
+											fontSize: '2vh',
+											color: 'blue',
+										}}
+									/>
+								}
 							>
-								Industry
-							</Link>
-						</Menu.Item>
-					</Menu>
+								<Link
+									to="/members/industry"
+									style={{
+										color: 'grey',
+										fontSize: '2vh',
+										fontWeight: 'bold',
+									}}
+								>
+									Industry
+								</Link>
+							</Menu.Item>
+						</Menu>
+					</Col>
 				</Row>
-				<div className="search-contain">
-					<Row>
+				<Row style={{ marginTop: '1vh', marginLeft: '10vh' }}>
+					<Col
+						span={21}
+						style={{
+							backgroundColor: 'white',
+							paddingBottom: '1vh',
+						}}
+					>
 						<div className="card-container">
 							<Tabs type="card">
 								<TabPane tab="Name, Email" key="1">
@@ -347,12 +560,12 @@ export default function Members() {
 								</TabPane>
 								<TabPane tab="Course & Year" key="2">
 									<Row style={{ marginTop: '2vh' }}>
-										<Col span={5}>
+										<Col span={md ? 7 : 24}>
 											<Select
-												size="large"
-												style={{ width: '33vh' }}
 												placeholder="Select Course"
 												onSelect={handleCourseSelect}
+												size="large"
+												style={{ width: '80%' }}
 											>
 												<Option value="Bachelor of Technology - B.Tech.">
 													Bachelor of Technology -
@@ -376,13 +589,12 @@ export default function Members() {
 												</Option>
 											</Select>
 										</Col>
-										<Col span={1}></Col>
-										<Col span={5}>
+										<Col span={md ? 7 : 24}>
 											<Select
-												size="large"
-												style={{ width: '33vh' }}
 												placeholder="Select Stream"
 												onSelect={handleStreamSelect}
+												size="large"
+												style={{ width: '80%' }}
 											>
 												<Option value="">
 													-- Select Stream --
@@ -425,13 +637,12 @@ export default function Members() {
 												</Option>
 											</Select>
 										</Col>
-										<Col span={1}></Col>
-										<Col span={5}>
+										<Col span={md ? 7 : 24}>
 											<Select
-												size="large"
-												style={{ width: '33vh' }}
 												placeholder="Select Graduation Year"
 												onSelect={handleYearSelect}
+												size="large"
+												style={{ width: '80%' }}
 											>
 												<Option value="">
 													Graduation Year
@@ -495,15 +706,12 @@ export default function Members() {
 												</Option>
 											</Select>
 										</Col>
-										<Col
-											span={2}
-											style={{ marginLeft: '7vh' }}
-										>
+										<Col span={1} style={{}}>
 											<Tooltip title="search">
 												<Button
 													type="primary"
-													size="large"
 													shape="circle"
+													size="large"
 													icon={<SearchOutlined />}
 													style={{
 														color: 'white',
@@ -518,7 +726,7 @@ export default function Members() {
 								</TabPane>
 								<TabPane tab="Location" key="3">
 									<Row style={{ marginTop: '2vh' }}>
-										<Col span={20}>
+										<Col span={6}>
 											<Input
 												size="large"
 												placeholder="City"
@@ -551,11 +759,12 @@ export default function Members() {
 								</TabPane>
 								<TabPane tab="Company" key="4">
 									<Row style={{ marginTop: '2vh' }}>
-										<Col span={20}>
+										<Col span={7}>
 											<Input
 												size="large"
 												placeholder="Company Name"
 												id="company"
+												onChange={handleCompanyChange}
 											/>
 										</Col>
 										<Col span={1}></Col>
@@ -565,6 +774,9 @@ export default function Members() {
 													type="primary"
 													size="large"
 													shape="circle"
+													onClick={
+														handleCompanySubmit
+													}
 													icon={<SearchOutlined />}
 													style={{
 														color: 'white',
@@ -586,6 +798,9 @@ export default function Members() {
 												size="large"
 												placeholder="Roles"
 												id="role"
+												onChange={
+													handleProfessionalChange
+												}
 											/>
 										</Col>
 
@@ -597,6 +812,9 @@ export default function Members() {
 												size="large"
 												placeholder="Industries"
 												id="industry"
+												onChange={
+													handleProfessionalChange
+												}
 											/>
 										</Col>
 										<Col
@@ -605,53 +823,13 @@ export default function Members() {
 										>
 											<Input
 												size="large"
-												placeholder="Professional"
-												id="professional"
+												placeholder="Skill"
+												id="skills"
+												onChange={
+													handleProfessionalChange
+												}
 											/>
 										</Col>
-										<Col
-											span={3}
-											style={{ marginRight: '4vh' }}
-										>
-											<Select
-												size="large"
-												style={{ width: '20vh' }}
-												placeholder="Experience Year From"
-											>
-												<Option value="yf1">1</Option>
-												<Option value="yf2">2</Option>
-												<Option value="yf3">3</Option>
-												<Option value="yf4">4</Option>
-												<Option value="yf5">5</Option>
-												<Option value="yf6">6</Option>
-												<Option value="yf7">7</Option>
-												<Option value="yf8">8</Option>
-												<Option value="yf9">9</Option>
-												<Option value="yf10">10</Option>
-											</Select>
-										</Col>
-										<Col
-											span={3}
-											style={{ marginRight: '1vh' }}
-										>
-											<Select
-												size="large"
-												style={{ width: '20vh' }}
-												placeholder="Experience Year To"
-											>
-												<Option value="yt1">1</Option>
-												<Option value="yt2">2</Option>
-												<Option value="yt3">3</Option>
-												<Option value="yt4">4</Option>
-												<Option value="yt5">5</Option>
-												<Option value="yt6">6</Option>
-												<Option value="yt7">7</Option>
-												<Option value="yt8">8</Option>
-												<Option value="yt9">9</Option>
-												<Option value="yt10">10</Option>
-											</Select>
-										</Col>
-										<Col span={1}> </Col>
 
 										<Col span={2}>
 											<Tooltip title="search">
@@ -665,6 +843,9 @@ export default function Members() {
 														backgroundColor:
 															'green',
 													}}
+													onClick={
+														handleProfessionalSubmit
+													}
 												/>
 											</Tooltip>
 										</Col>
@@ -672,41 +853,51 @@ export default function Members() {
 								</TabPane>
 							</Tabs>
 						</div>
-					</Row>
-				</div>
+					</Col>
+				</Row>
 				<Row
 					style={{
-						marginLeft: '10vh',
+						marginLeft: '90px',
 						marginTop: '2vh',
-						width: '170vh',
+						marginRight: '1vw',
 					}}
 				>
-					{members &&
-						members.map((member: any) => (
-							<Col span={5} style={{ marginBottom: '2vh' }}>
+					{members ?
+						members.map((member: any, idx: any) => (
+							<Col
+								key={idx}
+								span={md ? 5 : 20}
+								style={{
+									marginBottom: '2vh',
+									marginRight: '3vh',
+								}}
+							>
 								<Card
+									key={idx}
 									className="members-card"
 									style={{
-										width: 300,
-										height: '35vh',
+										// height: '35vh',
+										minHeight: '350px',
 										alignItems: 'center',
+										display: 'flex',
+										flexDirection: 'column',
+										
 									}}
-									cover={
-										<Avatar
-											style={{
-												marginTop: '2vh',
-												left: '25%',
-											}}
-											size={150}
-											icon={<img src={img1} />}
-										/>
-									}
 								>
-									<div className="member-details">
+									<Avatar
+										style={{
+											marginTop: '2vh',
+											left: '25%',
+										}}
+										size={100}
+										icon={<img src={member?.profileImg?.data ?? img1} />}
+									/>
+									<Divider />
+									<Row key={idx}>
 										<h1
+											key={idx}
 											style={{
-												width: '20vh',
-												fontSize: 20,
+												fontSize: '1.2em',
 												marginBottom: '0',
 												marginLeft: '6vh',
 												left: '50%',
@@ -717,6 +908,7 @@ export default function Members() {
 												member.basic_info.last_name}
 										</h1>
 										<h3
+											key={idx}
 											style={{
 												fontSize: 16,
 												fontWeight: 300,
@@ -731,10 +923,10 @@ export default function Members() {
 														?.end_date
 												)}
 										</h3>
-									</div>
+									</Row>
 								</Card>
 							</Col>
-						))}
+						)) : <Spin/>}
 				</Row>
 			</div>
 		</div>

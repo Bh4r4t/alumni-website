@@ -9,7 +9,7 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import { Tabs, Input, Button, Tooltip, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { getAllRoles } from '../../services/api/members';
 
@@ -24,7 +24,7 @@ const { Content } = Layout;
 
 export default function Roles() {
 	const user = useSelector((state: any) => state.authReducer.user);
-
+	const history = useHistory();
 	const [values, setvalues] = useState('roles');
 	const [roles, setroles] = useState<any>([]);
 	const handleClick = ({ e }: { e: any }) => {
@@ -45,11 +45,12 @@ export default function Roles() {
 				<Row></Row>
 				<Row style={{ marginLeft: '3vh' }}>
 					<Col span={1} style={{ marginTop: '1vh' }}>
-						<Button
-							href="/members"
-							icon={<ArrowBackIcon />}
-							size="large"
-						></Button>
+						<Link to="/members">
+							<Button
+								icon={<ArrowBackIcon />}
+								size="large"
+							></Button>
+						</Link>
 					</Col>
 					<Col span={3}>
 						<h1 style={{ fontSize: 45, fontWeight: 400 }}>
@@ -231,12 +232,15 @@ export default function Roles() {
 					<Row style={{ marginBottom: '2vh' }}>
 						{roles.map((role: String) => (
 							<Col span={5} offset={1}>
-								<Link
-									to="https://github.com/ant-design/ant-design/issues/1862"
+								<Button
+									type="link"
 									style={{ color: 'black' }}
+									onClick={() =>
+										history.push('/members', { role: role })
+									}
 								>
 									{role}{' '}
-								</Link>
+								</Button>
 							</Col>
 						))}
 					</Row>

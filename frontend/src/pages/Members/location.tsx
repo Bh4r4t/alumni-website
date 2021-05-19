@@ -10,7 +10,7 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import { Tabs, Input, Button, Tooltip, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { Card, Avatar, Tag } from 'antd';
@@ -29,6 +29,7 @@ const { Content } = Layout;
 export default function Location() {
 	const [cities, setcities] = useState([]);
 	const user = useSelector((state: any) => state.authReducer.user);
+	const history = useHistory();
 	useEffect(() => {
 		axios
 			.get(`${url}/members/all_loc`, {
@@ -59,7 +60,6 @@ export default function Location() {
 					<Col span={1} style={{ marginTop: '1vh' }}>
 						<Link to="/members">
 							<Button
-								href="/members"
 								icon={<ArrowBackIcon />}
 								size="large"
 							></Button>
@@ -246,12 +246,17 @@ export default function Location() {
 						{cities &&
 							cities.map((city: String) => (
 								<Col span={5} offset={1}>
-									<Link
-										to="/members"
+									<Button
+										type="link"
 										style={{ color: 'black' }}
+										onClick={() =>
+											history.push('/members', {
+												city: city,
+											})
+										}
 									>
 										{city}{' '}
-									</Link>
+									</Button>
 								</Col>
 							))}
 					</Row>

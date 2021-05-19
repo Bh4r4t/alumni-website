@@ -312,7 +312,7 @@ function EduCard(props: any) {
 
 							<Form.Item
 								initialValue={moment.unix(
-									props.start_date / 1000
+									props?.start_date / 1000
 								)}
 								name="start_date"
 								label="Start Date"
@@ -323,7 +323,7 @@ function EduCard(props: any) {
 
 							<Form.Item
 								initialValue={moment.unix(
-									props.end_date / 1000
+									props?.end_date / 1000
 								)}
 								name="end_date"
 								label="End Date(expected/left)"

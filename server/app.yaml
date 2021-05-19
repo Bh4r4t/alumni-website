@@ -2,7 +2,7 @@ runtime: nodejs12
 instance_class:
 
 env_variables:
-    DBURL: mongodb+srv://Bharat:abcBharat@cluster0.muuox.mongodb.net/sample?retryWrites=true&w=majority
+    DBURL: mongodb+srv://Bharat:abcBharat@cluster0.muuox.mongodb.net/prod?retryWrites=true&w=majority
 
     CLIENT_URL: 'https://nginx-logger.netlify.app'
     REFRESH_TOKEN_SECRET: aklngkla677

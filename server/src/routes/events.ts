@@ -32,7 +32,14 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
                 address: req.body.address,
                 pending: false,
             } as unknown as IEvent);
-            await event.save();
+            event.save(async (err, _doc) => {
+                if (err) {
+                    throw new Error(err.message);
+                } else {
+                    user.news?.push(event._id);
+                    await user.save();
+                }
+            });
         } else {
             const pending_req = await createPendingRequest(
                 user._id,
@@ -51,8 +58,14 @@ app.post('/create', verifyToken, async (req: Request, res: Response) => {
                 event_category: req.body.event_category,
                 address: req.body.address,
             } as IEvent);
-            console.log(event);
-            await event.save();
+            event.save(async (err, _doc) => {
+                if (err) {
+                    throw new Error(err.message);
+                } else {
+                    user.news?.push(event._id);
+                    await user.save();
+                }
+            });
         }
         res.send({ error: false, message: 'successfully added event!' });
     } catch (err) {
@@ -153,11 +166,11 @@ app.get('/pending', verifyToken, async (req: Request, res: Response) => {
         if (!user) {
             throw new Error('Not Accessible by Moderator');
         }
-       /* const query: any = {
+        /* const query: any = {
             pending: true,
             event_category: { $regex: req.query.cat, $options: 'i' },
         };*/
-        const events = await Events.find({pending:true});
+        const events = await Events.find({ pending: true });
         const copy_events = [...events];
         res.send({ events: copy_events });
     } catch (err) {
@@ -176,7 +189,7 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
         }
         const event_p = await Events.findOne({
             pending: true,
-            id: req.body._id,
+            _id: req.body._id,
         });
         if (!event_p) {
             const event_c = await Events.findOne({
@@ -185,11 +198,41 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
             });
             if (!event_c) {
                 throw new Error(`No event with id: ${req.body._id}`);
-            }
-            if (user.isAdmin) {
-                await Events.findOneAndUpdate(
-                    { pending: false, _id: req.body._id },
-                    {
+            } else {
+                if (user.isAdmin) {
+                    await Events.findOneAndUpdate(
+                        { pending: false, _id: req.body._id },
+                        {
+                            event_start:
+                                req.body.event_start ?? event_c.event_start,
+                            event_end: req.body.event_end ?? event_c.event_end,
+                            event_name:
+                                req.body.event_name ?? event_c.event_name,
+                            event_venue:
+                                req.body.event_venue ?? event_c.event_venue,
+                            event_description:
+                                req.body.event_description ??
+                                event_c.event_description,
+                            created_by:
+                                `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
+                            created_by_id: user._id,
+                            event_category:
+                                req.body.event_category ??
+                                event_c.event_category,
+                            pending: false,
+                        }
+                    );
+                    res.send({
+                        error: false,
+                        message: 'successfully updated event!',
+                    });
+                } else {
+                    const pendingReq = await createPendingRequest(
+                        user._id,
+                        e_request_admin.createEvent
+                    );
+                    await Events.findByIdAndDelete(req.body._id);
+                    const newEvent = new Events({
                         event_start:
                             req.body.event_start ?? event_c.event_start,
                         event_end: req.body.event_end ?? event_c.event_end,
@@ -202,26 +245,17 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
                         created_by:
                             `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
                         created_by_id: user._id,
-                    }
-                );
-            } else {
-                const pendingReq = await createPendingRequest(
-                    user._id,
-                    e_request_admin.createEvent
-                );
-                const newEvent = new Events({
-                    event_start: req.body.event_start,
-                    event_end: req.body.event_end,
-                    event_name: req.body.event_name,
-                    event_venue: req.body.event_venue,
-                    event_description: req.body.event_description,
-                    created_by:
-                        `${user.basic_info.first_name} ${user.basic_info.last_name}` as String,
-                    created_by_id: user._id,
-                    pending_req_id: pendingReq._id,
-                    pending: true,
-                } as unknown as IEvent);
-                await newEvent.save();
+                        event_category:
+                            req.body.event_category ?? event_c.event_category,
+                        pending_req_id: pendingReq._id,
+                        pending: true,
+                    } as unknown as IEvent);
+                    await newEvent.save();
+                    res.send({
+                        error: false,
+                        message: 'successfully updated event!',
+                    });
+                }
             }
         } else {
             if (user.isAdmin) {
@@ -239,6 +273,10 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
                 } as unknown as IEvent);
                 await newEvent.save();
                 await Events.deleteOne({ pending: true, _id: event_p._id });
+                res.send({
+                    error: false,
+                    message: 'successfully updated event!',
+                });
             } else {
                 await pendingVerificationModel.deleteOne({
                     _id: event_p.pending_req_id,
@@ -265,12 +303,15 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
                         pending_req_id: pendingReq._id,
                     }
                 );
+                res.send({
+                    error: false,
+                    message: 'successfully updated event!',
+                });
             }
         }
         if (!user) {
             throw new Error('User does not exist!');
         }
-        res.send({ error: false, message: 'successfully updated event!' });
     } catch (err) {
         res.send({ error: true, message: err.message });
     }
@@ -279,13 +320,14 @@ app.post('/update', verifyToken, async (req: Request, res: Response) => {
 app.post('/confirm_event', verifyToken, async (req, res) => {
     console.log(req.body.id);
     Events.findById(req.body.id, (err: any, event: any) => {
-        if (err) res.send('Error in getting event details');
-        else {
+        if (err) {
+            res.send('Error in getting event details');
+        } else {
             event.pending = false;
             event
                 .save()
                 .then((_response: any) => res.send('success'))
-                .then((_err: any) => res.send('error'));
+                .catch((_err: any) => res.send('error'));
         }
     });
 });

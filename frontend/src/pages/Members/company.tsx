@@ -8,7 +8,7 @@ import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import { Tabs, Input, Button, Select, Card } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { useSelector } from 'react-redux';
@@ -16,13 +16,12 @@ import { getAllComps } from '../../services/api/members';
 
 export default function Company() {
 	const user = useSelector((state: any) => state.authReducer.user);
-
+	const history = useHistory();
 	const [companies, setcompanies] = useState([]);
 	useEffect(() => {
 		getAllComps(user.token)
 			.then((response: any) => {
 				setcompanies(response?.data?.comps);
-				console.log(companies[0]);
 			})
 			.catch((err) => console.log(err));
 	}, []);
@@ -39,7 +38,7 @@ export default function Company() {
 				<Row></Row>
 				<Row style={{ marginLeft: '3vh' }}>
 					<Col span={1} style={{ marginTop: '1vh' }}>
-						<Link to={'/members'}>
+						<Link to="/members">
 							<Button
 								icon={<ArrowBackIcon />}
 								size="large"
@@ -226,12 +225,17 @@ export default function Company() {
 					<Row style={{ marginBottom: '2vh' }}>
 						{companies.map((company: String) => (
 							<Col span={5} offset={1}>
-								<Link
-									to="https://github.com/ant-design/ant-design/issues/1862"
+								<Button
+									type="link"
 									style={{ color: 'black' }}
+									onClick={() =>
+										history.push('/members', {
+											company: company,
+										})
+									}
 								>
 									{company}{' '}
-								</Link>
+								</Button>
 							</Col>
 						))}
 					</Row>

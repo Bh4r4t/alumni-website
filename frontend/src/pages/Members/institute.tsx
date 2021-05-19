@@ -8,7 +8,7 @@ import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import { Tabs, Input, Button, Select, Card, Avatar, Tag } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import axios from 'axios';
@@ -19,6 +19,7 @@ export default function Institute() {
 	const user = useSelector((state: any) => state.authReducer.user);
 
 	const [institutes, setinstitutes] = useState([]);
+	const history = useHistory();
 	useEffect(() => {
 		axios
 			.get(`${apiURL}/members/all_inst`, {
@@ -235,12 +236,17 @@ export default function Institute() {
 					<Row style={{ marginBottom: '2vh' }}>
 						{institutes.map((institute: String) => (
 							<Col span={5} offset={1}>
-								<Link
-									to="https://github.com/ant-design/ant-design/issues/1862"
+								<Button
+									type="link"
 									style={{ color: 'black' }}
+									onClick={() =>
+										history.push('/members', {
+											institute: institute,
+										})
+									}
 								>
 									{institute}{' '}
-								</Link>
+								</Button>
 							</Col>
 						))}
 					</Row>

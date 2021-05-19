@@ -1,19 +1,22 @@
-import { Row, Col, Grid, Button } from 'antd';
+import { Row, Col, Grid, Button, Card, Spin } from 'antd';
 
 import JobCard from '../../components/JobCard/jobCard.component';
-import { Input } from 'antd';
+import { Input, Select } from 'antd';
 import { useState, useEffect } from 'react';
 import './jobs.css';
 import { useSelector } from 'react-redux';
 import { getJob, searchJob } from '../../services/api/job';
 import { useLocation } from 'react-router';
+import { useHistory } from 'react-router-dom';
+
+const { Option } = Select;
 
 const { useBreakpoint } = Grid;
 
 function JobSection() {
 	const global_state = useSelector((state: any) => state.authReducer.user);
 	const location: any = useLocation();
-	console.log(location.state);
+	const history = useHistory();
 	const [jobs, setjobs] = useState([]);
 	const [jobsearch, setjobsearch] = useState({
 		keywords: '',
@@ -23,25 +26,28 @@ function JobSection() {
 
 	useEffect(() => {
 		if (
-			location.state.keywords !== '' ||
-			location.state.company !== '' ||
-			location.state.job_location !== ''
+			location.state &&
+			(location?.state?.keywords !== '' ||
+				location?.state?.company !== '' ||
+				location?.state?.job_location !== '')
 		) {
+			console.log('heloo', location.state);
 			searchJob(
-				global_state.token,
+				global_state?.token,
 				location?.state?.keywords,
 				location?.state?.job_location,
 				location?.state?.company
 			)
-				.then((res: any) => {
+				.then((res) => {
 					setjobs(res.data.job);
+					history.push({ pathname: '/all_jobs', state: null });
+					location.state = null;
 				})
-				.catch((err: any) => {
+				.catch((err) => {
 					console.log(err.message);
 				});
 		} else {
 			getJob(global_state.token).then((response) => {
-				console.log(response.data);
 				setjobs(response.data.jobs);
 			});
 		}
@@ -58,10 +64,10 @@ function JobSection() {
 			jobsearch.job_location,
 			jobsearch.company
 		)
-			.then((res: any) => {
+			.then((res) => {
 				setjobs(res.data.job);
 			})
-			.catch((err: any) => {
+			.catch((err) => {
 				console.log(err.message);
 			});
 	};
@@ -76,7 +82,6 @@ function JobSection() {
 						<hr />
 					</div>
 				</Row>
-
 				<Row>
 					<Col xs={24} style={{ marginLeft: 10, marginBottom: 50 }}>
 						<span>
@@ -121,14 +126,19 @@ function JobSection() {
 					</Col>
 				</Row>
 				<Row className="events-section-items-row">
-					{jobs?.map((job_element) => (
-						<Col
-							span={md ? 8 : 24}
-							className="events-section-items-col"
-						>
-							<JobCard job={job_element} />
-						</Col>
-					))}
+					{jobs ? (
+						jobs?.map((job_element: any, idx: any) => (
+							<Col
+								key={idx}
+								span={md ? 8 : 24}
+								className="events-section-items-col"
+							>
+								<JobCard key={idx} job={job_element} />
+							</Col>
+						))
+					) : (
+						<Spin />
+					)}
 				</Row>
 			</div>
 		</section>

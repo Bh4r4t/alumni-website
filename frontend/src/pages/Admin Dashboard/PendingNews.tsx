@@ -1,12 +1,9 @@
-import { Row, Col } from 'antd';
+import { Row, Col, message } from 'antd';
 import { useEffect, useState } from 'react';
 import './Admindashboard.css';
 import { Button } from 'antd';
 import { Table, Tag, Space } from 'antd';
-import {
-	confirmNews,
-	cancelNews,
-} from '../../services/api/newsroom';
+import { confirmNews, cancelNews } from '../../services/api/newsroom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPendPosts } from '../../services/api/newsroom';
 import { useHistory } from 'react-router';
@@ -14,30 +11,30 @@ import { useHistory } from 'react-router';
 export default function PendingNews() {
 	const global_state = useSelector((state: any) => state.authReducer.user);
 	const [rowsregular, setrowsregular] = useState<any>(null);
-    const [refresh, setrefresh] = useState(false);
-    const history=useHistory()
+	const [refresh, setrefresh] = useState(false);
+	const history = useHistory();
 	const handleConfirm = (newsid: any) => {
 		console.log(newsid);
-		confirmNews( newsid,global_state.token,).then((response) => {
+		confirmNews(newsid, global_state.token).then((response) => {
 			if (response.data === 'success') {
-				alert('News confirmed');
+				message.success('News confirmed');
 				setrefresh(!refresh);
-			} else alert('Error in confirming news');
+			} else message.error('Error in confirming news');
 		});
 	};
 
 	const handleCancel = (eventid: any) => {
-		cancelNews( eventid,global_state.token).then((response) => {
+		cancelNews(eventid, global_state.token).then((response) => {
 			if (response.data === 'success') {
-				alert('News cancelled');
+				message.success('News cancelled');
 				setrefresh(!refresh);
-			} else alert('Error in cancelling news');
+			} else message.error('Error in cancelling news');
 		});
 	};
 
 	const columns = [
 		{
-            title: 'Title',
+			title: 'Title',
 			key: 'title',
 			dataIndex: 'title',
 		},
@@ -45,12 +42,12 @@ export default function PendingNews() {
 			title: 'Date Created',
 			key: 'date_created',
 			dataIndex: 'date_created',
-        },
-        {
+		},
+		{
 			title: 'Time',
 			key: 'news_time',
 			dataIndex: 'news_time',
-        },
+		},
 		{
 			title: 'Overview',
 			key: 'overview',
@@ -82,8 +79,13 @@ export default function PendingNews() {
 		getPendPosts(global_state.token).then((response) => {
 			console.log(response.data.news);
 			response.data.news.map((details: any) => {
-				const news_date = new Date(details.date_created)
-				const newsdate = news_date.getDate() + '-' + (news_date.getMonth() + 1) + '-' + news_date.getFullYear();
+				const news_date = new Date(details.date_created);
+				const newsdate =
+					news_date.getDate() +
+					'-' +
+					(news_date.getMonth() + 1) +
+					'-' +
+					news_date.getFullYear();
 
 				var hours = news_date.getHours();
 				var minutes = news_date.getMinutes() as number;
@@ -132,14 +134,19 @@ export default function PendingNews() {
 					View: (
 						<Button
 							color="lightsecondary"
-							onClick={()=> (history.push({ pathname: `/newsroom/n/${details._id}`, state: details._id }))}
+							onClick={() =>
+								history.push({
+									pathname: `/newsroom/n/${details._id}`,
+									state: details._id,
+								})
+							}
 						>
 							{' '}
 							View{' '}
 						</Button>
 					),
-				})
-			})
+				});
+			});
 
 			setrowsregular(rows_regular);
 		});

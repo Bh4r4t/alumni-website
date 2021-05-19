@@ -8,7 +8,7 @@ import BusinessCenterIcon from '@material-ui/icons/BusinessCenter';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import { Tabs, Input, Button, Select, Card } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import axios from 'axios';
 import * as dotenv from 'dotenv';
@@ -20,6 +20,7 @@ export let url = process.env.REACT_APP_SERVER_URL;
 export default function Industry() {
 	const user = useSelector((state: any) => state.authReducer.user);
 	const [industries, setindustries] = useState([]);
+	const history = useHistory();
 	useEffect(() => {
 		axios
 			.get(`${apiURL}/all_inds`, {
@@ -236,12 +237,17 @@ export default function Industry() {
 					<Row style={{ marginBottom: '2vh' }}>
 						{industries.map((industry: String) => (
 							<Col span={5} offset={1}>
-								<Link
-									to="https://github.com/ant-design/ant-design/issues/1862"
+								<Button
+									type="link"
 									style={{ color: 'black' }}
+									onClick={() =>
+										history.push('/members', {
+											industry: industry,
+										})
+									}
 								>
 									{industry}{' '}
-								</Link>
+								</Button>
 							</Col>
 						))}
 					</Row>

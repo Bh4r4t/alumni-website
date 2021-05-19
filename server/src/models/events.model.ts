@@ -30,7 +30,7 @@ const eventSchema: Schema = new Schema({
     },
     event_category: { type: String },
     address: { type: String },
-    pending: { type: Boolean, default: true, required: true },
+    pending: { type: Boolean, default: true },
 });
 
 export default mongoose.model<IEvent>('events', eventSchema, 'events');

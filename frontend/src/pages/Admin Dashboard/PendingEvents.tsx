@@ -1,4 +1,4 @@
-import { Row, Col } from 'antd';
+import { Row, Col, message } from 'antd';
 import { useEffect, useState } from 'react';
 import './Admindashboard.css';
 import { Button } from 'antd';
@@ -20,18 +20,18 @@ export default function PendingEvents() {
 		console.log(eventid);
 		confirmEvent(global_state.token, eventid).then((response) => {
 			if (response.data === 'success') {
-				alert('Event confirmed');
+				message.success('Event confirmed');
 				setrefresh(!refresh);
-			} else alert('Error in confirming event');
+			} else message.error('Error in confirming event');
 		});
 	};
 
 	const handleCancel = (eventid: any) => {
 		cancelEvent(global_state.token, eventid).then((response) => {
 			if (response.data === 'success') {
-				alert('Event cancelled');
+				message.success('Event cancelled');
 				setrefresh(!refresh);
-			} else alert('Error in cancelling event');
+			} else message.error('Error in cancelling event');
 		});
 	};
 
@@ -82,8 +82,13 @@ export default function PendingEvents() {
 		getPendingEvents(global_state.token).then((response) => {
 			console.log(response.data);
 			response?.data?.events?.map((details: any) => {
-				const event_date = new Date(details.event_start)
-				const eventdate = event_date.getDate() + '-' + (event_date.getMonth() + 1) + '-' + event_date.getFullYear();
+				const event_date = new Date(details.event_start);
+				const eventdate =
+					event_date.getDate() +
+					'-' +
+					(event_date.getMonth() + 1) +
+					'-' +
+					event_date.getFullYear();
 
 				var hours = event_date.getHours();
 				var minutes = event_date.getMinutes() as number;
@@ -132,14 +137,19 @@ export default function PendingEvents() {
 					View: (
 						<Button
 							color="lightsecondary"
-							onClick={()=> (history.push({ pathname: `/events/e/${details.event_id}`, state: details._id }))}
+							onClick={() =>
+								history.push({
+									pathname: `/events/e/${details.event_id}`,
+									state: details._id,
+								})
+							}
 						>
 							{' '}
 							View{' '}
 						</Button>
 					),
-				})
-			})
+				});
+			});
 
 			setrowsregular(rows_regular);
 		});

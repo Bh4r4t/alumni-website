@@ -9,7 +9,7 @@ import ReceiptIcon from '@material-ui/icons/Receipt';
 import ApartmentIcon from '@material-ui/icons/Apartment';
 import { Tabs, Input, Button, Tooltip, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 import { Card, Avatar, Tag } from 'antd';
@@ -25,7 +25,7 @@ const { Content } = Layout;
 export default function ProfessionalSkills() {
 	const [values, setvalues] = useState('professional');
 	const user = useSelector((state: any) => state.authReducer.user);
-
+	const history = useHistory();
 	const [skills, setskills] = useState([]);
 	useEffect(() => {
 		getAllSkills(user.token)
@@ -233,12 +233,17 @@ export default function ProfessionalSkills() {
 					<Row style={{ marginBottom: '2vh' }}>
 						{skills.map((skill: String) => (
 							<Col span={5} offset={1}>
-								<Link
-									to="https://github.com/ant-design/ant-design/issues/1862"
+								<Button
+									type="link"
 									style={{ color: 'black' }}
+									onClick={() =>
+										history.push('/members', {
+											skill: skill,
+										})
+									}
 								>
 									{skill}{' '}
-								</Link>
+								</Button>
 							</Col>
 						))}
 					</Row>

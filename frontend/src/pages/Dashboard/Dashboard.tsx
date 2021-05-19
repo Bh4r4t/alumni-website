@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import './Dashboard.css';
+import ReactMarkdown from 'react-markdown';
+import gfm from 'remark-gfm';
 import { Row, Col, Card, Avatar, Input } from 'antd';
 import { ReadOutlined } from '@ant-design/icons';
 import { Upload, message, Button, List, Space } from 'antd';
@@ -294,7 +296,7 @@ export default function Dash() {
 													marginBottom: 0,
 												}}
 											>
-												{news[0]?.title}
+												{news[0]?.title?.slice(0, 30)}
 											</h2>
 											<h5>
 												{eventdate(
@@ -428,11 +430,17 @@ export default function Dash() {
 														{item?.user_name}
 													</a>
 												}
-												description={getDate_custom(
-													item.post_date
-												)}
+												description={
+													eventdate(item.post_date) +
+													'  ' +
+													newstime(item.post_date)
+												}
 											/>
-											{item.content}
+											<ReactMarkdown
+												remarkPlugins={[gfm]}
+											>
+												{item.content}
+											</ReactMarkdown>
 										</List.Item>
 									</div>
 								)}
@@ -497,7 +505,10 @@ export default function Dash() {
 										}
 										title={
 											<h2 style={{ color: 'orange' }}>
-												{events[0]?.event_name}
+												{events[0]?.event_name.slice(
+													0,
+													20
+												)}
 												<br></br>
 											</h2>
 										}

@@ -68,7 +68,7 @@ export function NewsItemIndiv() {
 	}, []);
 
 	const handleRemove = (id: any) => {
-		cancelNews(user.token, id)
+		cancelNews(id, user.token)
 			.then((_res: any) => {
 				history.push('/events');
 			})
@@ -149,7 +149,13 @@ export function NewsItemIndiv() {
 							span={md ? 18 : 24}
 							className="newsroom-content-display-card"
 						>
-							<img src={news.thumbnail} alt="thumbnail" />
+							<img
+								src={
+									news.thumbnail ??
+									'https://source.unsplash.com/random/800x600'
+								}
+								alt="thumbnail"
+							/>
 							<div className="textbody">
 								<ReactMarkdown remarkPlugins={[gfm]}>
 									{news.body}

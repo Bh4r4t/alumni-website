@@ -160,6 +160,10 @@ function Event() {
 						</Form.Item>
 
 						<Form.Item
+							initialValue={
+								props?.event_start &&
+								moment.unix(props?.event_start / 1000)
+							}
 							name="event_start"
 							label="Event Date/Time"
 							rules={[
@@ -174,12 +178,17 @@ function Event() {
 									current &&
 									current < moment().subtract(0, 'day')
 								}
+								showSecond={false}
 								showTime
 								showToday
 							/>
 						</Form.Item>
 
 						<Form.Item
+							initialValue={
+								props?.end_start &&
+								moment.unix(props?.event_end / 1000)
+							}
 							name="event_end"
 							label="Event End Date/Time"
 							rules={[
@@ -194,6 +203,7 @@ function Event() {
 									current &&
 									current < moment().subtract(0, 'day')
 								}
+								showSecond={false}
 								showTime
 								showToday
 							/>
