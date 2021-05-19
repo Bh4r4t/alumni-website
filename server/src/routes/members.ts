@@ -1,6 +1,9 @@
 import express, { Request, Response } from 'express';
 import verifyToken from '../auth/verifyToken';
 import User, { IUser } from '../models/user.model';
+import { IExportMember } from '../models/member.export';
+import { writeToString } from '@fast-csv/format';
+import moment from 'moment';
 
 const app = express.Router();
 
@@ -128,28 +131,58 @@ app.get('/all_roles', verifyToken, async (_req: Request, res: Response) => {
 // generale filter in searching at homepage of members
 app.get('/search', verifyToken, async (req: Request, res: Response) => {
     try {
-        if (req.query.name) {
-            const q_name = (req.query.name as string).trim();
-            const user = await User.find({
-                $or: [
-                    {
-                        'basic_info.first_name': {
-                            $regex: q_name.split(' ')[0],
-                            $options: 'i',
+        if (req.query.name || req.query.email) {
+            if (req.query.name !== '' && req.query.email !== '') {
+                const q_name = (req.query.name as string).trim();
+                const user = await User.find({
+                    $or: [
+                        {
+                            'basic_info.first_name': {
+                                $regex: q_name.split(' ')[0],
+                                $options: 'i',
+                            },
                         },
-                    },
-                    {
-                        'basic_info.second_name': {
-                            $regex:
-                                q_name.split(' ').length > 1
-                                    ? q_name.split(' ')[1]
-                                    : q_name,
-                            $options: 'i',
+                        {
+                            'basic_info.second_name': {
+                                $regex:
+                                    q_name.split(' ').length > 1
+                                        ? q_name.split(' ')[1]
+                                        : q_name,
+                                $options: 'i',
+                            },
                         },
-                    },
-                ],
-            });
-            res.send({ user });
+                    ],
+                    primary_email: req.query.email as string,
+                });
+                res.send({ user });
+            } else if (req.query.name === '' && req.query.email !== '') {
+                const user = await User.find({
+                    primary_email: req.query.email as string,
+                });
+                res.send({ user });
+            } else if (req.query.name !== '' && req.query.email === '') {
+                const q_name = (req.query.name as string).trim();
+                const user = await User.find({
+                    $or: [
+                        {
+                            'basic_info.first_name': {
+                                $regex: q_name.split(' ')[0],
+                                $options: 'i',
+                            },
+                        },
+                        {
+                            'basic_info.second_name': {
+                                $regex:
+                                    q_name.split(' ').length > 1
+                                        ? q_name.split(' ')[1]
+                                        : q_name,
+                                $options: 'i',
+                            },
+                        },
+                    ],
+                });
+                res.send({ user });
+            }
         }
         // course and year
         else if (req.query.course || req.query.year || req.query.stream) {
@@ -441,9 +474,101 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
     }
 });
 
+app.post('/export', verifyToken, async (req: Request, res: Response) => {
+    try {
+        const user = await User.findOne({
+            _id: res.locals.payload._id,
+            isAdmin: true,
+        });
+        if (!user) {
+            res.send({ error: true, message: 'Not Allowed' });
+        } else {
+            const q = req.body.ids;
+            let users: IExportMember[] = [];
+            for (let i = 0; i < q?.length; i++) {
+                await User.findById(q[i], (err: any, doc: IUser) => {
+                    if (err) {
+                        return;
+                    } else {
+                        users.push(c(doc));
+                    }
+                });
+            }
+            let result = '';
+            await writeToString(users, { headers: true, delimiter: '\t' }).then(
+                (data) => (result += data + '\n')
+            );
+            res.status(200).attachment(`members.csv`).send(result);
+        }
+    } catch (err) {
+        res.send({ error: true, message: err.message });
+    }
+});
+
 export default app;
 
-const filterUserData = (users: Array<IUser>) => {
-    // TODO: yet to implement
-    return users;
+const filterUserData = (users: IUser[]) => users;
+
+const c = (user: IUser) => {
+    const formatUser: IExportMember = {
+        Salutation: user?.basic_info.salutation,
+        Name: user?.basic_info.first_name + ' ' + user?.basic_info.last_name,
+        Gender: user?.basic_info.gender,
+        'Date of Birth': moment.unix((user?.basic_info.date_of_birth as number)/1000).format('DD-MM-YYYY'),
+        'Profile Type': user?.basic_info.profile_role,
+        Course: user?.educational_info[0].degree_name,
+        Stream: user?.educational_info[0].stream_name,
+        'Course Start Year':
+            user &&
+            moment
+                .unix((user.educational_info[0].start_date as number) / 1000)
+                .format('YYYY'),
+        'Course End Year':
+            user &&
+            moment
+                .unix((user.educational_info[0].end_date as number) / 1000)
+                .format('YYYY'),
+        'Primary Email': user?.primary_email,
+        'Secondary Email': user?.location_contact_info.alternative_email_id[0],
+        'Mobile Phone No.': user?.location_contact_info.mobile_number,
+        'Home Phone No.': user?.location_contact_info.home_phone_number,
+        'Office Phone No.': user?.location_contact_info.work_phone_number,
+        'Current Location': user?.location_contact_info.current_city,
+        'Home Town': user?.location_contact_info.home_town,
+        'Correspondence Address':
+            user?.location_contact_info.correspondance_address,
+        'Correspondence Locality':
+            user?.location_contact_info.correspondance_location,
+        'Correspondence Pincode': user?.location_contact_info
+            .correspondance_postal_code as unknown as String,
+        Company: user?.professional_info.orgs
+            ?.map((e: any) => e.company ?? '--')
+            .join(' | '),
+        Position: user?.professional_info.orgs
+            ?.map((e: any) => e.role ?? '--')
+            .join(' | '),
+        'Work Experience(in years)': user?.professional_info
+            .total_exp as unknown as String,
+        'Educational Course': user?.educational_info
+            ?.map((e: any) => e.degree_name)
+            .join(' | '),
+        'Educational Institute': user?.educational_info
+            ?.map((e: any) => e.name_of_organization)
+            .join(' | '),
+        'Start Year': user?.educational_info
+            ?.map((e: any) =>
+                moment.unix((e.start_date as number) / 1000).format('YYYY')
+            )
+            .join(' | '),
+        'End Year': user?.educational_info
+            ?.map((e: any) =>
+                moment.unix((e.end_date as number) / 1000).format('YYYY')
+            )
+            .join(' | '),
+        'Facebook Link': user?.location_contact_info.social_profiles.facebook,
+        'LinkedIn Link': user?.location_contact_info.social_profiles.linkedin,
+        'Twitter Link': user?.location_contact_info.social_profiles.twitter,
+        'Website Link': user?.location_contact_info.social_profiles.website,
+    };
+    return formatUser;
 };

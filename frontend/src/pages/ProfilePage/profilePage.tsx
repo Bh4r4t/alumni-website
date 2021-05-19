@@ -111,7 +111,7 @@ function ProfilePage() {
 						<ProfileInfo />
 					</>
 				) : (
-					<Spin />
+					<Spin size="large" />
 				)}
 			</div>
 		</div>

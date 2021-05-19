@@ -79,7 +79,7 @@ function EventsSection() {
 							</Col>
 						))
 					) : (
-						<Spin />
+						<Spin size="large" />
 					)}
 				</Row>
 			</div>

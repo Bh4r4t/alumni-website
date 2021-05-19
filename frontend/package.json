@@ -12,6 +12,7 @@
     "antd-img-crop": "^3.14.1",
     "axios": "^0.21.1",
     "dotenv": "^8.2.0",
+    "js-file-download": "^0.4.12",
     "mdbreact": "^5.0.2",
     "rc-motion": "^2.4.3",
     "react": "^17.0.1",

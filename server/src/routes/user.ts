@@ -123,17 +123,21 @@ app.put('/update_basic', verifyToken, async (req: Request, res: Response) => {
             primary_email: res.locals.payload.email,
         });
         await User.updateOne(
-            { email: res.locals.payload.email },
+            { primary_email: res.locals.payload.email },
             {
-                'basic_info.first_name': req.body.first_name,
+                'basic_info.first_name':
+                    req.body.first_name ?? user?.basic_info.first_name,
                 'basic_info.salutation':
                     req.body.salutation ?? user?.basic_info.salutation,
-                'basic_info.last_name': req.body.last_name,
+                'basic_info.last_name':
+                    req.body.last_name ?? user?.basic_info?.last_name,
                 'basic_info.gender': req.body.gender ?? user?.basic_info.gender,
                 'basic_info.date_of_birth':
                     req.body.date_of_birth ?? user?.basic_info.date_of_birth,
                 'location_contact_info.mobile_number': req.body.mobile_number,
-                'location_contact_info.current_city': req.body.current_city,
+                'location_contact_info.current_city':
+                    req.body.current_city ??
+                    user?.location_contact_info.current_city,
             }
         );
         res.status(201).send();

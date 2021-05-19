@@ -186,7 +186,7 @@ function Event() {
 
 						<Form.Item
 							initialValue={
-								props?.end_start &&
+								props?.event_end &&
 								moment.unix(props?.event_end / 1000)
 							}
 							name="event_end"

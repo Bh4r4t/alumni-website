@@ -1,5 +1,6 @@
 import { Layout, Row, Col, Divider, Menu, Spin } from 'antd';
 import { useEffect, useState } from 'react';
+import FileDownload from 'js-file-download';
 import './members.css';
 import querystring from 'querystring';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
@@ -16,10 +17,15 @@ import RollbackOutlined from '@ant-design/icons';
 import img1 from '../../assets/profile.png';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
-import { getMembers, memberSearch } from '../../services/api/members';
+import {
+	exportMembers,
+	getMembers,
+	memberSearch,
+} from '../../services/api/members';
 import { DriveEtaTwoTone } from '@material-ui/icons';
 import { apiURL } from '../../services/api/common';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
+import { getMyInfo } from '../../services/api/user';
 
 const { Meta } = Card;
 
@@ -29,9 +35,23 @@ const { Option } = Select;
 const { Content } = Layout;
 
 export default function Members() {
-	const [members, setmembers] = useState([]);
+	const user = useSelector((state: any) => state.authReducer.user);
+	const [members, setmembers] = useState<any>(null);
+	const [userA, setUserA] = useState<any>(null);
 	const location_web: any = useLocation();
 	const history = useHistory();
+
+	useEffect(() => {
+		getMyInfo(user.token)
+			.then((res: any) => {
+				if (res?.data?.error) {
+					throw new Error(res?.data?.message);
+				} else {
+					setUserA(res?.data?.user);
+				}
+			})
+			.catch((err: any) => console.log(err.message));
+	}, []);
 	useEffect(() => {
 		if (location_web?.state === undefined) {
 			const fetchMembers = async () => {
@@ -60,7 +80,6 @@ export default function Members() {
 						}
 					)
 					.then((response) => {
-						console.log(response.data);
 						setmembers(response.data.user);
 					})
 					.catch((err) => {
@@ -79,7 +98,6 @@ export default function Members() {
 						}
 					)
 					.then((response) => {
-						console.log(response.data);
 						setmembers(response.data.user);
 					})
 					.catch((err) => {
@@ -98,7 +116,6 @@ export default function Members() {
 						}
 					)
 					.then((response) => {
-						console.log(response.data);
 						setmembers(response.data.user);
 					})
 					.catch((err) => {
@@ -166,8 +183,21 @@ export default function Members() {
 		}
 	}, []);
 
+	const handleExportMemb = async () => {
+		try {
+			let ids: any[] = [];
+			members?.forEach((mem: any) => ids.push(mem._id));
+			console.log(ids);
+			const res = await exportMembers({ ids: ids }, user.token);
+			FileDownload(res?.data, 'members.csv');
+		} catch (err: any) {
+			console.log(err.message);
+		}
+	};
+
 	const [values, setvalues] = useState('location');
 	const [name_s, setname_s] = useState('');
+	const [email, setemail] = useState('');
 	const [degree, setdegree] = useState('');
 	const [course, setcourse] = useState('');
 	const [stream, setstream] = useState('');
@@ -188,28 +218,26 @@ export default function Members() {
 	const [year, setyear] = useState('');
 
 	const handleInputChange = (e: any) => {
-		console.log(e.target.id);
 		setname_s(e.target.value);
-		console.log(name_s);
+	};
+
+	const handleEmailChange = (e: any) => {
+		setemail(e.target.value);
 	};
 
 	const handleLocationChange = (e: any) => {
 		setlocation({ ...location, [e.target.id]: e.target.value });
-		console.log(location);
 	};
 
 	const handleClick = ({ e }: { e: any }) => {
-		console.log('click ', e);
 		setvalues(e.key);
 	};
 
 	const handleCompanyChange = (e: any) => {
 		setcompany(e.target.value);
-		console.log(company);
 	};
 
 	const handleCourseSelect = (option: any) => {
-		console.log(option);
 		setcourse(option);
 	};
 
@@ -225,18 +253,15 @@ export default function Members() {
 		setyear(option);
 	};
 
-	const user = useSelector((state: any) => state.authReducer.user);
-
 	const handleNameSubmit = (e: any) => {
 		axios
-			.get(`${apiURL}/members/search?name=` + name_s, {
+			.get(`${apiURL}/members/search?name=${name_s}&email=${email}`, {
 				withCredentials: true,
 				headers: {
 					authorization: `Bearer ${user.token}`,
 				},
 			})
 			.then((response) => {
-				console.log(response.data);
 				setmembers(response.data.user);
 			});
 	};
@@ -258,7 +283,6 @@ export default function Members() {
 				}
 			)
 			.then((response) => {
-				console.log(response.data);
 				setmembers(response.data.user);
 			})
 			.catch((err) => console.log(err.message));
@@ -281,7 +305,6 @@ export default function Members() {
 				}
 			)
 			.then((response) => {
-				console.log(response.data);
 				setmembers(response.data.user);
 			})
 			.catch((err) => console.log(err));
@@ -296,7 +319,6 @@ export default function Members() {
 				},
 			})
 			.then((response) => {
-				console.log(response.data);
 				setmembers(response.data.user);
 			})
 			.catch((err) => console.log(err));
@@ -319,7 +341,6 @@ export default function Members() {
 				}
 			)
 			.then((response) => {
-				console.log(response.data);
 				setmembers(response.data.user);
 			})
 			.catch((err) => console.log(err));
@@ -537,6 +558,7 @@ export default function Members() {
 												placeholder="Email"
 												id="email"
 												size="large"
+												onChange={handleEmailChange}
 											/>
 										</Col>
 										<Col span={1}></Col>
@@ -556,6 +578,11 @@ export default function Members() {
 												/>
 											</Tooltip>
 										</Col>
+										{userA?.isAdmin && (
+											<Button onClick={handleExportMemb}>
+												Export Data
+											</Button>
+										)}
 									</Row>
 								</TabPane>
 								<TabPane tab="Course & Year" key="2">
@@ -862,7 +889,7 @@ export default function Members() {
 						marginRight: '1vw',
 					}}
 				>
-					{members ?
+					{members ? (
 						members.map((member: any, idx: any) => (
 							<Col
 								key={idx}
@@ -881,7 +908,6 @@ export default function Members() {
 										alignItems: 'center',
 										display: 'flex',
 										flexDirection: 'column',
-										
 									}}
 								>
 									<Avatar
@@ -890,7 +916,14 @@ export default function Members() {
 											left: '25%',
 										}}
 										size={100}
-										icon={<img src={member?.profileImg?.data ?? img1} />}
+										icon={
+											<img
+												src={
+													member?.profileImg?.data ??
+													img1
+												}
+											/>
+										}
 									/>
 									<Divider />
 									<Row key={idx}>
@@ -926,7 +959,10 @@ export default function Members() {
 									</Row>
 								</Card>
 							</Col>
-						)) : <Spin/>}
+						))
+					) : (
+						<Spin size="large" />
+					)}
 				</Row>
 			</div>
 		</div>

@@ -15,3 +15,6 @@ export const getAllSkills = async (token: any) =>
 
 export const getAllRoles = async (token: any) =>
 	await axios.get(`${apiURL}/members/all_roles`, reqOptions(token));
+
+export const exportMembers = async (payload:any, token: any) =>
+	await axios.post(`${apiURL}/members/export`, payload, reqOptions(token));

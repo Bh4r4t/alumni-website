@@ -25,9 +25,11 @@ function BasicProfileMenu(props: any) {
 
 	const handleSubmit = (payload: any) => {
 		const dob = payload.date_of_birth.unix() * 1000;
+		const mob = [ccode, payload.mobile_num?.split(' ').join('')].join(' ');
 		updateBasic(
 			{
 				...payload,
+				mobile_num: mob,
 				date_of_birth: dob,
 			},
 			user.token
@@ -153,8 +155,8 @@ function BasicProfileMenu(props: any) {
 						label="Mobile No."
 						rules={[
 							{
-								required: true,
-								message: 'Please input your mobile number!',
+								max: 10,
+								message: 'Input valid Mobile Number',
 							},
 						]}
 					>

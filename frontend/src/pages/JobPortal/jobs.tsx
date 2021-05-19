@@ -137,7 +137,7 @@ function JobSection() {
 							</Col>
 						))
 					) : (
-						<Spin />
+						<Spin size="large" />
 					)}
 				</Row>
 			</div>

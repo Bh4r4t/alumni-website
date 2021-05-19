@@ -44,7 +44,7 @@ export const Routes: React.FC<RoutesProp> = () => {
 	const [check, setCheck] = useState(false);
 	useEffect(() => {
 		setCheck(window.location.href.includes('/auth/'));
-	}, []);
+	}, [check]);
 	return (
 		<Switch>
 			<React.Fragment>

@@ -7,13 +7,35 @@ import { useSelector } from 'react-redux';
 function ContactsMenu(props: any) {
 	const user = useSelector((state: any) => state.authReducer.user);
 	const [isLoading, setLoading] = useState(false);
-	const [ccode, setCCode] = useState('');
+	const [ccode1, setCCode1] = useState('');
+	const [ccode2, setCCode2] = useState('');
+	const [ccode3, setCCode3] = useState('');
 	const { Option } = Select;
 
 	const handleSubmit = (payload: any) => {
 		setLoading(true);
+		const mobile_num = [
+			ccode1,
+			payload.mobile_num?.split(' ').join(''),
+		].join(' ');
+		const home_phone_num = [
+			ccode2,
+			payload.home_phone_num?.split(' ').join(''),
+		].join(' ');
+		const work_phone_num = [
+			ccode3,
+			payload.work_phone_nums?.split(' ').join(''),
+		].join(' ');
 		try {
-			updateContacts(payload, user.token).then((res: any) => {
+			updateContacts(
+				{
+					...payload,
+					mobile_num: mobile_num,
+					home_phone_num: home_phone_num,
+					work_phone_num: work_phone_num,
+				},
+				user.token
+			).then((res: any) => {
 				if (res?.data?.error) {
 					throw new Error(res?.data?.message);
 				} else {
@@ -120,9 +142,44 @@ function ContactsMenu(props: any) {
 					label="Mobile No."
 					rules={[
 						{
-							required: true,
-							message: 'Please input your mobile number!',
+							max: 10,
+							message: 'Input valid Mobile Number',
 						},
+					]}
+				>
+					<div className="mobile-num">
+						<Input.Group compact>
+							<Select
+								showSearch
+								className="mobile-num-selector"
+								placeholder="Country"
+								style={{ width: '20%' }}
+								onChange={(val: string) =>
+									setCCode1(codes[val])
+								}
+							>
+								{Object.entries(codes).map(([key, val]) => (
+									<Option key={key} value={key}>
+										<>
+											{[
+												key,
+												['(', val, ')'].join(''),
+											].join(' ')}
+										</>
+									</Option>
+								))}
+							</Select>
+							<Input
+								placeholder="0123456789"
+								style={{ width: '70%' }}
+							/>
+						</Input.Group>
+					</div>
+				</Form.Item>
+				<Form.Item
+					name="home_phone_num"
+					label="Home Phone No."
+					rules={[
 						{
 							max: 10,
 							message: 'Input valid Mobile Number',
@@ -136,7 +193,9 @@ function ContactsMenu(props: any) {
 								className="mobile-num-selector"
 								placeholder="Country"
 								style={{ width: '20%' }}
-								onChange={(val: string) => setCCode(codes[val])}
+								onChange={(val: string) =>
+									setCCode2(codes[val])
+								}
 							>
 								{Object.entries(codes).map(([key, val]) => (
 									<Option key={key} value={key}>
@@ -156,7 +215,16 @@ function ContactsMenu(props: any) {
 						</Input.Group>
 					</div>
 				</Form.Item>
-				<Form.Item name="home_phone_num" label="Home Phone No.">
+				<Form.Item
+					name="work_phone_num"
+					label="Work Phone No."
+					rules={[
+						{
+							max: 10,
+							message: 'Input valid Mobile Number',
+						},
+					]}
+				>
 					<div className="mobile-num">
 						<Input.Group compact>
 							<Select
@@ -164,35 +232,9 @@ function ContactsMenu(props: any) {
 								className="mobile-num-selector"
 								placeholder="Country"
 								style={{ width: '20%' }}
-								onChange={(val: string) => setCCode(codes[val])}
-							>
-								{Object.entries(codes).map(([key, val]) => (
-									<Option key={key} value={key}>
-										<>
-											{[
-												key,
-												['(', val, ')'].join(''),
-											].join(' ')}
-										</>
-									</Option>
-								))}
-							</Select>
-							<Input
-								placeholder="0123456789"
-								style={{ width: '70%' }}
-							/>
-						</Input.Group>
-					</div>
-				</Form.Item>
-				<Form.Item name="work_phone_num" label="Work Phone No.">
-					<div className="mobile-num">
-						<Input.Group compact>
-							<Select
-								showSearch
-								className="mobile-num-selector"
-								placeholder="Country"
-								style={{ width: '20%' }}
-								onChange={(val: string) => setCCode(codes[val])}
+								onChange={(val: string) =>
+									setCCode3(codes[val])
+								}
 							>
 								{Object.entries(codes).map(([key, val]) => (
 									<Option key={key} value={key}>

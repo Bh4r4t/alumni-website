@@ -70,7 +70,7 @@ export function NewsItemIndiv() {
 	const handleRemove = (id: any) => {
 		cancelNews(id, user.token)
 			.then((_res: any) => {
-				history.push('/events');
+				history.push('/newsroom');
 			})
 			.catch((err: any) => console.log(err.message));
 	};
@@ -165,7 +165,7 @@ export function NewsItemIndiv() {
 					</Row>
 				</>
 			) : (
-				<Spin />
+				<Spin size="large" />
 			)}
 		</div>
 	);

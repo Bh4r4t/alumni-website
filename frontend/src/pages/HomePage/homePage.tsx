@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Row, Col, Grid, Card } from 'antd';
+import { Row, Col, Grid, Card, Spin } from 'antd';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.css';
 import EventsCard from '../../components/EventsCard/eventsCard.component';
@@ -139,23 +139,25 @@ function EventsSection(props: any) {
 					</div>
 				</Row>
 				<Row className="events-section-items-row">
-					{recentEvents
-						? recentEvents.map((event: any, idx: any) => (
-								<Col
+					{recentEvents ? (
+						recentEvents.map((event: any, idx: any) => (
+							<Col
+								key={idx}
+								span={md ? 8 : 24}
+								className="events-section-items-col"
+							>
+								<EventsCard
 									key={idx}
-									span={md ? 8 : 24}
-									className="events-section-items-col"
-								>
-									<EventsCard
-										key={idx}
-										event_name={event.event_name}
-										event_venue={event.event_venue}
-										event_date={event.event_start}
-										event_id={event._id}
-									/>
-								</Col>
-						  ))
-						: null}
+									event_name={event.event_name}
+									event_venue={event.event_venue}
+									event_date={event.event_start}
+									event_id={event._id}
+								/>
+							</Col>
+						))
+					) : (
+						<Spin size="large" />
+					)}
 				</Row>
 				<Row className="events-section-more-row">
 					<a href="/events" className="events-section-more">
@@ -197,7 +199,7 @@ function LatestStories(props: any) {
 					</div>
 				</Row>
 				<Row className="latestStories-section-items-row">
-					{recentStories &&
+					{recentStories ? (
 						recentStories.map((story: any, idx: any) => (
 							<Col
 								key={idx}
@@ -211,7 +213,10 @@ function LatestStories(props: any) {
 									title={story.title}
 								/>
 							</Col>
-						))}
+						))
+					) : (
+						<Spin size="large" />
+					)}
 				</Row>
 				<Row className="events-section-more-row">
 					<Link to="/newsroom" className="events-section-more">

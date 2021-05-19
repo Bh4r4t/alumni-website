@@ -59,7 +59,7 @@ function SignUpCreate() {
 			formBody.date_of_birth = payload.date_of_birth.unix() * 1000;
 			formBody.mobile_num = [
 				ccode,
-				payload.mobile_num.split(' ').join(''),
+				payload.mobile_num?.split(' ').join(''),
 			].join(' ');
 			const res = await registerUser(formBody);
 			if (res?.data?.error === true) {
@@ -232,6 +232,11 @@ function SignUpCreate() {
 											required: true,
 											message:
 												'Please input your mobile number!',
+										},
+										{
+											max: 10,
+											message:
+												'Input valid Mobile Number',
 										},
 									]}
 								>

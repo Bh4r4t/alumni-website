@@ -77,7 +77,7 @@ function GetAllCards() {
 					/>
 				))
 			) : (
-				<Spin />
+				<Spin size="large" />
 			)}
 		</div>
 	);
