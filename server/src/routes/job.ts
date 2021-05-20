@@ -197,4 +197,9 @@ app.get('/search', async (req: Request, res: Response) => {
     }
 });
 
+app.post('/get_job_details', async (req, res) => {
+    const job = await Job.findById(req.body.jobid);
+    res.send(job);
+});
+
 export default app;

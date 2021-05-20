@@ -250,7 +250,7 @@ function EduCard(props: any) {
 					visible={visible}
 					title={'Education Edit'}
 					onOk={form.submit}
-					width={800}
+					width={1000}
 					onCancel={() => setVisible(false)}
 				>
 					<div className="profileupdate-menu-form">

@@ -1,4 +1,4 @@
-import { Layout, Row, Col, Divider } from 'antd';
+import { Layout, Row, Col, Divider, Modal } from 'antd';
 import { Card, Avatar } from 'antd';
 import './JobPortal.css';
 import { Input, Select, Button } from 'antd';
@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { getJob, getRecJob } from '../../services/api/job';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import JobDesc from '../../components/JobDescription/jobDesc.component';
 
 const { Content } = Layout;
 const { Option } = Select;
@@ -13,6 +14,8 @@ const { Option } = Select;
 export default function JobPortal() {
 	const global_state = useSelector((state: any) => state.authReducer.user);
 	const history = useHistory();
+	const [jobid, setJobid] = useState<any>();
+	const [modal, setModal] = useState(false);
 	const [jobsearch, setjobsearch] = useState({
 		keywords: '',
 		job_location: '',
@@ -33,6 +36,8 @@ export default function JobPortal() {
 				console.log(err);
 			});
 	}, []);
+
+	const handleJobSelect = (jobid: any) => <JobDesc jobid={jobid}></JobDesc>;
 
 	const handleInputChange = (e: any) => {
 		setjobsearch({ ...jobsearch, [e.target.id]: e.target.value });
@@ -132,7 +137,13 @@ export default function JobPortal() {
 						<Col key={idx} xs={24} md={12} lg={6}>
 							<Card
 								key={idx}
+								id={job_element?._id}
 								style={{ height: '40vh', marginBottom: '25px' }}
+								hoverable
+								onClick={() => {
+									setJobid(job_element._id);
+									setModal(true);
+								}}
 							>
 								<Col
 									key={idx}
@@ -200,6 +211,20 @@ export default function JobPortal() {
 					BROWSE ALL JOBS
 				</Button>
 			</Divider>
+			<Row>
+				<Col span={20}>
+					<Modal
+						title="Job Details"
+						style={{ top: 20, width: '350vw' }}
+						width={1000}
+						visible={modal}
+						onOk={() => setModal(false)}
+						onCancel={() => setModal(false)}
+					>
+						<JobDesc jobid={jobid} />
+					</Modal>
+				</Col>
+			</Row>
 		</div>
 	);
 }

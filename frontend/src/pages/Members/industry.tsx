@@ -23,7 +23,7 @@ export default function Industry() {
 	const history = useHistory();
 	useEffect(() => {
 		axios
-			.get(`${apiURL}/all_inds`, {
+			.get(`${apiURL}/members/all_inds`, {
 				withCredentials: true,
 				headers: {
 					authorization: `Bearer ${user.token}`,

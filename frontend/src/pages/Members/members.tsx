@@ -60,7 +60,11 @@ export default function Members() {
 						1 as unknown as string,
 						user.token
 					);
-					setmembers(memb?.data.users);
+					if (memb?.data?.error) {
+						throw new Error(memb?.data?.message);
+					} else {
+						setmembers(memb?.data.users);
+					}
 				} catch (err) {
 					console.log(err.message);
 				}
@@ -80,7 +84,11 @@ export default function Members() {
 						}
 					)
 					.then((response) => {
-						setmembers(response.data.user);
+						if (response?.data?.error) {
+							throw new Error(response?.data?.message);
+						} else {
+							setmembers(response.data.user);
+						}
 					})
 					.catch((err) => {
 						console.log(err.message);
@@ -98,7 +106,11 @@ export default function Members() {
 						}
 					)
 					.then((response) => {
-						setmembers(response.data.user);
+						if (response?.data?.error) {
+							throw new Error(response?.data?.message);
+						} else {
+							setmembers(response.data.user);
+						}
 					})
 					.catch((err) => {
 						console.log(err.message);
@@ -116,7 +128,11 @@ export default function Members() {
 						}
 					)
 					.then((response) => {
-						setmembers(response.data.user);
+						if (response?.data?.error) {
+							throw new Error(response?.data?.message);
+						} else {
+							setmembers(response.data.user);
+						}
 					})
 					.catch((err) => {
 						console.log(err.message);
@@ -134,8 +150,11 @@ export default function Members() {
 						}
 					)
 					.then((response) => {
-						console.log(response.data);
-						setmembers(response.data.user);
+						if (response?.data?.error) {
+							throw new Error(response?.data?.message);
+						} else {
+							setmembers(response.data.user);
+						}
 					})
 					.catch((err) => {
 						console.log(err.message);
@@ -153,8 +172,11 @@ export default function Members() {
 						}
 					)
 					.then((response) => {
-						console.log(response.data);
-						setmembers(response.data.user);
+						if (response?.data?.error) {
+							throw new Error(response?.data?.message);
+						} else {
+							setmembers(response.data.user);
+						}
 					})
 					.catch((err) => {
 						console.log(err.message);
@@ -162,7 +184,7 @@ export default function Members() {
 			} else if (location_web?.state?.industry !== 'undefined') {
 				axios
 					.get(
-						`${apiURL}/members/search?industry=` +
+						`${apiURL}/members/search?industries=` +
 							location_web?.state?.industry,
 						{
 							withCredentials: true,
@@ -172,8 +194,11 @@ export default function Members() {
 						}
 					)
 					.then((response) => {
-						console.log(response.data);
-						setmembers(response.data.user);
+						if (response?.data?.error) {
+							throw new Error(response?.data?.message);
+						} else {
+							setmembers(response.data.user);
+						}
 					})
 					.catch((err) => {
 						console.log(err.message);

@@ -1,4 +1,4 @@
-import { Row, Col, Grid, Button, Card, Spin } from 'antd';
+import { Row, Col, Grid, Button, Card, Spin, Modal } from 'antd';
 
 import JobCard from '../../components/JobCard/jobCard.component';
 import { Input, Select } from 'antd';
@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { getJob, searchJob } from '../../services/api/job';
 import { useLocation } from 'react-router';
 import { useHistory } from 'react-router-dom';
+import JobDesc from '../../components/JobDescription/jobDesc.component';
 
 const { Option } = Select;
 
@@ -17,7 +18,8 @@ function JobSection() {
 	const global_state = useSelector((state: any) => state.authReducer.user);
 	const location: any = useLocation();
 	const history = useHistory();
-	const [jobs, setjobs] = useState([]);
+	const [jobs, setjobs] = useState<any>(null);
+
 	const [jobsearch, setjobsearch] = useState({
 		keywords: '',
 		job_location: '',
@@ -140,6 +142,7 @@ function JobSection() {
 						<Spin size="large" />
 					)}
 				</Row>
+				<Row></Row>
 			</div>
 		</section>
 	);

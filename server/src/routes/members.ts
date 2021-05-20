@@ -71,7 +71,7 @@ app.get('/search_by_inst', verifyToken, async (req: Request, res: Response) => {
 // company wise
 app.get('/all_comps', verifyToken, async (_req: Request, res: Response) => {
     try {
-        const comps = await User.distinct('professional_info.company');
+        const comps = await User.distinct('professional_info.orgs.company');
         res.send({ comps });
     } catch (err) {
         res.send({ error: true, message: err.messagee });
@@ -81,7 +81,7 @@ app.get('/all_comps', verifyToken, async (_req: Request, res: Response) => {
 app.get('/search_by_comp', verifyToken, async (req: Request, res: Response) => {
     try {
         const users: Array<IUser> = await User.find({
-            'professional_info.company': req.body.company,
+            'professional_info.orgs.company': req.body.company,
         });
         res.send({ users: filterUserData(users) });
     } catch (err) {
@@ -92,7 +92,7 @@ app.get('/search_by_comp', verifyToken, async (req: Request, res: Response) => {
 // industry wise
 app.get('/all_inds', verifyToken, async (_req: Request, res: Response) => {
     try {
-        const inds = await User.distinct('professional_info.industry');
+        const inds = await User.distinct('professional_info.orgs.industry');
         res.send({ inds });
     } catch (err) {
         res.send({ error: true, message: err.messagee });
@@ -102,7 +102,7 @@ app.get('/all_inds', verifyToken, async (_req: Request, res: Response) => {
 app.get('/search_by_inds', verifyToken, async (req: Request, res: Response) => {
     try {
         const users: Array<IUser> = await User.find({
-            'professional_info.industry': req.body.industry,
+            'professional_info.orgs.industry': req.body.industry,
         });
         res.send({ users: filterUserData(users) });
     } catch (err) {
@@ -416,6 +416,19 @@ app.get('/search', verifyToken, async (req: Request, res: Response) => {
                     },
                 });
                 res.send({ user });
+            } else if (
+                req.query.roles === '' &&
+                req.query.industries !== '' &&
+                req.query.skills === ''
+            ) {
+                const user = await User.find({
+                    'educational_info.name_of_organization': 'IIT Ropar',
+                    'professional_info.industries': {
+                        $regex: req.query.industries as string,
+                        $options: 'i',
+                    },
+                });
+                res.send({ user });
             }
         }
         // location
@@ -514,7 +527,9 @@ const c = (user: IUser) => {
         Salutation: user?.basic_info.salutation,
         Name: user?.basic_info.first_name + ' ' + user?.basic_info.last_name,
         Gender: user?.basic_info.gender,
-        'Date of Birth': moment.unix((user?.basic_info.date_of_birth as number)/1000).format('DD-MM-YYYY'),
+        'Date of Birth': moment
+            .unix((user?.basic_info.date_of_birth as number) / 1000)
+            .format('DD-MM-YYYY'),
         'Profile Type': user?.basic_info.profile_role,
         Course: user?.educational_info[0].degree_name,
         Stream: user?.educational_info[0].stream_name,

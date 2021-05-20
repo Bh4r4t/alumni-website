@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import TopNavbar from '../components/Navbar/TopNavbar/topNavbar.component';
-import PrivateNavBar from '../components/Navbar/PrivateNavbar/privateNav.component';
-import Footer from '../components/Footer/mainFooter/mainFooter.component';
 import Dashboard from '../pages/Dashboard/Dashboard';
 import ProfilePage from '../pages/ProfilePage/profilePage';
-import PrivateRoute from '../components/PrivateRoute/privateRoute';
+import PrivateRoute, {
+	CustomRoute,
+} from '../components/PrivateRoute/privateRoute';
 import ContactUs from '../pages/About/ContactUs/contactUs';
 import Director from '../pages/About/Director/director';
 import ExecTeam from '../pages/About/ExecutiveTeam/execTeam';
@@ -40,11 +38,6 @@ import PendingNews from '../pages/Admin Dashboard/PendingNews';
 
 interface RoutesProp {}
 export const Routes: React.FC<RoutesProp> = () => {
-	const user = useSelector((state: any) => state.authReducer.user);
-	const [check, setCheck] = useState(false);
-	useEffect(() => {
-		setCheck(window.location.href.includes('/auth/'));
-	}, [check]);
 	return (
 		<Switch>
 			<React.Fragment>
@@ -65,37 +58,23 @@ export const Routes: React.FC<RoutesProp> = () => {
 				>
 					<SignUpDetails />
 				</PrivateRoute>
-				{!check && (
-					<div className="page-container">
-						<TopNavbar />
-						{/* <PrivateNavBar username=""/> */}
-						{user ? (
-							<PrivateNavBar
-								username={
-									user?.first_name + ' ' + user?.last_name
-								}
-							/>
-						) : null}
-						<div className="content-wrap">
-							{/* Private Routes*/}
-							<PrivateRoute path="/dashboard" exact>
-								<Dashboard />
-							</PrivateRoute>
-							<PrivateRoute path="/profile" exact>
-								<ProfilePage />
-							</PrivateRoute>
-							<PrivateRoute path="/support/become-mentor" exact>
-								<BeAMentor />
-							</PrivateRoute>
-							<PrivateRoute
-								path="/support/become-volunteer"
-								exact
-							>
-								<BeAVolunteer />
-							</PrivateRoute>
 
-							{/* profile routes */}
-							{/* <PrivateRoute path="/profile/basic" exact>
+				{/* Private Routes*/}
+				<PrivateRoute path="/dashboard" exact>
+					<Dashboard />
+				</PrivateRoute>
+				<PrivateRoute path="/profile" exact>
+					<ProfilePage />
+				</PrivateRoute>
+				<PrivateRoute path="/support/become-mentor" exact>
+					<BeAMentor />
+				</PrivateRoute>
+				<PrivateRoute path="/support/become-volunteer" exact>
+					<BeAVolunteer />
+				</PrivateRoute>
+
+				{/* profile routes */}
+				{/* <PrivateRoute path="/profile/basic" exact>
 						<ProfilePage />
 					</PrivateRoute>
 					<PrivateRoute path="/profile/contact" exact>
@@ -104,120 +83,112 @@ export const Routes: React.FC<RoutesProp> = () => {
 					<PrivateRoute path="/profile/contact" exact>
 						<ProfilePage />
 					</PrivateRoute> */}
-							{/* <Route path="/admin_dashboard" exact>
+				{/* <Route path="/admin_dashboard" exact>
 						<Admindashboard />
 					</Route> */}
-							{/* <Route path="/admin_dashboard/pending_events" exact>
+				{/* <Route path="/admin_dashboard/pending_events" exact>
 						<PendingEvents />
 					</Route> */}
 
-							{/* newsroom */}
-							<PrivateRoute path="/newsroom" exact>
-								<NewsRoom />
-							</PrivateRoute>
-							<PrivateRoute path="/newsroom/create/" exact>
-								<NewsItemEdit />
-							</PrivateRoute>
-							<PrivateRoute path="/newsroom/n/:id" exact>
-								<NewsItemIndiv />
-							</PrivateRoute>
-							<PrivateRoute path="/newsroom/:id/edit">
-								<NewsItemEdit />
-							</PrivateRoute>
+				{/* newsroom */}
+				<PrivateRoute path="/newsroom" exact>
+					<NewsRoom />
+				</PrivateRoute>
+				<PrivateRoute path="/newsroom/create/" exact>
+					<NewsItemEdit />
+				</PrivateRoute>
+				<PrivateRoute path="/newsroom/n/:id" exact>
+					<NewsItemIndiv />
+				</PrivateRoute>
+				<PrivateRoute path="/newsroom/:id/edit">
+					<NewsItemEdit />
+				</PrivateRoute>
 
-							<PrivateRoute path="/job_portal">
-								<JobPortal />
-							</PrivateRoute>
-							<PrivateRoute path="/all_jobs" exact>
-								<JobSection />
-							</PrivateRoute>
+				<PrivateRoute path="/job_portal">
+					<JobPortal />
+				</PrivateRoute>
+				<PrivateRoute path="/all_jobs" exact>
+					<JobSection />
+				</PrivateRoute>
 
-							{/* public routes */}
-							<Route path="/about/contact">
-								<ContactUs />
-							</Route>
-							<Route path="/about/executive-committee">
-								<ExecTeam />
-							</Route>
-							<Route path="/support/contribute">
-								<Contribute />
-							</Route>
-							<Route path="/about/director">
-								<Director />
-							</Route>
+				{/* public routes */}
+				<CustomRoute path="/about/contact">
+					<ContactUs />
+				</CustomRoute>
+				<CustomRoute path="/about/executive-committee">
+					<ExecTeam />
+				</CustomRoute>
+				<CustomRoute path="/support/contribute">
+					<Contribute />
+				</CustomRoute>
+				<CustomRoute path="/about/director">
+					<Director />
+				</CustomRoute>
 
-							<PrivateRoute path="/user/me">
-								<ProfilePage />
-							</PrivateRoute>
+				<PrivateRoute path="/user/me">
+					<ProfilePage />
+				</PrivateRoute>
 
-							{/* landing Page */}
-							<Route path="/" exact>
-								<HomePage />
-							</Route>
+				{/* landing Page */}
+				<CustomRoute path="/" exact>
+					<HomePage />
+				</CustomRoute>
 
-							{/* Members' routes */}
-							<PrivateRoute path="/members" exact>
-								<Members />
-							</PrivateRoute>
-							<PrivateRoute path="/members/institute" exact>
-								<Institute />
-							</PrivateRoute>
-							<PrivateRoute path="/members/location" exact>
-								<Location />
-							</PrivateRoute>
-							<PrivateRoute path="/members/prof_skills" exact>
-								<ProfessionalSkills />
-							</PrivateRoute>
-							<PrivateRoute path="/members/company" exact>
-								<Company />
-							</PrivateRoute>
-							<PrivateRoute path="/members/roles" exact>
-								<Roles />
-							</PrivateRoute>
-							<PrivateRoute path="/members/industry" exact>
-								<Industry />
-							</PrivateRoute>
+				{/* Members' routes */}
+				<PrivateRoute path="/members" exact>
+					<Members />
+				</PrivateRoute>
+				<PrivateRoute path="/members/institute" exact>
+					<Institute />
+				</PrivateRoute>
+				<PrivateRoute path="/members/location" exact>
+					<Location />
+				</PrivateRoute>
+				<PrivateRoute path="/members/prof_skills" exact>
+					<ProfessionalSkills />
+				</PrivateRoute>
+				<PrivateRoute path="/members/company" exact>
+					<Company />
+				</PrivateRoute>
+				<PrivateRoute path="/members/roles" exact>
+					<Roles />
+				</PrivateRoute>
+				<PrivateRoute path="/members/industry" exact>
+					<Industry />
+				</PrivateRoute>
 
-							{/* events' routes */}
-							<PrivateRoute path="/events" exact>
-								<EventsSection />
-							</PrivateRoute>
-							<PrivateRoute path="/events/create" exact>
-								<EventEdit />
-							</PrivateRoute>
-							<PrivateRoute path="/events/e/:id">
-								<EventDesc />
-							</PrivateRoute>
-							<PrivateRoute path="/events/:id/edit" exact>
-								<EventEdit />
-							</PrivateRoute>
+				{/* events' routes */}
+				<PrivateRoute path="/events" exact>
+					<EventsSection />
+				</PrivateRoute>
+				<PrivateRoute path="/events/create" exact>
+					<EventEdit />
+				</PrivateRoute>
+				<PrivateRoute path="/events/e/:id">
+					<EventDesc />
+				</PrivateRoute>
+				<PrivateRoute path="/events/:id/edit" exact>
+					<EventEdit />
+				</PrivateRoute>
 
-							{/* admin dashboard */}
-							<PrivateRoute path="/admin_dashboard" exact>
-								<Admindashboard />
-							</PrivateRoute>
-							<PrivateRoute
-								path="/admin_dashboard/pending_events"
-								exact
-							>
-								<PendingEvents />
-							</PrivateRoute>
-							<PrivateRoute path="/admin_dashboard/pending_news">
-								<PendingNews />
-							</PrivateRoute>
+				{/* admin dashboard */}
+				<PrivateRoute path="/admin_dashboard" exact>
+					<Admindashboard />
+				</PrivateRoute>
+				<PrivateRoute path="/admin_dashboard/pending_events" exact>
+					<PendingEvents />
+				</PrivateRoute>
+				<PrivateRoute path="/admin_dashboard/pending_news">
+					<PendingNews />
+				</PrivateRoute>
 
-							<PrivateRoute path="/post_job" exact>
-								<PostInternship />
-							</PrivateRoute>
+				<PrivateRoute path="/post_job" exact>
+					<PostInternship />
+				</PrivateRoute>
 
-							{/* <Route path="*">
+				{/* <Route path="*">
 						<Redirect to="/" />
 					</Route> */}
-						</div>
-
-						<Footer />
-					</div>
-				)}
 			</React.Fragment>
 		</Switch>
 	);

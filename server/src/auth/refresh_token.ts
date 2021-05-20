@@ -17,32 +17,34 @@ app.post('/', async (req, res) => {
         const token = req.cookies.rid;
         if (!token) {
             throw new Error('Please login first!');
-        }
-        const payload: jwtpayload = jwt.verify(
-            token,
-            process.env.REFRESH_TOKEN_SECRET as jwt.Secret
-        ) as jwtpayload;
-        const user = await User.findOne({
-            primary_email: payload.email,
-        });
-        if (!user) {
-            throw new Error('Please login first! (user not in db)');
-        }
-        const pload: jwtpayload = {
-            id: payload._id,
-            email: payload.email,
-            first_name: payload.first_name,
-            last_name: payload.last_name,
-        } as jwtpayload;
+        } else {
+            const payload: jwtpayload = jwt.verify(
+                token,
+                process.env.REFRESH_TOKEN_SECRET as jwt.Secret
+            ) as jwtpayload;
+            const user = await User.findOne({
+                primary_email: payload.email,
+            });
+            if (!user) {
+                throw new Error('Please login first! (user not in db)');
+            } else {
+                const pload: jwtpayload = {
+                    _id: payload._id,
+                    email: payload.email,
+                    first_name: payload.first_name,
+                    last_name: payload.last_name,
+                } as jwtpayload;
 
-        sendRefreshToken(res, genRefreshToken(pload));
-        res.send({
-            email: payload.email,
-            first_name: payload.first_name,
-            last_name: payload.last_name,
-            token: genAccessToken(pload),
-            _id: user._id,
-        });
+                sendRefreshToken(res, genRefreshToken(pload));
+                res.send({
+                    email: payload.email,
+                    first_name: payload.first_name,
+                    last_name: payload.last_name,
+                    token: genAccessToken(pload),
+                    _id: user._id,
+                });
+            }
+        }
     } catch (err) {
         res.send({ error: true, message: err.message });
     }

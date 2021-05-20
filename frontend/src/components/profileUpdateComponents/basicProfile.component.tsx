@@ -39,6 +39,7 @@ function BasicProfileMenu(props: any) {
 					throw new Error(res?.data?.message);
 				} else {
 					message.success('Successfully Updated Basic info.');
+					window.location.reload();
 				}
 			})
 			.catch((err: any) => {
