@@ -774,6 +774,11 @@ export default function Members() {
 												/>
 											</Tooltip>
 										</Col>
+										{userA?.isAdmin && (
+											<Button onClick={handleExportMemb}>
+												Export Data
+											</Button>
+										)}
 									</Row>
 								</TabPane>
 								<TabPane tab="Location" key="3">
@@ -807,6 +812,11 @@ export default function Members() {
 												/>
 											</Tooltip>
 										</Col>
+										{userA?.isAdmin && (
+											<Button onClick={handleExportMemb}>
+												Export Data
+											</Button>
+										)}
 									</Row>
 								</TabPane>
 								<TabPane tab="Company" key="4">
@@ -838,6 +848,11 @@ export default function Members() {
 												/>
 											</Tooltip>
 										</Col>
+										{userA?.isAdmin && (
+											<Button onClick={handleExportMemb}>
+												Export Data
+											</Button>
+										)}
 									</Row>
 								</TabPane>
 								<TabPane tab="Professional Skills" key="5">
@@ -901,6 +916,11 @@ export default function Members() {
 												/>
 											</Tooltip>
 										</Col>
+										{userA?.isAdmin && (
+											<Button onClick={handleExportMemb}>
+												Export Data
+											</Button>
+										)}
 									</Row>
 								</TabPane>
 							</Tabs>

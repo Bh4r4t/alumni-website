@@ -49,7 +49,7 @@ function JobDesc(_props: any) {
 			<Card className="auth-form-container">
 				<Row className="eventdesc-row">
 					<Col span={md ? 12 : 24} className="eventdesc-col-key">
-						Event Name:
+						Job Title:
 					</Col>
 					<Col span={md ? 12 : 24} className="eventdesc-col-value">
 						{job && job.title}

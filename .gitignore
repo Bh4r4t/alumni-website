@@ -23,6 +23,6 @@ yarn-error.log*
 
 dist/
 .env
-.vscode
+/.vscode
 app.yaml
 .gcloudignore
